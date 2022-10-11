@@ -1,0 +1,30 @@
+@use "../../../../scss/index" as *;
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+
+  & img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: $radius-rounded;
+  }
+}
+
+.header-admin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & .user-info {
+    & img {
+      width: 32px;
+      height: 32px;
+      border-radius: $radius-rounded;
+      object-fit: cover;
+      cursor: pointer;
+    }
+  }
+}

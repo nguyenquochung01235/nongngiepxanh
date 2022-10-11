@@ -1,0 +1,16 @@
+.header-list-menu {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+
+  &__icon {
+    font-size: 20px;
+    margin-right: 16px;
+  }
+
+  &__drop-down {
+    &-item {
+      margin-right: 24px;
+    }
+  }
+}

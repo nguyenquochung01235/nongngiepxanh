@@ -1,0 +1,11 @@
+@use "../../../../scss//index" as *;
+
+.create-htx-form {
+  padding: $basic-padding;
+
+  &__heading {
+    text-transform: uppercase;
+    font-size: $font-size-heading;
+    margin-bottom: 12px;
+  }
+}

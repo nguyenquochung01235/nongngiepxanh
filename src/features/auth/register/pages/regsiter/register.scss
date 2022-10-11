@@ -1,0 +1,8 @@
+@use "../../../../../scss/index" as *;
+
+.register {
+  @include auth-bg();
+  background: url("../../../../../assets//images/bg-auth.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+}

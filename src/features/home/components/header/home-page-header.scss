@@ -1,0 +1,36 @@
+@use "../../../../scss/index" as *;
+
+.home-header {
+  background-color: $main-color;
+  color: $white-color;
+
+  &__search {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+
+    & span {
+      position: absolute;
+      top: 50%;
+      right: 4px;
+      transform: translateY(-50%);
+      padding: 6px 16px;
+      border-radius: $radius-0;
+      background-color: $main-color;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  &__auth {
+    margin-left: 36px;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.account-dropdown {
+  font-size: 13px;
+  cursor: pointer;
+}

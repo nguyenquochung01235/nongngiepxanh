@@ -1,0 +1,39 @@
+@use "../../../../../scss/index" as *;
+
+.register-form {
+  width: $register-form-width;
+  background-color: $white-color;
+  padding: 16px 32px;
+  box-shadow: $box-shadow;
+  border-radius: $radius-1;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  &__heading {
+    @include heading();
+  }
+}
+
+@media (max-width: 992px) {
+  .register-form {
+    width: 768px;
+  }
+}
+
+@media (max-width: 768px) {
+  .register-form {
+    width: 540px;
+  }
+}
+
+@media (max-width: 576px) {
+  .register-form {
+    max-width: 380px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 576px) {
+  .register-form {
+    max-width: 320px;
+  }
+}

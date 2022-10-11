@@ -1,0 +1,153 @@
+@use "./variable" as *;
+
+.ant-btn,
+.btn {
+  border-radius: $radius-0 !important;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.ant-layout-header {
+  background-color: #fff;
+  padding: 0 20px !important;
+}
+
+// .side-bar {
+//   min-width: 260px !important;
+// }
+
+.ant-layout-sider {
+  background-color: #fff;
+}
+
+.ant-layout-content {
+  padding: 20px !important;
+  margin: 16px !important;
+  background-color: #fff;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.ant-input,
+.ant-input-affix-wrapper {
+  border-radius: $radius-0 !important;
+  // border-color: $border-color !important;
+  display: flex;
+  align-items: center;
+}
+
+.ant-form-item-explain-error {
+  margin: 8px 0 12px 0;
+}
+
+.ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input,
+.ant-input-status-error:not(.ant-input-disabled):not(.ant-input-borderless).ant-input:hover {
+  border-color: #ff4d4f !important;
+}
+
+.css-eez85g-MuiTypography-root {
+  color: #fff !important;
+}
+
+.css-llvhl4-MuiTypography-root {
+  color: #fff !important;
+}
+
+.pagiantion {
+  margin: 16px 0;
+  text-align: right;
+}
+
+.ant-descriptions-item {
+  padding-right: 12px;
+}
+
+.link-to {
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  margin: 0 16px;
+}
+
+html::-webkit-scrollbar {
+  width: 8px;
+}
+
+html::-webkit-scrollbar-track {
+  background-color: #fff;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: rgb(204, 197, 197);
+  border-radius: 20px;
+}
+
+div::-webkit-scrollbar {
+  width: 8px;
+}
+
+div::-webkit-scrollbar-track {
+  background-color: #fff;
+}
+
+div::-webkit-scrollbar-thumb {
+  background-color: rgb(204, 197, 197);
+  border-radius: 20px;
+}
+
+.cursor-poiner {
+  cursor: pointer;
+}
+
+.text-small {
+  font-size: 14px;
+  display: inline-block;
+  padding: 0 4px;
+}
+
+.shadow-wrapper {
+  padding: 20px;
+  background-color: $white-color;
+  box-shadow: $box-shadow;
+  border-radius: $radius-1;
+}
+
+.ml-12 {
+  margin-left: 12px;
+}
+
+.ml-16 {
+  margin-left: 16px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ant-dropdown-menu {
+  border-radius: $radius-0 !important;
+}
+
+.ant-dropdown {
+  min-width: 150px !important;
+}
+
+.ant-popover-inner {
+  padding: 4px !important;
+  border-radius: $radius-0 !important;
+}
+
+.ant-layout-content {
+  border-radius: $radius-0 !important;
+}

@@ -1,0 +1,15 @@
+export const PATH = {
+  LOGIN: "/login",
+  REGISTER: "/register",
+  HTX: "/htx",
+  TRADER: "/trader",
+  DASHBOARD: "/dashboard",
+  CREATE_HTX: "/create-htx",
+  ADD_USER_TO_HTX: "/add-user-to-htx",
+  MANAGE_HTX: "/manage-htx",
+  MANAGE_SEASON: "/manage-season",
+  MANAGE_SEASON_DETAIL: "/manage-season/detail/:id",
+  MANAGE_ACTIVITY: "/manage-activity",
+  CALENDAR: "/calendar",
+  CREATE_CATEGORY_MANAGEMENT: "/create-category-management",
+};

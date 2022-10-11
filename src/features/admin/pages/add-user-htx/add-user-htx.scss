@@ -1,0 +1,18 @@
+@use "../../../../scss//index" as *;
+
+.add-user-to-htx {
+  &-desc {
+    padding: 20px;
+    box-shadow: $box-shadow;
+    margin-bottom: 20px;
+    border-radius: $radius-1;
+  }
+
+  &__search {
+    display: flex;
+
+    & button {
+      margin-left: 5px;
+    }
+  }
+}
