@@ -18,7 +18,7 @@ const htxApi = {
     return axiosClient.post(url, data);
   },
 
-  deleteUser(id: any) {
+  deleteUser(id: number) {
     const url = `htx/delete-member/${id}`;
     return axiosClient.delete(url);
   },

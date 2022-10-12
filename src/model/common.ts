@@ -4,12 +4,21 @@ export interface PaginationParams {
   _totalRows: number;
 }
 
+export interface Meta {
+  total: number;
+  totalPage: number;
+  currentPage: number;
+  prePage: number;
+  nextPage: number;
+}
+
 export interface ListResponse<T> {
   data: T[];
   statusCode?: string;
   errorList?: Array<any>;
   message?: string;
   pagination?: PaginationParams;
+  meta?: Meta;
   [key: string]: any;
 }
 
