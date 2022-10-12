@@ -1,3 +1,5 @@
+import { ListParams } from "../model";
+import { AddCalendar } from "./../model/calendar";
 import axiosClient from "./axiosClient";
 
 const calendarApi = {
@@ -6,12 +8,12 @@ const calendarApi = {
     return axiosClient.get(url);
   },
 
-  createCalendar(data: any) {
+  createCalendar(data: AddCalendar) {
     const url = "lichmuavu/create";
     return axiosClient.post(url, data);
   },
 
-  getDetail(params: any) {
+  getDetail(params: ListParams) {
     const url = "lichmuavu/get-detail";
     return axiosClient.get(url, { params });
   },
