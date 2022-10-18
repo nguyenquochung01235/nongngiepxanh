@@ -1,0 +1,14 @@
+@use "../../scss/index" as *;
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+
+  &-btn {
+    & button {
+      margin-left: 4px;
+    }
+  }
+}

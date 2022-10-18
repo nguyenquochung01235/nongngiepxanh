@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import htxApi from "../../../../api/htx";
+import { PATH } from "../../../../enum";
 import { hasHTX } from "../../../../redux/htxSlice";
 import { toggleLoading } from "../../../../redux/loadingSlice";
 import { validateMessage } from "../../../../utils/validateMessage";
@@ -24,7 +25,7 @@ const CreateHTX = (props: Props) => {
       await htxApi.createHTX(values);
 
       dispatch(hasHTX(true));
-      navigate("/htx");
+      navigate(`${PATH.HTX}${PATH.DASHBOARD}`);
     } catch (error) {
       message.error("tạo hợp tác xã thất bại");
     } finally {
@@ -83,6 +84,9 @@ const CreateHTX = (props: Props) => {
               rules={[
                 {
                   required: true,
+                },
+                {
+                  type: "email",
                 },
               ]}
             >

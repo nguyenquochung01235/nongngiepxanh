@@ -35,9 +35,7 @@ const Register = (props: Props) => {
       },
 
       onError: (err) => {
-        if (getErrorMessage(err).length > 0) {
-          getErrorMessage(err).map((item: string) => message.error(item));
-        }
+        getErrorMessage(err);
       },
     });
   };

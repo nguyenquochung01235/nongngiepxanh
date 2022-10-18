@@ -8,9 +8,24 @@ const activityApi = {
     return axiosClient.get(url, { params });
   },
 
-  create(data: ADDACTIVITY): Promise<ADDACTIVITY> {
+  getDetail(id: number | string) {
+    const url = "/hoatdongmuavu/get-detail";
+    return axiosClient.get(url, { params: { id_hoatdongmuavu: id } });
+  },
+
+  create(data: ADDACTIVITY): Promise<ListResponse<ADDACTIVITY>> {
     const url = "hoatdongmuavu/create";
     return axiosClient.post(url, data);
+  },
+
+  update(data: ADDACTIVITY): Promise<ListResponse<ADDACTIVITY>> {
+    const url = "hoatdongmuavu/update";
+    return axiosClient.post(url, data);
+  },
+
+  delete(id: string): Promise<void> {
+    const url = `hoatdongmuavu/delete/${id}`;
+    return axiosClient.delete(url);
   },
 };
 

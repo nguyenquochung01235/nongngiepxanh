@@ -1,18 +1,29 @@
-import { Select, Spin } from "antd";
+import { Form, Select, Spin } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import riceApi from "../../api/price";
 
 type Props = {
   Key: string;
   Value: string;
-  onSelect: Function;
+  onSelect?: Function;
   placeholder?: string;
+  name?: string;
+  lable?: string;
 };
 const { Option } = Select;
-const AutoComplete = ({ Key, Value, onSelect, placeholder }: Props) => {
+
+const AutoComplete = ({
+  Key,
+  Value,
+  onSelect,
+  placeholder,
+  name,
+  lable,
+}: Props) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchData, setSearchData] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [selectValue, setSelectValue] = useState<string>("");
   const timer = useRef<number>();
 
   useEffect(() => {
@@ -43,38 +54,60 @@ const AutoComplete = ({ Key, Value, onSelect, placeholder }: Props) => {
   };
 
   const handleSelect = (value: string) => {
+    setSelectValue(value);
     if (onSelect) {
       onSelect(value);
     }
   };
 
-  return (
-    <>
-      <Select
-        placeholder={placeholder || "Search"}
-        showSearch
-        onSearch={handleSearch}
-        filterOption={false}
-        loading={loading}
-        onSelect={handleSelect}
-      >
-        {searchData &&
-          !loading &&
-          searchData.length > 0 &&
-          searchData?.map((item: any) => {
-            return (
-              <Option key={item[Key]} value={item[Key]}>
-                {item[Value]}
-              </Option>
-            );
-          })}
-        {loading && (
-          <Option>
-            <Spin size="small"></Spin>
-          </Option>
-        )}
-      </Select>
-    </>
+  const handleChange = (value: string) => {
+    setSelectValue(value);
+  };
+
+  const children =
+    searchData &&
+    searchData.length > 0 &&
+    searchData?.map((item: any) => {
+      return (
+        <Option key={item[Key]} value={item[Key]}>
+          {item[Value]}
+        </Option>
+      );
+    });
+
+  const selectC = (
+    <Select
+      allowClear
+      placeholder={placeholder || "Tìm kiếm"}
+      showSearch
+      onSearch={handleSearch}
+      filterOption={false}
+      onSelect={handleSelect}
+      onChange={handleChange}
+    >
+      {children?.length > 0 && !loading && children}
+      {loading && (
+        <Option>
+          <Spin size="small"></Spin>
+        </Option>
+      )}
+    </Select>
+  );
+
+  return name ? (
+    <Form.Item
+      name={name || Key}
+      label={lable || " "}
+      rules={[
+        {
+          required: true,
+        },
+      ]}
+    >
+      {selectC}
+    </Form.Item>
+  ) : (
+    selectC
   );
 };
 

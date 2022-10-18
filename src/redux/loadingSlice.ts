@@ -13,6 +13,8 @@ const loadingSlice = createSlice({
   initialState,
   reducers: {
     toggleLoading(state, action) {
+      console.log(action.payload);
+
       state.isLoading = action.payload;
     },
   },

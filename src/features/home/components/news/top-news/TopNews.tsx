@@ -18,7 +18,7 @@ const TopNews = (props: Props) => {
                       height: "300px",
                       objectFit: "cover",
                     }}
-                    src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.6435-9/82865944_2632458970330793_1053120410406617088_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=174925&_nc_ohc=v4JSRDquAsQAX9tBvw-&_nc_ht=scontent.fsgn2-5.fna&oh=00_AT9IvxgiatuOiafNrvDnyq4yjLFpfKAgStKoX89zMw0mcw&oe=63424404"
+                    src="https://t.ex-cdn.com/nongnghiep.vn/resize/600x360/files/bao_in/2022/10/08/18_57_5766_1-083124.jpeg"
                     alt=""
                   />
                 </Col>
@@ -31,6 +31,7 @@ const TopNews = (props: Props) => {
                     background: "rgb(2245,245,245)",
                     padding: "16px",
                     maxHeight: "300px",
+                    overflow: "auto",
                   }}
                 >
                   <h2>Mô hình trồng lúa kết hợp nuôi tôm</h2>
@@ -53,7 +54,11 @@ const TopNews = (props: Props) => {
             md={6}
             sm={24}
             xs={24}
-            style={{ maxHeight: "300px", overflow: "hidden" }}
+            style={{
+              maxHeight: "300px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
           >
             <div className="top-news-list__item">
               <Row gutter={12}>
@@ -65,7 +70,7 @@ const TopNews = (props: Props) => {
                       height: "120px",
                       objectFit: "cover",
                     }}
-                    src="https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.6435-9/82865944_2632458970330793_1053120410406617088_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=174925&_nc_ohc=v4JSRDquAsQAX9tBvw-&_nc_ht=scontent.fsgn2-5.fna&oh=00_AT9IvxgiatuOiafNrvDnyq4yjLFpfKAgStKoX89zMw0mcw&oe=63424404"
+                    src="https://t.ex-cdn.com/nongnghiep.vn/resize/600x360/files/bao_in/2022/10/08/18_57_5766_1-083124.jpeg"
                     alt=""
                   />
                 </Col>

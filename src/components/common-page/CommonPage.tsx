@@ -121,7 +121,7 @@ const CommonPage = (props: Props) => {
   const handleSubmitCommonForm = (values: any) => {
     mutation_common.mutate(values, {
       onSuccess: (res) => {
-        message.success(getResponseMessage(res));
+        getResponseMessage(res);
         refetch();
         setIsModalOpen(false);
       },
