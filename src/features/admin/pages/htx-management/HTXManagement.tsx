@@ -24,6 +24,7 @@ import "./htx-management.scss";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import htxApi from "../../../../api/htx";
 import { getErrorMessage } from "../../../../utils/getErrorMessage";
+import { getResponseMessage } from "../../../../utils/getResponseMessage";
 
 interface DataType {
   key: React.Key;
@@ -31,102 +32,6 @@ interface DataType {
   age: number;
   address: string;
 }
-
-const columns: ColumnsType<DataType> = [
-  {
-    title: "id_xã viên",
-    dataIndex: "id_xavien",
-    filterMode: "tree",
-    filterSearch: true,
-    // width: "30%",
-  },
-  {
-    title: "Tên xã viên",
-    dataIndex: "fullname",
-  },
-  {
-    width: "15%",
-    title: "Ảnh đại diện",
-    dataIndex: "thumbnail",
-    render: (text, record: any) => (
-      <div>
-        <img
-          style={{
-            width: "40px",
-            height: "40px",
-            objectFit: "cover",
-            borderRadius: "50%",
-          }}
-          src={
-            record?.thumbnail ||
-            "https://scontent.fsgn2-1.fna.fbcdn.net/v/t39.30808-6/309685743_1781383138924088_4335957281887489023_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=-q4rabpkPusAX9KFM0B&_nc_ht=scontent.fsgn2-1.fna&oh=00_AT__1jLpnxatNs-W-iyKjHdDXNtF-aU0LUl7XTGU-gecFA&oe=6345A758"
-          }
-          alt=""
-        />
-      </div>
-    ),
-  },
-  {
-    title: "Số điện thoại",
-    dataIndex: "phone_number",
-    // width: "40%",
-  },
-  {
-    title: "Trạng thái",
-    dataIndex: "active_switch",
-    // width: "40%",
-  },
-  {
-    title: "Hành động",
-    dataIndex: "",
-    key: "x",
-    render: (text, record: any) => (
-      <>
-        <span
-          className=""
-          onClick={() => {
-            // navigate("/admin/manage-season/detail/" + record?.id_lichmuavu);
-          }}
-          style={{
-            display: "inline-block",
-            marginRight: "16px",
-            cursor: "pointer",
-          }}
-        >
-          <EditOutlined />
-        </span>
-        <span
-          style={{ cursor: "pointer" }}
-          className=""
-          onClick={(e) => {
-            console.log(e);
-          }}
-        >
-          <Popconfirm
-            placement="top"
-            title="Xóa xã viên khỏi hợp tác xã?"
-            onConfirm={() => handleConfirmDeleteUser(record)}
-          >
-            <DeleteOutlined />
-          </Popconfirm>
-        </span>
-      </>
-    ),
-  },
-];
-
-const handleConfirmDeleteUser = (record: any) => {
-  console.log(record);
-};
-
-const onChange: TableProps<DataType>["onChange"] = (
-  pagination,
-  filters,
-  sorter,
-  extra
-) => {
-  console.log("params", pagination, filters, sorter, extra);
-};
 
 const HTXManagement = () => {
   const htx = useSelector((state: any) => state.htx.role);
@@ -155,6 +60,76 @@ const HTXManagement = () => {
     })();
   }, [filter]);
 
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "id_xã viên",
+      dataIndex: "id_xavien",
+      filterMode: "tree",
+      filterSearch: true,
+      // width: "30%",
+    },
+    {
+      title: "Tên xã viên",
+      dataIndex: "fullname",
+    },
+    {
+      width: "15%",
+      title: "Ảnh đại diện",
+      dataIndex: "thumbnail",
+      render: (text, record: any) => (
+        <div>
+          <img
+            style={{
+              width: "40px",
+              height: "40px",
+              objectFit: "cover",
+              borderRadius: "50%",
+            }}
+            src={
+              record?.thumbnail ||
+              "https://scontent.fsgn2-1.fna.fbcdn.net/v/t39.30808-6/309685743_1781383138924088_4335957281887489023_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=-q4rabpkPusAX9KFM0B&_nc_ht=scontent.fsgn2-1.fna&oh=00_AT__1jLpnxatNs-W-iyKjHdDXNtF-aU0LUl7XTGU-gecFA&oe=6345A758"
+            }
+            alt=""
+          />
+        </div>
+      ),
+    },
+    {
+      title: "Số điện thoại",
+      dataIndex: "phone_number",
+      // width: "40%",
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "active_switch",
+      // width: "40%",
+    },
+    {
+      title: "Hành động",
+      dataIndex: "",
+      key: "x",
+      render: (text, record: any) => (
+        <>
+          <span
+            style={{ cursor: "pointer" }}
+            className=""
+            onClick={(e) => {
+              console.log(e);
+            }}
+          >
+            <Popconfirm
+              placement="top"
+              title="Xóa xã viên khỏi hợp tác xã?"
+              onConfirm={() => handleConfirmDeleteUser(record)}
+            >
+              <DeleteOutlined />
+            </Popconfirm>
+          </span>
+        </>
+      ),
+    },
+  ];
+
   const fetchUserList = (filter: any) => {
     return userApi.getAllUser({
       id_hoptacxa: htx.id_hoptacxa,
@@ -166,6 +141,16 @@ const HTXManagement = () => {
 
   const handleChangeSwitch = (value: boolean) => {
     console.log(value);
+  };
+
+  const handleConfirmDeleteUser = async (record: any) => {
+    try {
+      const res = await htxApi.deleteUser(record.id_user);
+      getResponseMessage(res);
+      refetch();
+    } catch (error) {
+      getErrorMessage(error);
+    }
   };
   // console.log([...data?.data[0], ...data?.data[0]?.user]);
 
@@ -249,9 +234,7 @@ const HTXManagement = () => {
         refetch();
       },
       onError: (error) => {
-        if (getErrorMessage(error)?.length > 0) {
-          getErrorMessage(error).map((item: string) => message.error(item));
-        }
+        getErrorMessage(error);
       },
     });
   };
@@ -264,13 +247,13 @@ const HTXManagement = () => {
         onOk={handleCancel}
         open={isModalOpen}
         onCancel={handleCancel}
-        width="70%"
+        width="50%"
         // cancelButtonProps={{ style: { display: "none" } }}
         // okButtonProps={{ style: { display: "none" } }}
       >
         <div className="add-user-to-htx">
           <Row>
-            <Col span={8}>
+            <Col span={14}>
               <div className="add-user-to-htx__search">
                 <Input
                   onChange={(e) => setSearchValue(e.target.value)}
@@ -294,7 +277,6 @@ const HTXManagement = () => {
               </div>
             </Col>
           </Row>
-          <br />
           <br />
           {user && (
             <Row>
@@ -353,10 +335,9 @@ const HTXManagement = () => {
           </Form>
         </div>
         <Table
-          loading={isLoading}
+          loading={isLoading || isFetching}
           columns={columns}
           dataSource={result}
-          onChange={onChange}
           pagination={false}
         />
         <div className="pagiantion">

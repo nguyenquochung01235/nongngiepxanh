@@ -62,7 +62,11 @@ const HomePageHeader = (props: Props) => {
         </Col>
         <Col lg={15} md={12} sm={0} xs={0}>
           <div className="home-header__search" style={{ textAlign: "right" }}>
-            <Input placeholder="Tìm kiếm thông tin" style={{ width: "85%" }} />
+            <Input
+              className="border-none"
+              placeholder="Tìm kiếm thông tin"
+              style={{ width: "85%" }}
+            />
             <SearchOutlined />
           </div>
         </Col>

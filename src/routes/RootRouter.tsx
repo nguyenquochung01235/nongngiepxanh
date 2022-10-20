@@ -2,6 +2,7 @@ import { Route } from "react-router";
 import { Routes } from "react-router-dom";
 import AllPageLoading from "../components/loading/AllPageLoading";
 import NotFound from "../components/not-found/NotFound";
+import Profile from "../components/profile/Profile";
 import { PATH } from "../enum";
 import CreateHTX from "../features/admin/pages/create-htx/CreateHTX";
 import HomeAdmin from "../features/admin/pages/home-admin/HomeAdmin";

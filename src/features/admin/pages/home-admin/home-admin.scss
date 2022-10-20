@@ -28,3 +28,13 @@
     }
   }
 }
+
+.logo {
+  display: flex;
+  align-items: center;
+
+  &-title {
+    text-transform: uppercase;
+    margin-left: 12px;
+  }
+}

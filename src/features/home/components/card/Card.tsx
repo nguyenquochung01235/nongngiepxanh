@@ -1,5 +1,6 @@
 import { AnyArray } from "immer/dist/internal";
 import React from "react";
+import "./card.scss";
 
 type Props = {
   children: any;
