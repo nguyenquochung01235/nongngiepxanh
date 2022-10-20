@@ -13,4 +13,6 @@ export const PATH = {
   MANAGE_ACTIVITY: "/manage-activity",
   CALENDAR: "/calendar",
   CREATE_CATEGORY_MANAGEMENT: "/create-category-management",
+  CONTRACT_MANAGEMENT: "/contract-management",
+  CONTRACT_CREATE: "/contract-create",
 };

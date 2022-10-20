@@ -3,6 +3,7 @@ import {
   AppstoreOutlined,
   BellOutlined,
   BugOutlined,
+  ContainerOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
@@ -17,9 +18,12 @@ import {
   useNavigate,
 } from "react-router-dom";
 import logo from "../../../../assets/images/admin-logo.jpg";
+import Profile from "../../../../components/profile/Profile";
 import { PATH } from "../../../../enum";
 import { handleLogout } from "../../../../utils/logout";
 import CreateCategoryPertocodes from "../../pages/category-pesticides-management/CategoryPertocodesManagement";
+import CreateContract from "../../pages/create-contract/CreateContract";
+import ContractManagement from "../contract/ContractManagement";
 
 const { Header, Sider, Content } = Layout;
 
@@ -54,18 +58,33 @@ const HomeTraders = () => {
         </Link>
       ),
     },
+    {
+      key: `${PATH.TRADER}${PATH.CONTRACT_MANAGEMENT}`,
+      icon: <ContainerOutlined />,
+      label: (
+        <Link to={`${PATH.TRADER}${PATH.CONTRACT_MANAGEMENT}`}>
+          Quản lý hợp đồng
+        </Link>
+      ),
+    },
   ];
 
   const menu: any = (
     <Menu
       items={[
         {
-          key: "logout",
-          label: <div onClick={() => handleLogout(navigate)}>Log out</div>,
+          key: PATH.PROFILE,
+          label: (
+            <span>
+              <Link to={`${PATH.TRADER}${PATH.PROFILE}`}>
+                Thông tin cá nhân
+              </Link>
+            </span>
+          ),
         },
         {
-          key: "profile",
-          label: <span>Thông tin cá nhân</span>,
+          key: "logout",
+          label: <div onClick={() => handleLogout(navigate)}>Đăng xuất</div>,
         },
       ]}
     />
@@ -74,6 +93,7 @@ const HomeTraders = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
+        width={250}
         trigger={null}
         collapsible
         collapsed={collapsed}
@@ -135,6 +155,15 @@ const HomeTraders = () => {
               path={PATH.CREATE_CATEGORY_MANAGEMENT}
               element={<CreateCategoryPertocodes></CreateCategoryPertocodes>}
             ></Route>
+            <Route
+              path={PATH.CONTRACT_MANAGEMENT}
+              element={<ContractManagement></ContractManagement>}
+            ></Route>
+            <Route
+              path={PATH.CONTRACT_CREATE}
+              element={<CreateContract></CreateContract>}
+            ></Route>
+            <Route path={PATH.PROFILE} element={<Profile></Profile>}></Route>
           </Routes>
         </Content>
       </Layout>

@@ -1,0 +1,13 @@
+.trader-detail {
+  display: inline-block;
+  margin-left: 8px;
+  font-weight: 600;
+}
+
+.trader-label {
+  display: inline-block;
+  min-width: 120px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

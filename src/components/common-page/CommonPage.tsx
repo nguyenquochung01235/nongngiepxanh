@@ -11,7 +11,7 @@ import {
   Table,
 } from "antd";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import "./common-page.scss";
 import queryString from "query-string";
 import commontApi from "../../api/common";
@@ -21,8 +21,9 @@ import { getErrorMessage } from "../../utils/getErrorMessage";
 import { validateMessage } from "../../utils/validateMessage";
 
 type Props = {
-  buttonTitle: string;
-  modalTitle: string;
+  newPage?: boolean;
+  buttonTitle?: string;
+  modalTitle?: string;
   modalWidth?: number;
   modalChildren?: any;
   tableColumns?: any;
@@ -31,6 +32,7 @@ type Props = {
   submitUrl?: string;
   commonHeading?: string;
   baseUrl?: string;
+  linkToNewPage?: string;
 };
 
 const CommonPage = (props: Props) => {
@@ -57,6 +59,8 @@ const CommonPage = (props: Props) => {
     submitUrl,
     commonHeading,
     baseUrl,
+    newPage,
+    linkToNewPage,
   } = props;
 
   useEffect(() => {
@@ -138,7 +142,12 @@ const CommonPage = (props: Props) => {
 
   return (
     <div className="common-page">
-      <Button onClick={showModal}>{buttonTitle || ""}</Button>
+      {!newPage && <Button onClick={showModal}>{buttonTitle || ""}</Button>}
+      {newPage && (
+        <Button>
+          <Link to={linkToNewPage || ""}>{buttonTitle || ""}</Link>
+        </Button>
+      )}
       <Modal
         title={modalTitle || ""}
         onOk={handleCancel}
@@ -194,7 +203,7 @@ const CommonPage = (props: Props) => {
           </Form>
         </div>
         <Table
-          loading={isLoading}
+          loading={isLoading || isFetching}
           columns={tableColumns}
           dataSource={data?.data || []}
           pagination={false}

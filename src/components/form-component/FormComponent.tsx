@@ -23,7 +23,7 @@ const FormComponent = ({
   initialValues = {},
   onDisable,
 }: Props) => {
-  const [form] = Form.useForm();
+  const [formCommon] = Form.useForm();
 
   let dataChildren = [];
 
@@ -60,12 +60,15 @@ const FormComponent = ({
   };
 
   const handleFieldsChange = (values: any) => {
-    console.log(form.getFieldsError().filter(({ errors }) => errors.length));
+    console.log(
+      formCommon.getFieldsError().filter(({ errors }) => errors.length)
+    );
 
     setTimeout(() => {
       if (onDisable) {
         if (
-          form.getFieldsError().filter(({ errors }) => errors.length).length > 0
+          formCommon.getFieldsError().filter(({ errors }) => errors.length)
+            .length > 0
         ) {
           onDisable(true);
         } else {
@@ -79,7 +82,7 @@ const FormComponent = ({
     <div>
       <Form
         onFieldsChange={handleFieldsChange}
-        form={form}
+        form={formCommon}
         layout="vertical"
         name={name || ""}
         validateMessages={validateMessage()}
