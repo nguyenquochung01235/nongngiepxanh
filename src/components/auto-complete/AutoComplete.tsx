@@ -1,5 +1,6 @@
 import { Form, Select, Spin } from "antd";
 import React, { useEffect, useRef, useState } from "react";
+import commontApi from "../../api/common";
 import riceApi from "../../api/price";
 
 type Props = {
@@ -9,6 +10,8 @@ type Props = {
   placeholder?: string;
   name?: string;
   lable?: string;
+  type: string;
+  keyword?: string;
 };
 const { Option } = Select;
 
@@ -19,6 +22,8 @@ const AutoComplete = ({
   placeholder,
   name,
   lable,
+  type = "",
+  keyword = "search",
 }: Props) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchData, setSearchData] = useState<any>();
@@ -32,11 +37,13 @@ const AutoComplete = ({
 
       timer.current = setTimeout(async () => {
         setLoading(true);
-        const params = {
-          name_gionglua: searchValue,
-        };
+        const params: any = {};
+        params[keyword] = searchValue;
+
         try {
-          const res = await riceApi.autoCompleteRice(params);
+          console.log(type);
+
+          const res = await commontApi.autoComplete(type, params);
           setSearchData(res.data);
         } catch (error) {
           console.log(error);

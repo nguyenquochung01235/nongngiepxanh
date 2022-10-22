@@ -20,12 +20,9 @@ body {
   margin: 0 16px;
 }
 
-// table,
-// tr,
-// th,
-// td {
-//   text-align: center !important;
-// }
+.ant-collapse {
+  border-radius: $radius-0 !important;
+}
 
 html::-webkit-scrollbar {
   width: 8px;
@@ -55,6 +52,11 @@ div::-webkit-scrollbar-thumb {
 
 .cursor-poiner {
   cursor: pointer;
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
 }
 
 .text-small {

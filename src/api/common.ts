@@ -10,6 +10,11 @@ const commontApi = {
   create(url: string, data: ListParams): Promise<ListResponse<any>> {
     return axiosClient.post(url, data);
   },
+
+  autoComplete(type: string, params: ListParams) {
+    const url = `/auto-complete/${type}/get-list`;
+    return axiosClient.get(url, { params });
+  },
 };
 
 export default commontApi;

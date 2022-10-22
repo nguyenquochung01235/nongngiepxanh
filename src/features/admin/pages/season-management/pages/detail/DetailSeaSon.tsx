@@ -250,9 +250,10 @@ const DetailSeaSon = (props: Props) => {
     values.id_hoatdongmuavu = activityId || null;
     values.date_start = formatMoment(values.date_start);
     values.date_end = formatMoment(values.date_end);
+    values.id_lichmuavu = id || null;
 
     if (activityDetail && Object.keys(activityDetail).length > 0) {
-      values.id_lichmuavu = id || null;
+      // values.id_lichmuavu = id || null; ??
 
       mutation_update_activity.mutate(values, {
         onSuccess: (val) => {
@@ -308,10 +309,13 @@ const DetailSeaSon = (props: Props) => {
   );
 
   const handleFormSubmit = (values: any) => {
+    console.log(id);
+    console.log("run");
+
     values.id_hoptacxa = htx.role.id_hoptacxa;
     values.date_start = formatMoment(values.date_start);
     values.date_end = formatMoment(values.date_end);
-    values.id_lichmuavu = id || null;
+    values.id_lichmuavu = id;
 
     mutation_calendar.mutate(values, {
       onError: (err) => getErrorMessage(err),
