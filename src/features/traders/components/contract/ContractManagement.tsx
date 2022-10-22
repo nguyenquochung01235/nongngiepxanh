@@ -12,23 +12,23 @@ const ContractManagement = (props: Props) => {
   const tableColumns = [
     {
       title: "Thương lái",
-      dataIndex: "id_thuonglai",
+      dataIndex: "name_thuonglai",
     },
     {
       title: "Hợp tác xã",
-      dataIndex: "id_hoptacxa",
-    },
-    {
-      title: "Lịch mùa vụ",
-      dataIndex: "id_lichmuavu",
+      dataIndex: "name_hoptacxa",
     },
     {
       title: "Giống lúa",
-      dataIndex: "id_gionglua",
+      dataIndex: "name_gionglua",
     },
     {
-      title: "Danh mục thuốc",
-      dataIndex: "id_danhmucquydinh",
+      title: "Trạng thái",
+      dataIndex: "status",
+    },
+    {
+      title: "Nội dung",
+      dataIndex: "title_hopdongmuaban",
     },
     {
       title: "Hành động",

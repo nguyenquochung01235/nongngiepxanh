@@ -6,11 +6,6 @@ const traderApi = {
     const url = "thuonglai/get-detail";
     return axiosClient.get(url);
   },
-
-  searchUser(params: ListParams) {
-    const url = "htx/search";
-    return axiosClient.get(url, { params });
-  },
 };
 
 export default traderApi;
