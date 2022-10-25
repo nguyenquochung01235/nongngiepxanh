@@ -11,7 +11,10 @@
   "dependencies": {
     "@aldabil/react-scheduler": "^2.3.1",
     "@ant-design/icons": "^4.7.0",
+    "@ckeditor/ckeditor5-alignment": "^35.2.1",
     "@ckeditor/ckeditor5-build-classic": "^35.2.1",
+    "@ckeditor/ckeditor5-build-inline": "^35.2.1",
+    "@ckeditor/ckeditor5-editor-inline": "^35.2.1",
     "@ckeditor/ckeditor5-react": "^5.0.2",
     "@emotion/react": "11.7.1",
     "@emotion/styled": "11.6.0",
@@ -22,6 +25,7 @@
     "@mui/x-date-pickers": "^5.0.2",
     "@reduxjs/toolkit": "^1.8.5",
     "@tanstack/react-query": "^4.3.3",
+    "@tanstack/react-query-devtools": "^4.13.0",
     "antd": "^4.21.3",
     "apexcharts": "^3.35.5",
     "axios": "^0.27.2",

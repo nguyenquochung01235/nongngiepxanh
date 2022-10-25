@@ -7,8 +7,12 @@ const commontApi = {
     return axiosClient.get(url, { params });
   },
 
-  create(url: string, data: ListParams): Promise<ListResponse<any>> {
+  create(url: string, data: any): Promise<ListResponse<any>> {
     return axiosClient.post(url, data);
+  },
+
+  update(url: string, data: any): Promise<ListResponse<any>> {
+    return axiosClient.put(url, data);
   },
 
   autoComplete(type: string, params: ListParams) {

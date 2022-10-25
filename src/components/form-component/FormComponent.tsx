@@ -1,4 +1,4 @@
-import { Button, Col, Form, Row } from "antd";
+import { Button, Col, Form, Row, Spin } from "antd";
 import React, { useEffect } from "react";
 import { validateMessage } from "../../utils/validateMessage";
 
@@ -6,11 +6,11 @@ type Props = {
   data: any;
   onSubmit?: (data: any) => void;
   name: string;
-  buttonSubmit: string;
+  buttonSubmit?: string;
   loading?: boolean;
   hideBtnSubmit?: boolean;
   initialValues?: any;
-  onDisable: any;
+  onDisable?: any;
 };
 
 const FormComponent = ({
@@ -26,6 +26,7 @@ const FormComponent = ({
   const [formCommon] = Form.useForm();
 
   let dataChildren = [];
+  console.log(data);
 
   if (data && data.length > 0) {
     dataChildren = data.map((item: any, index: number) => {
@@ -33,6 +34,12 @@ const FormComponent = ({
         return (
           <Col key={index} lg={12} md={12} sm={24} xs={24}>
             {item.autoComplete}
+          </Col>
+        );
+      } else if (item.editor) {
+        return (
+          <Col key={index} span={24}>
+            {item.editor}
           </Col>
         );
       } else {

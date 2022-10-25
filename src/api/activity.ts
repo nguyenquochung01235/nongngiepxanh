@@ -9,8 +9,8 @@ const activityApi = {
   },
 
   getDetail(id: number | string) {
-    const url = "/hoatdongmuavu/get-detail";
-    return axiosClient.get(url, { params: { id_hoatdongmuavu: id } });
+    const url = `/hoatdongmuavu/get-detail/${id}`;
+    return axiosClient.get(url);
   },
 
   create(data: ADDACTIVITY): Promise<ListResponse<ADDACTIVITY>> {
@@ -20,7 +20,7 @@ const activityApi = {
 
   update(data: ADDACTIVITY): Promise<ListResponse<ADDACTIVITY>> {
     const url = "hoatdongmuavu/update";
-    return axiosClient.post(url, data);
+    return axiosClient.put(url, data);
   },
 
   delete(id: string): Promise<void> {

@@ -132,6 +132,9 @@ const DetailSeaSon = (props: Props) => {
     {
       autoComplete: (
         <AutoComplete
+          returnName
+          keyword="name_gionglua"
+          type="gionglua"
           Key="id_gionglua"
           Value="name_gionglua"
           name="id_gionglua"
@@ -187,10 +190,7 @@ const DetailSeaSon = (props: Props) => {
   };
 
   const fetchSeasonDetail = () => {
-    return calendarApi.getDetail({
-      id_lichmuavu: id,
-      id_hoptacxa: htx.id_hoptacxa,
-    });
+    return calendarApi.getDetail(id);
   };
 
   let seaSonDetail: any = useQuery(["season/detail"], fetchSeasonDetail, {
@@ -282,6 +282,7 @@ const DetailSeaSon = (props: Props) => {
   const mutation_create_activity = useMutation((data: any) =>
     activityApi.create(data)
   );
+
   const mutation_update_activity = useMutation((data: any) =>
     activityApi.update(data)
   );

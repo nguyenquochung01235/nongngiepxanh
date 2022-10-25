@@ -4,6 +4,7 @@ import {
   BellOutlined,
   BugOutlined,
   ContainerOutlined,
+  FullscreenExitOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
@@ -18,11 +19,14 @@ import {
   useNavigate,
 } from "react-router-dom";
 import logo from "../../../../assets/images/admin-logo.jpg";
+import PreviewContract from "../../../../components/preview/PreviewContract";
 import Profile from "../../../../components/profile/Profile";
 import { PATH } from "../../../../enum";
 import { handleLogout } from "../../../../utils/logout";
 import CreateCategoryPertocodes from "../../pages/category-pesticides-management/CategoryPertocodesManagement";
 import CreateContract from "../../pages/create-contract/CreateContract";
+import DetailContract from "../../pages/detail-contract/DetailContract";
+import Supplier from "../../pages/suppiler/Supplier";
 import ContractManagement from "../contract/ContractManagement";
 
 const { Header, Sider, Content } = Layout;
@@ -54,7 +58,7 @@ const HomeTraders = () => {
       icon: <BugOutlined />,
       label: (
         <Link to={`${PATH.TRADER}${PATH.CREATE_CATEGORY_MANAGEMENT}`}>
-          Danh mục phân bón
+          Danh mục qui định
         </Link>
       ),
     },
@@ -66,6 +70,11 @@ const HomeTraders = () => {
           Quản lý hợp đồng
         </Link>
       ),
+    },
+    {
+      key: `${PATH.TRADER}${PATH.SUPPLIER}`,
+      icon: <FullscreenExitOutlined />,
+      label: <Link to={`${PATH.TRADER}${PATH.SUPPLIER}`}>Quản lý vật tư</Link>,
     },
   ];
 
@@ -160,8 +169,16 @@ const HomeTraders = () => {
               element={<ContractManagement></ContractManagement>}
             ></Route>
             <Route
-              path={PATH.CONTRACT_CREATE}
+              path={`${PATH.CONTRACT_MANAGEMENT}${PATH.CONTRACT_CREATE}`}
               element={<CreateContract></CreateContract>}
+            ></Route>
+            <Route
+              path={`${PATH.CONTRACT_MANAGEMENT}${PATH.CONTRACT_DETAIL}`}
+              element={<DetailContract></DetailContract>}
+            ></Route>
+            <Route
+              path={`${PATH.SUPPLIER}`}
+              element={<Supplier></Supplier>}
             ></Route>
             <Route path={PATH.PROFILE} element={<Profile></Profile>}></Route>
           </Routes>

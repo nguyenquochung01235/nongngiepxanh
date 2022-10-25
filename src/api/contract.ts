@@ -16,6 +16,21 @@ const contractApi = {
     const url = "thuonglai/create-hopdong";
     return axiosClient.post(url, data);
   },
+
+  getDetail(id: string | number) {
+    const url = `hopdongmuaban/get-detail/${id}`;
+    return axiosClient.get(url);
+  },
+
+  update(data: any) {
+    const url = "hopdongmuaban/update";
+    return axiosClient.put(url, data);
+  },
+
+  delete(id: string | number) {
+    const url = `hopdongmuaban/delete/${id}`;
+    return axiosClient.delete(url);
+  },
 };
 
 export default contractApi;

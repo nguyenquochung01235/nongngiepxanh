@@ -139,9 +139,19 @@ const HTXManagement = () => {
   const { isLoading, isError, data, error, isFetching, refetch } =
     useQuery<any>(["user/list", filter], () => fetchUserList(filter));
 
-  const handleChangeSwitch = (value: boolean) => {
-    console.log(value);
+  const handleChangeSwitch = (id: boolean) => {
+    mutation_toggleActive.mutate(id, {
+      onSuccess: (val) => {
+        getResponseMessage(val);
+        refetch();
+      },
+      onError: (err) => getErrorMessage(err),
+    });
   };
+
+  const mutation_toggleActive = useMutation((data: any) =>
+    htxApi.toggleActive(data)
+  );
 
   const handleConfirmDeleteUser = async (record: any) => {
     try {
@@ -162,8 +172,8 @@ const HTXManagement = () => {
           style={{ color: "#333 !important" }}
           // checkedChildren="Hoạt động"
           // unCheckedChildren="Đang Ẩn"
-          defaultChecked={item.active}
-          onChange={handleChangeSwitch}
+          defaultChecked={item.xavien_active}
+          onChange={() => handleChangeSwitch(item.id_user)}
         />
       );
       return {
@@ -238,6 +248,8 @@ const HTXManagement = () => {
       },
     });
   };
+
+  console.log(result);
 
   return (
     <div className="htx-management">
@@ -335,7 +347,7 @@ const HTXManagement = () => {
           </Form>
         </div>
         <Table
-          loading={isLoading || isFetching}
+          loading={isLoading || mutation_toggleActive.isLoading}
           columns={columns}
           dataSource={result}
           pagination={false}

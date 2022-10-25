@@ -44,6 +44,7 @@ const SeaSonManagement = () => {
   });
   const [id_gionglua, setId_gionglua] = useState();
   const [searchForm] = Form.useForm();
+  const navigate = useNavigate();
 
   useEffect(() => {
     (() => {
@@ -51,7 +52,6 @@ const SeaSonManagement = () => {
     })();
   }, [filter]);
 
-  const navigate = useNavigate();
   const htx = useSelector((state: any) => state.htx);
 
   const columns = useMemo(() => {
@@ -148,7 +148,7 @@ const SeaSonManagement = () => {
   };
 
   const { isLoading, isError, data, error, isFetching, refetch } = useQuery(
-    ["user/list", filter],
+    ["season/list", filter],
     () => fetchCalendarList(filter)
   ) as any;
 
@@ -264,7 +264,7 @@ const SeaSonManagement = () => {
         </div>
         <Table
           pagination={false}
-          loading={isLoading || isFetching}
+          loading={isLoading}
           columns={columns}
           dataSource={data?.data}
         />
