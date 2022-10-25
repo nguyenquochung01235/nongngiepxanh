@@ -409,6 +409,13 @@
   dependencies:
     ckeditor5 "^35.2.1"
 
+"@ckeditor/ckeditor5-alignment@^35.2.1":
+  version "35.2.1"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-alignment/-/ckeditor5-alignment-35.2.1.tgz#05e66614a97fbea4b72410def51f9fc2cedefbb1"
+  integrity sha512-0wfEb6femCLyCrjn0napDq+pB3xqhYtJTExTAsyWqZrdZ5AQCqTWnMZFLUUjvHQWbCAUyd56XuXac6EZ6ZWD5Q==
+  dependencies:
+    ckeditor5 "^35.2.1"
+
 "@ckeditor/ckeditor5-autoformat@^35.2.1":
   version "35.2.1"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-autoformat/-/ckeditor5-autoformat-35.2.1.tgz#39aa84bdaad017c5b87f037645406b1725fc0177"
@@ -444,6 +451,32 @@
     "@ckeditor/ckeditor5-cloud-services" "^35.2.1"
     "@ckeditor/ckeditor5-easy-image" "^35.2.1"
     "@ckeditor/ckeditor5-editor-classic" "^35.2.1"
+    "@ckeditor/ckeditor5-essentials" "^35.2.1"
+    "@ckeditor/ckeditor5-heading" "^35.2.1"
+    "@ckeditor/ckeditor5-image" "^35.2.1"
+    "@ckeditor/ckeditor5-indent" "^35.2.1"
+    "@ckeditor/ckeditor5-link" "^35.2.1"
+    "@ckeditor/ckeditor5-list" "^35.2.1"
+    "@ckeditor/ckeditor5-media-embed" "^35.2.1"
+    "@ckeditor/ckeditor5-paragraph" "^35.2.1"
+    "@ckeditor/ckeditor5-paste-from-office" "^35.2.1"
+    "@ckeditor/ckeditor5-table" "^35.2.1"
+    "@ckeditor/ckeditor5-typing" "^35.2.1"
+
+"@ckeditor/ckeditor5-build-inline@^35.2.1":
+  version "35.2.1"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-build-inline/-/ckeditor5-build-inline-35.2.1.tgz#ba15e782b3971f0a6a8253074a1e2b5ef57dfaf7"
+  integrity sha512-XabVtcs7zK3FpknU2OHvKwmPWPavTm+UDtSaA30RcVewjPtVBlRvrPUD8qfOj1P5FtkHFrE1rOmN1UYMAGQrHw==
+  dependencies:
+    "@ckeditor/ckeditor5-adapter-ckfinder" "^35.2.1"
+    "@ckeditor/ckeditor5-autoformat" "^35.2.1"
+    "@ckeditor/ckeditor5-basic-styles" "^35.2.1"
+    "@ckeditor/ckeditor5-block-quote" "^35.2.1"
+    "@ckeditor/ckeditor5-ckbox" "^35.2.1"
+    "@ckeditor/ckeditor5-ckfinder" "^35.2.1"
+    "@ckeditor/ckeditor5-cloud-services" "^35.2.1"
+    "@ckeditor/ckeditor5-easy-image" "^35.2.1"
+    "@ckeditor/ckeditor5-editor-inline" "^35.2.1"
     "@ckeditor/ckeditor5-essentials" "^35.2.1"
     "@ckeditor/ckeditor5-heading" "^35.2.1"
     "@ckeditor/ckeditor5-image" "^35.2.1"
@@ -509,6 +542,14 @@
   version "35.2.1"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-editor-classic/-/ckeditor5-editor-classic-35.2.1.tgz#efa9dd3dcb87eb5bfe720f1c65003cb785d7c3c7"
   integrity sha512-K1X5dNamkeEBia+luXMWeuweB7G09AVYSgp+yVUfyn/fV1RUu75OhQQ2f2G5e6WCgkWCk8uQV3ChH8eXAykcTA==
+  dependencies:
+    ckeditor5 "^35.2.1"
+    lodash-es "^4.17.15"
+
+"@ckeditor/ckeditor5-editor-inline@^35.2.1":
+  version "35.2.1"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-editor-inline/-/ckeditor5-editor-inline-35.2.1.tgz#7e2597edf6f556c9071330d67a5f4918764161ff"
+  integrity sha512-gDakPzsdZErUpHRxcf8QHD9Lj+ipsdsGD+lqKS9b+Ug7R9T+nCDgCeCarN324C4pWco/vl6pFACtkA0iooD4EA==
   dependencies:
     ckeditor5 "^35.2.1"
     lodash-es "^4.17.15"
@@ -1035,10 +1076,26 @@
     redux-thunk "^2.4.1"
     reselect "^4.1.5"
 
+"@tanstack/match-sorter-utils@^8.1.1":
+  version "8.5.14"
+  resolved "https://registry.yarnpkg.com/@tanstack/match-sorter-utils/-/match-sorter-utils-8.5.14.tgz#12efcd536abe491d09521e0242bc4d51442f8a8a"
+  integrity sha512-lVNhzTcOJ2bZ4IU+PeCPQ36vowBHvviJb2ZfdRFX5uhy7G0jM8N34zAMbmS5ZmVH8D2B7oU82OWo0e/5ZFzQrw==
+  dependencies:
+    remove-accents "0.4.2"
+
 "@tanstack/query-core@4.3.3":
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.3.3.tgz#77c2e258bbc43e0871f700150397376f111c7b87"
   integrity sha512-D8k59GAunx8LnjAHep/iHQRVw0WSNKO0IsvrfjPfUegp/zBRum0VaAFRul7dxykDkKEWp0lchOm6nkRasty8RA==
+
+"@tanstack/react-query-devtools@^4.13.0":
+  version "4.13.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query-devtools/-/react-query-devtools-4.13.0.tgz#d3827cdcf770dd8b9f560196a86975477edc0fe5"
+  integrity sha512-Gv33auVlcUMrnj5qXJuhhTJtBs8bKp7v3TFRysnS+VlLOmdj9gwl5bc0e0/URL7m+PQoR1Rr55yzQ5bmZcWm1g==
+  dependencies:
+    "@tanstack/match-sorter-utils" "^8.1.1"
+    superjson "^1.10.0"
+    use-sync-external-store "^1.2.0"
 
 "@tanstack/react-query@^4.3.3":
   version "4.3.3"
@@ -1398,6 +1455,13 @@ copy-anything@^2.0.1:
   integrity sha512-1j20GZTsvKNkc4BY3NpMOM8tt///wY3FpIzozTOFO2ffuZcV61nojHXVKIy3WM+7ADCy5FVhdZYHYDdgTU0yJw==
   dependencies:
     is-what "^3.14.1"
+
+copy-anything@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/copy-anything/-/copy-anything-3.0.2.tgz#7189171ff5e1893b2287e8bf574b8cd448ed50b1"
+  integrity sha512-CzATjGXzUQ0EvuvgOCI6A4BGOo2bcVx8B+eC2nF862iv9fopnPQwlrbACakNCHRIJbCSBj+J/9JeDf60k64MkA==
+  dependencies:
+    is-what "^4.1.6"
 
 copy-to-clipboard@^3.2.0:
   version "3.3.2"
@@ -1817,6 +1881,11 @@ is-what@^3.14.1:
   version "3.14.1"
   resolved "https://registry.yarnpkg.com/is-what/-/is-what-3.14.1.tgz#e1222f46ddda85dead0fd1c9df131760e77755c1"
   integrity sha512-sNxgpk9793nzSs7bA6JQJGeIuRBQhAaNGG77kzYQgMkrID+lS6SlK07K5LaptscDlSaIgH+GPFzf+d75FVxozA==
+
+is-what@^4.1.6:
+  version "4.1.7"
+  resolved "https://registry.yarnpkg.com/is-what/-/is-what-4.1.7.tgz#c41dc1d2d2d6a9285c624c2505f61849c8b1f9cc"
+  integrity sha512-DBVOQNiPKnGMxRMLIYSwERAS5MVY1B7xYiGnpgctsOFvVDz9f9PFXXxMcTOHuoqYp4NK9qFYQaIC1NRRxLMpBQ==
 
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
@@ -2566,6 +2635,11 @@ regenerator-runtime@^0.13.4:
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz#8925742a98ffd90814988d7566ad30ca3b263b52"
   integrity sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==
 
+remove-accents@0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/remove-accents/-/remove-accents-0.4.2.tgz#0a43d3aaae1e80db919e07ae254b285d9e1c7bb5"
+  integrity sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==
+
 reselect@^4.1.5:
   version "4.1.6"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.1.6.tgz#19ca2d3d0b35373a74dc1c98692cdaffb6602656"
@@ -2701,6 +2775,13 @@ stylis@4.0.13:
   version "4.0.13"
   resolved "https://registry.yarnpkg.com/stylis/-/stylis-4.0.13.tgz#f5db332e376d13cc84ecfe5dace9a2a51d954c91"
   integrity sha512-xGPXiFVl4YED9Jh7Euv2V220mriG9u4B2TA6Ybjc1catrstKD2PpIdU3U0RKpkVBC2EhmL/F0sPCr9vrFTNRag==
+
+superjson@^1.10.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/superjson/-/superjson-1.11.0.tgz#f6e2ae0d8fbac61c3fca09ab6739ac9678414d1b"
+  integrity sha512-6PfAg1FKhqkwWvPb2uXhH4MkMttdc17eJ91+Aoz4s1XUEDZFmLfFx/xVA3wgkPxAGy5dpozgGdK6V/n20Wj9yg==
+  dependencies:
+    copy-anything "^3.0.2"
 
 supports-color@^5.3.0:
   version "5.5.0"

@@ -8,6 +8,7 @@ import {
   Pagination,
   Row,
   Space,
+  Spin,
   Table,
 } from "antd";
 import React, { useEffect, useState } from "react";
@@ -33,6 +34,16 @@ type Props = {
   commonHeading?: string;
   baseUrl?: string;
   linkToNewPage?: string;
+  initialValue?: any;
+  isShowModal?: boolean;
+  onChangeModal?: any;
+  loadingModal?: boolean;
+  updateTitle?: string;
+  isUpdate?: boolean;
+  updateUrl?: string;
+  onEdit?: any;
+  name?: string;
+  deleteId?: string;
 };
 
 const CommonPage = (props: Props) => {
@@ -61,6 +72,16 @@ const CommonPage = (props: Props) => {
     baseUrl,
     newPage,
     linkToNewPage,
+    initialValue,
+    isShowModal = false,
+    onChangeModal,
+    loadingModal,
+    updateTitle = "cập nhật",
+    isUpdate = false,
+    updateUrl,
+    onEdit,
+    name,
+    deleteId,
   } = props;
 
   useEffect(() => {
@@ -68,6 +89,14 @@ const CommonPage = (props: Props) => {
       navigate(`/${baseUrl || "/"}?${queryString.stringify(filter)}`);
     })();
   }, [filter]);
+
+  useEffect(() => {
+    setIsModalOpen(isShowModal);
+  }, [isShowModal]);
+
+  useEffect(() => {
+    refetch();
+  }, [deleteId]);
 
   let dataChildren = [];
 
@@ -94,14 +123,18 @@ const CommonPage = (props: Props) => {
   };
 
   const { isLoading, isError, data, error, isFetching, refetch } =
-    useQuery<any>(["common/list", filter], () => fetchCommonList(filter));
+    useQuery<any>([name || "", filter], () => fetchCommonList(filter));
 
-  const showModal = () => {
+  const showModalAdd = () => {
+    commonForm.resetFields();
     setIsModalOpen(true);
+    onChangeModal && onChangeModal(true);
+    onEdit && onEdit(false);
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    onChangeModal && onChangeModal(false);
   };
 
   const handleSearch = (value: any) => {
@@ -123,61 +156,107 @@ const CommonPage = (props: Props) => {
   };
 
   const handleSubmitCommonForm = (values: any) => {
-    mutation_common.mutate(values, {
-      onSuccess: (res) => {
-        getResponseMessage(res);
-        refetch();
-        setIsModalOpen(false);
-      },
-      onError: (err) => {
-        getErrorMessage(err);
-        setIsModalOpen(false);
-      },
-    });
+    commonForm.setFieldsValue(values);
+
+    if (!isUpdate) {
+      mutation_common.mutate(values, {
+        onSuccess: (res) => {
+          setIsModalOpen(false);
+          onChangeModal && onChangeModal(false);
+          getResponseMessage(res);
+          refetch();
+        },
+        onError: (err) => {
+          getErrorMessage(err);
+        },
+      });
+    } else {
+      values.id_danhmucquydinh = initialValue?.id_danhmucquydinh || "";
+
+      mutation_common_update.mutate(values, {
+        onSuccess: (res) => {
+          setIsModalOpen(false);
+          onChangeModal && onChangeModal(false);
+          getResponseMessage(res);
+          refetch();
+        },
+        onError: (err) => {
+          getErrorMessage(err);
+        },
+      });
+    }
   };
 
   const mutation_common = useMutation((data: any) =>
     commontApi.create(submitUrl || "", data)
   );
 
+  const mutation_common_update = useMutation((data: any) =>
+    commontApi.update(updateUrl || "", data)
+  );
+
+  if (
+    initialValue &&
+    isUpdate &&
+    !mutation_common.isLoading &&
+    !mutation_common_update.isLoading
+  ) {
+    commonForm.setFieldsValue({ ...initialValue });
+  }
+
   return (
     <div className="common-page">
-      {!newPage && <Button onClick={showModal}>{buttonTitle || ""}</Button>}
+      {!newPage && <Button onClick={showModalAdd}>{buttonTitle || ""}</Button>}
       {newPage && (
         <Button>
           <Link to={linkToNewPage || ""}>{buttonTitle || ""}</Link>
         </Button>
       )}
       <Modal
-        title={modalTitle || ""}
+        title={isUpdate ? "Cập nhật" : modalTitle || ""}
         onOk={handleCancel}
         open={isModalOpen}
         onCancel={handleCancel}
         width={modalWidth || "70%"}
       >
-        <Form
-          form={commonForm}
-          layout="vertical"
-          name="common-form"
-          validateMessages={validateMessage()}
-          onFinish={handleSubmitCommonForm}
+        <Spin
+          spinning={
+            loadingModal ||
+            mutation_common_update.isLoading ||
+            mutation_common.isLoading
+          }
         >
-          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 24 }}>
-            {dataChildren.length > 0 && dataChildren}
-          </Row>
-          <Row>
-            <div className="common-form-submit">
-              <Button
-                loading={mutation_common.isLoading}
-                form="common-form"
-                type="primary"
-                htmlType="submit"
-              >
-                {buttonSubmit || "Thực hiện"}
-              </Button>
-            </div>
-          </Row>
-        </Form>
+          <Form
+            form={commonForm}
+            layout="vertical"
+            name="common-form"
+            validateMessages={validateMessage()}
+            onFinish={handleSubmitCommonForm}
+          >
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 24 }}>
+              {dataChildren.length > 0 && dataChildren}
+            </Row>
+            <Row>
+              <div className="common-form-submit">
+                {!isUpdate && (
+                  <Button
+                    loading={mutation_common.isLoading}
+                    form="common-form"
+                    type="primary"
+                    htmlType="submit"
+                  >
+                    {buttonSubmit || "Thực hiện"}
+                  </Button>
+                )}
+                {isUpdate && (
+                  <Button form="common-form" type="primary" htmlType="submit">
+                    {updateTitle || "Cập nhật"}
+                  </Button>
+                )}
+              </div>
+            </Row>
+          </Form>
+        </Spin>
       </Modal>
       <div className="list-user">
         <br />
@@ -203,7 +282,7 @@ const CommonPage = (props: Props) => {
           </Form>
         </div>
         <Table
-          loading={isLoading || isFetching}
+          loading={isLoading}
           columns={tableColumns}
           dataSource={data?.data || []}
           pagination={false}

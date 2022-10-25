@@ -11,7 +11,7 @@ declare module "@ckeditor/ckeditor5-react" {
   const CKEditor: React.FunctionComponent<{
     disabled?: boolean;
     editor: typeof ClassicEditor;
-    data?: string;
+    data?: any;
     id?: string;
     config?: EditorConfig;
     onReady?: (editor: ClassicEditor) => void;

@@ -22,6 +22,16 @@ const htxApi = {
     const url = `htx/delete-member/${id}`;
     return axiosClient.delete(url);
   },
+
+  dashboard() {
+    const url = "htx/dash-board";
+    return axiosClient.get(url);
+  },
+
+  toggleActive(id: string | number) {
+    const url = `htx/update-active/${id}`;
+    return axiosClient.put(url);
+  },
 };
 
 export default htxApi;

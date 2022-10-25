@@ -1,12 +1,19 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Col, Form, Input, Popconfirm, Row } from "antd";
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import contractApi from "../../../../api/contract";
 import CommonPage from "../../../../components/common-page/CommonPage";
+import { getErrorMessage } from "../../../../utils/getErrorMessage";
+import { getResponseMessage } from "../../../../utils/getResponseMessage";
 import { validateMessage } from "../../../../utils/validateMessage";
 
 type Props = {};
 
 const ContractManagement = (props: Props) => {
+  const [deleteId, setDeleteId] = useState<any>();
+  const navigate = useNavigate();
+
   const modalChildren: any = [];
 
   const tableColumns = [
@@ -39,7 +46,9 @@ const ContractManagement = (props: Props) => {
           <span
             className=""
             onClick={() => {
-              // navigate("/admin/manage-season/detail/" + record?.id_lichmuavu);
+              navigate(
+                "/trader/contract-management/detail/" + record?.id_hopdongmuaban
+              );
             }}
             style={{
               display: "inline-block",
@@ -49,17 +58,13 @@ const ContractManagement = (props: Props) => {
           >
             <EditOutlined />
           </span>
-          <span
-            style={{ cursor: "pointer" }}
-            className=""
-            onClick={(e) => {
-              console.log(e);
-            }}
-          >
+          <span style={{ cursor: "pointer" }} className="">
             <Popconfirm
               placement="top"
-              title="Xóa xã viên khỏi hợp tác xã?"
-              // onConfirm={() => handleConfirmDeleteUser(record)}
+              title="Xóa hợp đồng?"
+              onConfirm={() =>
+                handleConfirmDeleteContract(record.id_hopdongmuaban || "")
+              }
             >
               <DeleteOutlined />
             </Popconfirm>
@@ -69,15 +74,27 @@ const ContractManagement = (props: Props) => {
     },
   ];
 
+  const handleConfirmDeleteContract = async (id: string | number) => {
+    try {
+      setDeleteId(id);
+      const res = await contractApi.delete(id);
+      getResponseMessage(res);
+    } catch (error) {
+      getErrorMessage(error);
+    }
+  };
+
   return (
     <CommonPage
+      deleteId={deleteId}
       newPage
-      linkToNewPage="/trader/contract-create"
+      linkToNewPage="/trader/contract-management/contract-create"
       buttonTitle="Tạo hợp đồng"
       tableColumns={tableColumns}
       commonHeading="Danh sách hợp đồng"
       commonUrl="/hopdongmuaban/get-list"
       baseUrl="trader/contract-management"
+      name="contract"
     ></CommonPage>
   );
 };

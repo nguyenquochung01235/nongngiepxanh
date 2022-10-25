@@ -6,20 +6,29 @@ type Props = {
   form: string;
   loading?: boolean;
   disabled?: boolean;
+  headerBreadcrumb?: any;
 };
 
-const PageHeader = ({ form, loading = false, disabled = false }: Props) => {
+const PageHeader = ({
+  form,
+  loading = false,
+  disabled = false,
+  headerBreadcrumb,
+}: Props) => {
   const navigate = useNavigate();
 
   return (
     <div className="page-header">
       <div className="breadcrumb">
-        <Breadcrumb>
-          <Breadcrumb.Item>Hợp tác xã</Breadcrumb.Item>
-          <Breadcrumb.Item>
-            <a href="">Chi tiết lịch mùa vụ</a>
-          </Breadcrumb.Item>
-        </Breadcrumb>
+        {headerBreadcrumb && headerBreadcrumb.length > 0 && (
+          <Breadcrumb>
+            {headerBreadcrumb.map((item: any) => {
+              return (
+                <Breadcrumb.Item key={item.name}>{item.name}</Breadcrumb.Item>
+              );
+            })}
+          </Breadcrumb>
+        )}
       </div>
       <div className="page-header-btn">
         <Button loading={loading} onClick={() => navigate(-2)}>

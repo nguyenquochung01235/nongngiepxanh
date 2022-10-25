@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import contractSlice from "../redux/contractSlice";
 import htxSlice from "../redux/htxSlice";
 import loadingSlice from "../redux/loadingSlice";
 import userSlice from "../redux/userSlice";
@@ -8,6 +9,7 @@ export const store = configureStore({
     loading: loadingSlice,
     user: userSlice,
     htx: htxSlice,
+    contract: contractSlice,
   },
 });
 

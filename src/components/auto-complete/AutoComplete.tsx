@@ -12,6 +12,7 @@ type Props = {
   lable?: string;
   type: string;
   keyword?: string;
+  returnName?: boolean;
 };
 const { Option } = Select;
 
@@ -24,6 +25,7 @@ const AutoComplete = ({
   lable,
   type = "",
   keyword = "search",
+  returnName = false,
 }: Props) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchData, setSearchData] = useState<any>();
@@ -63,7 +65,14 @@ const AutoComplete = ({
   const handleSelect = (value: string) => {
     setSelectValue(value);
     if (onSelect) {
-      onSelect(value);
+      if (returnName) {
+        if (searchData && searchData.length > 0) {
+          const name = searchData.find((item: any) => item[Key] === value);
+          onSelect(name);
+        }
+      } else {
+        onSelect(value);
+      }
     }
   };
 

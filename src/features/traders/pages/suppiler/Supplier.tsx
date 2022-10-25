@@ -10,15 +10,23 @@ import { validateMessage } from "../../../../utils/validateMessage";
 
 type Props = {};
 
-const CategoryPertocodesManagement = (props: Props) => {
+const Suppiler = (props: Props) => {
   const modalChildren = [
     {
-      name: "name_danhmucquydinh",
-      label: "Danh mục phân bón quy định",
+      name: "id_danhmucquydinh",
+      label: "Danh mục quy định",
       rules: {
         required: true,
       },
-      formChildren: <Input placeholder="Danh mục phân bón quy định"></Input>,
+      formChildren: <Input placeholder="Danh mục quy định"></Input>,
+    },
+    {
+      name: "name_category_vattu",
+      label: "Tên vật tư",
+      rules: {
+        required: true,
+      },
+      formChildren: <Input placeholder="Tên vật tư"></Input>,
     },
   ];
 
@@ -48,8 +56,8 @@ const CategoryPertocodesManagement = (props: Props) => {
       dataIndex: "id_danhmucquydinh",
     },
     {
-      title: "Tên danh mục",
-      dataIndex: "name_danhmucquydinh",
+      title: "Tên vật tư",
+      dataIndex: "name_category_vattu",
     },
     {
       title: "Hành động",
@@ -71,10 +79,10 @@ const CategoryPertocodesManagement = (props: Props) => {
           <span style={{ cursor: "pointer" }} className="">
             <Popconfirm
               placement="top"
-              title="Xóa danh mục?"
-              onConfirm={() =>
-                handleConfirmDeleteCategory(record?.id_danhmucquydinh)
-              }
+              title="Xóa vật tư?"
+              // onConfirm={() =>
+              //   // handleConfirmDeleteCategory(record?.id_danhmucquydinh)
+              // }
             >
               <DeleteOutlined />
             </Popconfirm>
@@ -100,23 +108,22 @@ const CategoryPertocodesManagement = (props: Props) => {
       onChangeModal={(value: boolean) => setShowModal(value)}
       onEdit={(value: any) => setIsEdit(value)}
       isShowModal={showModal}
-      initialValue={detailCategory}
       modalChildren={modalChildren}
-      buttonTitle="Tạo danh mục qui định"
-      modalTitle="Tạo danh mục qui định"
+      buttonTitle="Tạo vật tư"
+      modalTitle="Tạo vật tư"
       buttonSubmit="Tạo"
-      submitUrl="danhmucquydinh/create"
+      submitUrl="category-vattu/create"
       tableColumns={tableColumns}
-      commonHeading="Danh sách quy định"
-      commonUrl="/danhmucquydinh/get-list"
-      baseUrl="trader/create-category-management"
+      commonHeading="Danh sách vật tư"
+      commonUrl="/category-vattu/get-list"
+      baseUrl="trader/supplier"
       loadingModal={loadingDetail}
       isUpdate={isEdit}
-      name="trader"
-      updateUrl="danhmucquydinh/update"
+      name="supplier"
+      updateUrl="category-vattu/update"
       deleteId={deleteId}
     ></CommonPage>
   );
 };
 
-export default CategoryPertocodesManagement;
+export default Suppiler;

@@ -15,12 +15,12 @@ const calendarApi = {
 
   updateCalendar(data: AddCalendar) {
     const url = "lichmuavu/update";
-    return axiosClient.post(url, data);
+    return axiosClient.put(url, data);
   },
 
-  getDetail(params: ListParams) {
-    const url = "lichmuavu/get-detail";
-    return axiosClient.get(url, { params });
+  getDetail(id: string | undefined) {
+    const url = `lichmuavu/get-detail/${id}`;
+    return axiosClient.get(url);
   },
 };
 

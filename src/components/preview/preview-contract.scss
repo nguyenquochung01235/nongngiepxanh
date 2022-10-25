@@ -1,0 +1,32 @@
+@use "../../scss/index" as *;
+
+.preview-contract {
+  margin: 24px 200px !important;
+  padding: 24px 50px;
+  padding-bottom: 150px;
+  box-shadow: $box-shadow;
+  border-radius: $radius-1;
+  display: block;
+
+  &-heading {
+    margin-bottom: 32px;
+    text-align: center;
+
+    & h2 {
+      margin-bottom: 0;
+      text-transform: uppercase;
+    }
+
+    & i {
+      display: inline-block;
+      margin: 4px 0;
+      margin-bottom: 12px;
+    }
+  }
+
+  &-body {
+    p {
+      margin-bottom: 8px !important;
+    }
+  }
+}

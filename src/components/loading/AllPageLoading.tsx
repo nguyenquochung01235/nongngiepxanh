@@ -12,7 +12,7 @@ const AllPageLoading = ({ children }: Props) => {
   return isLoading ? (
     <div
       style={{
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

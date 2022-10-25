@@ -1,23 +1,18 @@
 import { DollarCircleOutlined } from "@ant-design/icons";
-import { Col, Row } from "antd";
+import { useQuery } from "@tanstack/react-query";
+import { Col, Row, Spin } from "antd";
 import React, { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
+import htxApi from "../../../../api/htx";
 import Card from "../../../home/components/card/Card";
 
 type Props = {};
 
 const Dashboard = (props: Props) => {
-  // useEffect(() => {
-  //   const rowCard = document.querySelector(".row-card") as HTMLElement;
-  //   const circleChard = document.querySelector(".circle-chart") as HTMLElement;
-
-  //   if (rowCard && circleChard) {
-  //     console.log(circleChard.offsetHeight.toString());
-
-  //     rowCard.style["maxHeight"] = circleChard.offsetHeight.toString() + "px";
-  //     rowCard.style.overflowY = "scroll";
-  //   }
-  // }, []);
+  const fetchUserList = () => {
+    return htxApi.dashboard();
+  };
+  const dashboard: any = useQuery<any>(["htx/dashboard"], fetchUserList);
 
   let chart: any = {
     series: [14, 23, 21, 17, 15, 10, 12, 17, 21],
@@ -154,7 +149,10 @@ const Dashboard = (props: Props) => {
                   <DollarCircleOutlined />
                 </div>
                 <div className="card-total">
-                  <div className="card-total-number">1200</div>
+                  <div className="card-total-number">
+                    {dashboard.isLoading && <Spin></Spin>}
+                    {dashboard?.data?.data?.hopdong_count || ""}
+                  </div>
                   <div className="card-total-text">Hoạt động</div>
                 </div>
               </Card>
@@ -165,7 +163,10 @@ const Dashboard = (props: Props) => {
                   <DollarCircleOutlined />
                 </div>
                 <div className="card-total">
-                  <div className="card-total-number">1200</div>
+                  <div className="card-total-number">
+                    {dashboard.isLoading && <Spin></Spin>}
+                    {dashboard?.data?.data?.xavien_count || ""}
+                  </div>
                   <div className="card-total-text">Xã viên</div>
                 </div>
               </Card>
@@ -176,7 +177,10 @@ const Dashboard = (props: Props) => {
                   <DollarCircleOutlined />
                 </div>
                 <div className="card-total">
-                  <div className="card-total-number">1200</div>
+                  <div className="card-total-number">
+                    {dashboard.isLoading && <Spin></Spin>}
+                    {dashboard?.data?.data?.lichmuavu_count || ""}
+                  </div>
                   <div className="card-total-text">Mùa vụ</div>
                 </div>
               </Card>
@@ -187,8 +191,11 @@ const Dashboard = (props: Props) => {
                   <DollarCircleOutlined />
                 </div>
                 <div className="card-total">
-                  <div className="card-total-number">1200</div>
-                  <div className="card-total-text">Hoạt động</div>
+                  <div className="card-total-number">
+                    {dashboard.isLoading && <Spin></Spin>}
+                    {dashboard?.data?.data?.hoatdongmuavu_count || ""}
+                  </div>
+                  <div className="card-total-text">Hoạt động mùa vụ</div>
                 </div>
               </Card>
             </Col>

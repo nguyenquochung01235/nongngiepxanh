@@ -14,5 +14,8 @@ export const PATH = {
   CALENDAR: "/calendar",
   CREATE_CATEGORY_MANAGEMENT: "/create-category-management",
   CONTRACT_MANAGEMENT: "/contract-management",
+  CONTRACT_DETAIL: "/detail/:id",
   CONTRACT_CREATE: "/contract-create",
+  PREVIEW: "/preview",
+  SUPPLIER: "/supplier",
 };
