@@ -1,6 +1,7 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Col, Form, Input, Popconfirm, Row } from "antd";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axiosClient from "../../../../api/axiosClient";
 import categoryApi from "../../../../api/category";
 import CommonPage from "../../../../components/common-page/CommonPage";
@@ -11,6 +12,13 @@ import { validateMessage } from "../../../../utils/validateMessage";
 type Props = {};
 
 const CategoryPertocodesManagement = (props: Props) => {
+  const navigate = useNavigate();
+  const [detailCategory, setDetailCategory] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [loadingDetail, setLoadingDetail] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
+
   const modalChildren = [
     {
       name: "name_danhmucquydinh",
@@ -21,12 +29,6 @@ const CategoryPertocodesManagement = (props: Props) => {
       formChildren: <Input placeholder="Danh mục phân bón quy định"></Input>,
     },
   ];
-
-  const [detailCategory, setDetailCategory] = useState(null);
-  const [isEdit, setIsEdit] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [loadingDetail, setLoadingDetail] = useState(false);
-  const [deleteId, setDeleteId] = useState("");
 
   const handleEditCategory = async (id: number | string) => {
     setLoadingDetail(true);
@@ -59,7 +61,14 @@ const CategoryPertocodesManagement = (props: Props) => {
         <>
           <span
             className=""
-            onClick={() => handleEditCategory(record?.id_danhmucquydinh || "")}
+            // onClick={() => handleEditCategory(record?.id_danhmucquydinh || "")}
+            onClick={() =>
+              navigate(
+                `/trader/category-management/detail/${
+                  record?.id_danhmucquydinh || ""
+                }`
+              )
+            }
             style={{
               display: "inline-block",
               marginRight: "16px",
@@ -109,7 +118,7 @@ const CategoryPertocodesManagement = (props: Props) => {
       tableColumns={tableColumns}
       commonHeading="Danh sách quy định"
       commonUrl="/danhmucquydinh/get-list"
-      baseUrl="trader/create-category-management"
+      baseUrl="trader/category-management"
       loadingModal={loadingDetail}
       isUpdate={isEdit}
       name="trader"

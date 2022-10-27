@@ -11,6 +11,11 @@ const categoryApi = {
     const url = `danhmucquydinh/delete/${id}`;
     return axiosClient.delete(url);
   },
+
+  update(id: string | number | undefined, data: any) {
+    const url = `danhmucquydinh/update/${id}`;
+    return axiosClient.put(url, data);
+  },
 };
 
 export default categoryApi;
