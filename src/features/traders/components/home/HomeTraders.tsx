@@ -26,6 +26,7 @@ import { handleLogout } from "../../../../utils/logout";
 import CreateCategoryPertocodes from "../../pages/category-pesticides-management/CategoryPertocodesManagement";
 import CreateContract from "../../pages/create-contract/CreateContract";
 import DetailContract from "../../pages/detail-contract/DetailContract";
+import DetailCategory from "../../pages/detailCategory/DetailCategory";
 import Supplier from "../../pages/suppiler/Supplier";
 import ContractManagement from "../contract/ContractManagement";
 
@@ -54,10 +55,10 @@ const HomeTraders = () => {
       ),
     },
     {
-      key: `${PATH.TRADER}${PATH.CREATE_CATEGORY_MANAGEMENT}`,
+      key: `${PATH.TRADER}${PATH.CATEGORY_MANAGEMENT}`,
       icon: <BugOutlined />,
       label: (
-        <Link to={`${PATH.TRADER}${PATH.CREATE_CATEGORY_MANAGEMENT}`}>
+        <Link to={`${PATH.TRADER}${PATH.CATEGORY_MANAGEMENT}`}>
           Danh mục qui định
         </Link>
       ),
@@ -71,11 +72,11 @@ const HomeTraders = () => {
         </Link>
       ),
     },
-    {
-      key: `${PATH.TRADER}${PATH.SUPPLIER}`,
-      icon: <FullscreenExitOutlined />,
-      label: <Link to={`${PATH.TRADER}${PATH.SUPPLIER}`}>Quản lý vật tư</Link>,
-    },
+    // {
+    //   key: `${PATH.TRADER}${PATH.SUPPLIER}`,
+    //   icon: <FullscreenExitOutlined />,
+    //   label: <Link to={`${PATH.TRADER}${PATH.SUPPLIER}`}>Quản lý vật tư</Link>,
+    // },
   ];
 
   const menu: any = (
@@ -161,7 +162,7 @@ const HomeTraders = () => {
         >
           <Routes>
             <Route
-              path={PATH.CREATE_CATEGORY_MANAGEMENT}
+              path={PATH.CATEGORY_MANAGEMENT}
               element={<CreateCategoryPertocodes></CreateCategoryPertocodes>}
             ></Route>
             <Route
@@ -177,9 +178,17 @@ const HomeTraders = () => {
               element={<DetailContract></DetailContract>}
             ></Route>
             <Route
+              path={`${PATH.CONTRACT_MANAGEMENT}${PATH.CONTRACT_DETAIL}`}
+              element={<DetailContract></DetailContract>}
+            ></Route>
+            <Route
+              path={`${PATH.CATEGORY_MANAGEMENT}${PATH.CATEGORY_DETAIL}`}
+              element={<DetailCategory></DetailCategory>}
+            ></Route>
+            {/* <Route
               path={`${PATH.SUPPLIER}`}
               element={<Supplier></Supplier>}
-            ></Route>
+            ></Route> */}
             <Route path={PATH.PROFILE} element={<Profile></Profile>}></Route>
           </Routes>
         </Content>
