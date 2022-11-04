@@ -34,9 +34,9 @@ interface DataType {
 }
 
 const SeaSonManagement = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [filter, setFilter] = useState({
     page: searchParams.get("page") || 1,
     limit: searchParams.get("limit") || 5,
@@ -283,7 +283,7 @@ const SeaSonManagement = () => {
           onOk={handleCancel}
           open={isModalOpen}
           onCancel={handleCancel}
-          bodyStyle={{ height: "300px" }}
+          // bodyStyle={{ height: "300px" }}
           width="70%"
         >
           {/* <Form

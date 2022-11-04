@@ -2,8 +2,11 @@ import {
   AppstoreAddOutlined,
   AppstoreOutlined,
   BellOutlined,
+  CalendarOutlined,
+  ContainerOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  PieChartOutlined,
   UserOutlined,
   YuqueOutlined,
 } from "@ant-design/icons";
@@ -27,6 +30,11 @@ import { toggleLoading } from "../../../../redux/loadingSlice";
 import { setTheme } from "../../../../utils/changeTheme";
 import { handleLogout } from "../../../../utils/logout";
 import Calendar from "../../../calendar/Calendar";
+import CreateLand from "../../../land/pages/land-create/CreateLand";
+import Landmanagement from "../../../land/pages/land-management/Landmanagement";
+import StoryOfSeason from "../../../story/pages/StoryOfSeason";
+import Story from "../../../story/Story";
+import ContractManagement from "../../../traders/components/contract/ContractManagement";
 import AddUserToHTX from "../add-user-htx/AddUserToHTX";
 import CreateHTX from "../create-htx/CreateHTX";
 import Dashboard from "../dashboard/Dashboard";
@@ -42,10 +50,11 @@ const HomeAdmin = () => {
   const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
   const htx = useSelector((state: any) => state.htx.hasHTX);
+  const roleHtx = useSelector((state: any) => state.htx);
   const [isNewUser, setIsNewUser] = useState(false);
   const user = useSelector((state: any) => state.user);
   const navigate = useNavigate();
-  const [roles, setRoles] = useState();
+  const [roles, setRoles] = useState<any>();
   const [currentPath, setCurrentPath] = useState("");
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -101,6 +110,33 @@ const HomeAdmin = () => {
     },
   ];
 
+  const userMenu = [
+    {
+      key: `${PATH.HTX}${PATH.DASHBOARD}`,
+      icon: <UserOutlined />,
+      label: <Link to={`${PATH.HTX}${PATH.DASHBOARD}`}>Bảng điều khiển</Link>,
+    },
+    {
+      key: `/htx/manage-land`,
+      icon: <PieChartOutlined />,
+      label: <Link to="/htx/manage-land">Quản lý thửa đất</Link>,
+    },
+    {
+      key: `/htx/manage-story`,
+      icon: <CalendarOutlined />,
+      label: <Link to="/htx/manage-story">Nhật ký đồng ruộng</Link>,
+    },
+    {
+      key: `${PATH.HTX}${PATH.CONTRACT_MANAGEMENT}`,
+      icon: <ContainerOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${PATH.CONTRACT_MANAGEMENT}`}>
+          Quản lý hợp đồng
+        </Link>
+      ),
+    },
+  ];
+
   const manageMenu = [
     {
       key: `${PATH.HTX}${PATH.DASHBOARD}`,
@@ -119,6 +155,15 @@ const HomeAdmin = () => {
       icon: <YuqueOutlined />,
       label: (
         <Link to={`${PATH.HTX}${PATH.MANAGE_SEASON}`}>quản lý mùa vụ</Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${PATH.CONTRACT_MANAGEMENT}`,
+      icon: <ContainerOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${PATH.CONTRACT_MANAGEMENT}`}>
+          Quản lý hợp đồng
+        </Link>
       ),
     },
   ];
@@ -187,14 +232,22 @@ const HomeAdmin = () => {
                   }
                   className="logo-title opacity"
                 >
-                  Nông Nghiệp xanh
+                  {roleHtx?.role?.name_hoptacxa || ""}
                 </div>
               }
             </div>
             <Menu
               mode="inline"
               defaultSelectedKeys={[currentPath]}
-              items={htx ? manageMenu : isNewUser ? createMenu : []}
+              items={
+                htx
+                  ? roles?.role === "xavien"
+                    ? userMenu
+                    : manageMenu
+                  : isNewUser
+                  ? createMenu
+                  : []
+              }
             />
           </Sider>
           <Layout className="site-layout">
@@ -273,6 +326,40 @@ const HomeAdmin = () => {
                         element={<CreateHTX></CreateHTX>}
                       ></Route>
                     )}
+
+                    {roles?.role === "xavien" && (
+                      <>
+                        <Route
+                          path="/manage-story"
+                          element={<Story></Story>}
+                        ></Route>
+                        <Route
+                          path="/manage-land"
+                          element={
+                            <Landmanagement baseUrl="htx/manage-land"></Landmanagement>
+                          }
+                        ></Route>
+                        <Route
+                          path="/manage-land/create"
+                          element={<CreateLand></CreateLand>}
+                        ></Route>
+                        <Route
+                          path="/manage-story/detail/:id"
+                          element={<StoryOfSeason></StoryOfSeason>}
+                        ></Route>
+                        <Route
+                          path={PATH.CONTRACT_MANAGEMENT}
+                          element={
+                            <ContractManagement
+                              allowCreate={false}
+                              baseUrl="htx/contract-management"
+                            ></ContractManagement>
+                          }
+                        ></Route>
+                        <Route path="*" element={<NotFound />} />
+                      </>
+                    )}
+
                     <Route
                       path={PATH.ADD_USER_TO_HTX}
                       element={<AddUserToHTX></AddUserToHTX>}
@@ -300,6 +387,19 @@ const HomeAdmin = () => {
                     <Route
                       path={PATH.PROFILE}
                       element={<Profile></Profile>}
+                    ></Route>
+                    <Route
+                      path="/manage-land/create"
+                      element={<CreateLand></CreateLand>}
+                    ></Route>
+                    <Route
+                      path={PATH.CONTRACT_MANAGEMENT}
+                      element={
+                        <ContractManagement
+                          allowCreate={false}
+                          baseUrl="htx/contract-management"
+                        ></ContractManagement>
+                      }
                     ></Route>
                     <Route path="*" element={<NotFound />} />
                   </>

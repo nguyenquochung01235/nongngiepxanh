@@ -106,6 +106,8 @@ const CategoryPertocodesManagement = (props: Props) => {
 
   return (
     <CommonPage
+      modalWidth={500}
+      fullCol
       onChangeModal={(value: boolean) => setShowModal(value)}
       onEdit={(value: any) => setIsEdit(value)}
       isShowModal={showModal}

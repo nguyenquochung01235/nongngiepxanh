@@ -1,20 +1,18 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Col, Form, Input, Popconfirm, Row } from "antd";
-import React, { useState } from "react";
+import { Popconfirm } from "antd";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import contractApi from "../../../../api/contract";
 import CommonPage from "../../../../components/common-page/CommonPage";
 import { getErrorMessage } from "../../../../utils/getErrorMessage";
 import { getResponseMessage } from "../../../../utils/getResponseMessage";
-import { validateMessage } from "../../../../utils/validateMessage";
 
 type Props = {
   baseUrl?: string;
-  allowCreate?: boolean;
 };
 
-const ContractManagement = (props: Props) => {
-  const { baseUrl, allowCreate = true } = props;
+const LandManagement = (props: Props) => {
+  const { baseUrl } = props;
   const [deleteId, setDeleteId] = useState<any>();
   const navigate = useNavigate();
 
@@ -22,25 +20,22 @@ const ContractManagement = (props: Props) => {
 
   const tableColumns = [
     {
-      title: "Thương lái",
-      dataIndex: "name_thuonglai",
+      title: "ID",
+      dataIndex: "id_thuadat",
     },
     {
-      title: "Hợp tác xã",
-      dataIndex: "name_hoptacxa",
+      title: "Địa chỉ",
+      dataIndex: "address",
     },
     {
-      title: "Giống lúa",
-      dataIndex: "name_gionglua",
+      title: "Vị trí",
+      dataIndex: "location",
     },
     {
-      title: "Trạng thái",
-      dataIndex: "status",
+      title: "Hoạt động",
+      dataIndex: "active",
     },
-    {
-      title: "Nội dung",
-      dataIndex: "title_hopdongmuaban",
-    },
+
     {
       title: "Hành động",
       dataIndex: "",
@@ -90,18 +85,17 @@ const ContractManagement = (props: Props) => {
 
   return (
     <CommonPage
-      allowCreate={allowCreate}
       deleteId={deleteId}
       newPage
-      linkToNewPage="/trader/contract-management/contract-create"
-      buttonTitle="Tạo hợp đồng"
+      linkToNewPage="/htx/manage-land/create"
+      buttonTitle="Tạo thửa đất"
       tableColumns={tableColumns}
-      commonHeading="Danh sách hợp đồng"
-      commonUrl="/hopdongmuaban/get-list"
+      commonHeading="Danh sách thửa đất"
+      commonUrl="/thuadat/get-list"
       baseUrl={baseUrl || "trader/contract-management"}
-      name="contract"
+      name="land/list"
     ></CommonPage>
   );
 };
 
-export default ContractManagement;
+export default LandManagement;

@@ -150,8 +150,11 @@ const Dashboard = (props: Props) => {
                 </div>
                 <div className="card-total">
                   <div className="card-total-number">
-                    {dashboard.isLoading && <Spin></Spin>}
-                    {dashboard?.data?.data?.hopdong_count || ""}
+                    {dashboard.isLoading ? (
+                      <Spin></Spin>
+                    ) : (
+                      dashboard?.data?.data?.hopdong_count || 0
+                    )}
                   </div>
                   <div className="card-total-text">Hoạt động</div>
                 </div>
@@ -164,8 +167,11 @@ const Dashboard = (props: Props) => {
                 </div>
                 <div className="card-total">
                   <div className="card-total-number">
-                    {dashboard.isLoading && <Spin></Spin>}
-                    {dashboard?.data?.data?.xavien_count || ""}
+                    {dashboard.isLoading ? (
+                      <Spin></Spin>
+                    ) : (
+                      dashboard?.data?.data?.xavien_count || 0
+                    )}
                   </div>
                   <div className="card-total-text">Xã viên</div>
                 </div>
@@ -178,8 +184,11 @@ const Dashboard = (props: Props) => {
                 </div>
                 <div className="card-total">
                   <div className="card-total-number">
-                    {dashboard.isLoading && <Spin></Spin>}
-                    {dashboard?.data?.data?.lichmuavu_count || ""}
+                    {dashboard.isLoading ? (
+                      <Spin></Spin>
+                    ) : (
+                      dashboard?.data?.data?.lichmuavu_count || 0
+                    )}
                   </div>
                   <div className="card-total-text">Mùa vụ</div>
                 </div>
@@ -192,8 +201,11 @@ const Dashboard = (props: Props) => {
                 </div>
                 <div className="card-total">
                   <div className="card-total-number">
-                    {dashboard.isLoading && <Spin></Spin>}
-                    {dashboard?.data?.data?.hoatdongmuavu_count || ""}
+                    {dashboard.isLoading ? (
+                      <Spin></Spin>
+                    ) : (
+                      dashboard?.data?.data?.hoatdongmuavu_count || 0
+                    )}
                   </div>
                   <div className="card-total-text">Hoạt động mùa vụ</div>
                 </div>
