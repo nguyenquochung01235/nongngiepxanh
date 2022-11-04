@@ -26,7 +26,6 @@ const FormComponent = ({
   const [formCommon] = Form.useForm();
 
   let dataChildren = [];
-  console.log(data);
 
   if (data && data.length > 0) {
     dataChildren = data.map((item: any, index: number) => {
@@ -67,10 +66,6 @@ const FormComponent = ({
   };
 
   const handleFieldsChange = (values: any) => {
-    console.log(
-      formCommon.getFieldsError().filter(({ errors }) => errors.length)
-    );
-
     setTimeout(() => {
       if (onDisable) {
         if (

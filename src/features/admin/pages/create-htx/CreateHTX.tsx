@@ -6,6 +6,8 @@ import htxApi from "../../../../api/htx";
 import { PATH } from "../../../../enum";
 import { hasHTX } from "../../../../redux/htxSlice";
 import { toggleLoading } from "../../../../redux/loadingSlice";
+import { getErrorMessage } from "../../../../utils/getErrorMessage";
+import { getResponseMessage } from "../../../../utils/getResponseMessage";
 import { validateMessage } from "../../../../utils/validateMessage";
 import "./create-htx.scss";
 
@@ -13,23 +15,24 @@ type Props = {};
 
 const CreateHTX = (props: Props) => {
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   const user_id = useSelector((state: any) => state.user.user.id_user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onFinish = async (values: any) => {
-    dispatch(toggleLoading(true));
     values.id_user = user_id;
+    setLoading(true);
 
     try {
-      await htxApi.createHTX(values);
-
+      const res = await htxApi.createHTX(values);
+      getResponseMessage(res);
       dispatch(hasHTX(true));
       navigate(`${PATH.HTX}${PATH.DASHBOARD}`);
     } catch (error) {
-      message.error("tạo hợp tác xã thất bại");
+      getErrorMessage(error);
     } finally {
-      dispatch(toggleLoading(false));
+      setLoading(false);
     }
   };
 
@@ -72,7 +75,12 @@ const CreateHTX = (props: Props) => {
               <Input placeholder="Số điện thoại" />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" className="btn">
+              <Button
+                loading={loading}
+                type="primary"
+                htmlType="submit"
+                className="btn"
+              >
                 Tạo hợp tác xã
               </Button>
             </Form.Item>

@@ -44,13 +44,13 @@ type Props = {
   onEdit?: any;
   name?: string;
   deleteId?: string;
+  allowCreate?: boolean;
+  fullCol?: boolean;
 };
 
 const CommonPage = (props: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-
   const [filter, setFilter] = useState({
     page: searchParams.get("page") || 1,
     limit: searchParams.get("limit") || 5,
@@ -59,6 +59,8 @@ const CommonPage = (props: Props) => {
 
   const [form] = Form.useForm();
   const [commonForm] = Form.useForm();
+  const navigate = useNavigate();
+  const pathName = location.pathname.split("/")[1] || "";
   const {
     buttonTitle,
     modalTitle,
@@ -82,11 +84,17 @@ const CommonPage = (props: Props) => {
     onEdit,
     name,
     deleteId,
+    allowCreate = true,
+    fullCol = false,
   } = props;
+
+  console.log(modalWidth);
 
   useEffect(() => {
     (() => {
-      navigate(`/${baseUrl || "/"}?${queryString.stringify(filter)}`);
+      navigate(
+        `/${baseUrl || baseUrl || "/"}?${queryString.stringify(filter)}`
+      );
     })();
   }, [filter]);
 
@@ -102,19 +110,41 @@ const CommonPage = (props: Props) => {
 
   if (modalChildren && modalChildren.length > 0) {
     dataChildren = modalChildren.map((item: any, index: number) => {
-      return index % 2 === 0 ? (
-        <Col lg={12} md={12} sm={24} xs={24}>
-          <Form.Item name={item?.name} label={item?.label} rules={[item.rules]}>
-            {item.formChildren}
-          </Form.Item>
-        </Col>
-      ) : (
-        <Col lg={12} md={12} sm={24} xs={24}>
-          <Form.Item name={item?.name} label={item?.label} rules={[item.rules]}>
-            {item.formChildren}
-          </Form.Item>
-        </Col>
-      );
+      if (fullCol) {
+        return (
+          <Col lg={24} md={24} sm={24} xs={24}>
+            <Form.Item
+              name={item?.name}
+              label={item?.label}
+              rules={[item.rules]}
+            >
+              {item.formChildren}
+            </Form.Item>
+          </Col>
+        );
+      } else {
+        return index % 2 === 0 ? (
+          <Col lg={12} md={12} sm={24} xs={24}>
+            <Form.Item
+              name={item?.name}
+              label={item?.label}
+              rules={[item.rules]}
+            >
+              {item.formChildren}
+            </Form.Item>
+          </Col>
+        ) : (
+          <Col lg={12} md={12} sm={24} xs={24}>
+            <Form.Item
+              name={item?.name}
+              label={item?.label}
+              rules={[item.rules]}
+            >
+              {item.formChildren}
+            </Form.Item>
+          </Col>
+        );
+      }
     });
   }
 
@@ -206,8 +236,10 @@ const CommonPage = (props: Props) => {
 
   return (
     <div className="common-page">
-      {!newPage && <Button onClick={showModalAdd}>{buttonTitle || ""}</Button>}
-      {newPage && (
+      {!newPage && allowCreate && (
+        <Button onClick={showModalAdd}>{buttonTitle || ""}</Button>
+      )}
+      {newPage && allowCreate && (
         <Button>
           <Link to={linkToNewPage || ""}>{buttonTitle || ""}</Link>
         </Button>
@@ -288,7 +320,7 @@ const CommonPage = (props: Props) => {
           pagination={false}
         />
         <div className="pagiantion">
-          {data?.meta.total > 0 && (
+          {data?.meta?.total > 0 && (
             <Pagination
               defaultCurrent={filter?.page as number}
               total={data?.meta?.total}
