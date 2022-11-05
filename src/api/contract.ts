@@ -22,8 +22,8 @@ const contractApi = {
     return axiosClient.get(url);
   },
 
-  update(data: any) {
-    const url = "hopdongmuaban/update";
+  update(data: any, id: string | number) {
+    const url = `hopdongmuaban/update/${id}`;
     return axiosClient.put(url, data);
   },
 

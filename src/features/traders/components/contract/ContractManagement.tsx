@@ -52,7 +52,8 @@ const ContractManagement = (props: Props) => {
             className=""
             onClick={() => {
               navigate(
-                "/trader/contract-management/detail/" + record?.id_hopdongmuaban
+                `/${baseUrl || "trader/contract-management"}/detail/` +
+                  record?.id_hopdongmuaban
               );
             }}
             style={{

@@ -11,7 +11,9 @@ import PageHeader from "../../../../components/page-header/PageHeader";
 import { getErrorMessage } from "../../../../utils/getErrorMessage";
 import { getResponseMessage } from "../../../../utils/getResponseMessage";
 
-type Props = {};
+type Props = {
+  baseUrl?: string;
+};
 
 // {
 //   "id_hopdongmuaban": 14,
@@ -41,6 +43,7 @@ type Props = {};
 // }
 
 const DetailContract = (props: Props) => {
+  const { baseUrl } = props;
   const { id } = useParams();
   const [refesh, setRefresh] = useState(false);
   const [ckData, setCkData] = useState();
@@ -157,6 +160,7 @@ const DetailContract = (props: Props) => {
     {
       autoComplete: (
         <AutoComplete
+          disabled={!!baseUrl}
           returnName
           type="danhmucquydinh"
           Key="id_danhmucquydinh"
@@ -333,7 +337,7 @@ const DetailContract = (props: Props) => {
   };
 
   const mutation_update_contract = useMutation((data: any) =>
-    contractApi.update(data)
+    contractApi.update(data, data?.id_hopdongmuaban || "")
   );
 
   const headerBreadcrumb = [

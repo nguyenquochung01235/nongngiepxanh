@@ -13,6 +13,7 @@ type Props = {
   type: string;
   keyword?: string;
   returnName?: boolean;
+  disabled?: boolean;
 };
 const { Option } = Select;
 
@@ -26,6 +27,7 @@ const AutoComplete = ({
   type = "",
   keyword = "search",
   returnName = false,
+  disabled = false,
 }: Props) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchData, setSearchData] = useState<any>();
@@ -100,6 +102,7 @@ const AutoComplete = ({
       filterOption={false}
       onSelect={handleSelect}
       onChange={handleChange}
+      disabled={disabled}
     >
       {children?.length > 0 && !loading && children}
       {loading && (

@@ -36,6 +36,7 @@ import Landmanagement from "../../../land/pages/land-management/Landmanagement";
 import StoryOfSeason from "../../../story/pages/StoryOfSeason";
 import Story from "../../../story/Story";
 import ContractManagement from "../../../traders/components/contract/ContractManagement";
+import DetailContract from "../../../traders/pages/detail-contract/DetailContract";
 import AddUserToHTX from "../add-user-htx/AddUserToHTX";
 import CreateHTX from "../create-htx/CreateHTX";
 import Dashboard from "../dashboard/Dashboard";
@@ -358,6 +359,12 @@ const HomeAdmin = () => {
                             ></ContractManagement>
                           }
                         ></Route>
+                        <Route
+                          path={`${PATH.CONTRACT_MANAGEMENT}${PATH.CONTRACT_DETAIL}`}
+                          element={
+                            <DetailContract baseUrl="htx/contract-management"></DetailContract>
+                          }
+                        ></Route>
                         <Route path="*" element={<NotFound />} />
                       </>
                     )}
@@ -403,6 +410,12 @@ const HomeAdmin = () => {
                           allowDelete={false}
                           baseUrl="htx/contract-management"
                         ></ContractManagement>
+                      }
+                    ></Route>
+                    <Route
+                      path={`${PATH.CONTRACT_MANAGEMENT}${PATH.CONTRACT_DETAIL}`}
+                      element={
+                        <DetailContract baseUrl="htx/contract-management"></DetailContract>
                       }
                     ></Route>
                     <Route path="*" element={<NotFound />} />
