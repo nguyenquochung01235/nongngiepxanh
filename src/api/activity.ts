@@ -18,8 +18,11 @@ const activityApi = {
     return axiosClient.post(url, data);
   },
 
-  update(data: ADDACTIVITY): Promise<ListResponse<ADDACTIVITY>> {
-    const url = "hoatdongmuavu/update";
+  update(
+    data: ADDACTIVITY,
+    id: string | number
+  ): Promise<ListResponse<ADDACTIVITY>> {
+    const url = `hoatdongmuavu/update/${id}`;
     return axiosClient.put(url, data);
   },
 

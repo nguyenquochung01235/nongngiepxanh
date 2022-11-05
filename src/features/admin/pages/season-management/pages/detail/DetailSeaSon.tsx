@@ -9,6 +9,7 @@ import {
   Modal,
   Pagination,
   Popconfirm,
+  Popover,
   Row,
   Skeleton,
   Space,
@@ -16,7 +17,7 @@ import {
   Table,
 } from "antd";
 import moment from "moment";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import "./detail-season.scss";
 import queryString from "query-string";
@@ -27,19 +28,23 @@ import activityApi from "../../../../../../api/activity";
 import { formatMoment } from "../../../../../../utils/formatMoment";
 import { validateMessage } from "../../../../../../utils/validateMessage";
 import { ColumnsType } from "antd/es/table";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import AutoComplete from "../../../../../../components/auto-complete/AutoComplete";
 import FormComponent from "../../../../../../components/form-component/FormComponent";
 import { convertToMoment } from "../../../../../../utils/convertToMoment";
 import { getErrorMessage } from "../../../../../../utils/getErrorMessage";
 import { getResponseMessage } from "../../../../../../utils/getResponseMessage";
 import PageHeader from "../../../../../../components/page-header/PageHeader";
+import ActionOfList from "../../../../../../components/action-of-list/ActionOfList";
 
 type Props = {};
 
 const DetailSeaSon = (props: Props) => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const inputRef = useRef<any>(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
@@ -48,6 +53,60 @@ const DetailSeaSon = (props: Props) => {
   const [activityDetail, setActivityDetail] = useState();
   const [activityId, setActivityId] = useState<number>();
   const [disableBtnUpdateSeason, setDisableBtnUpdateSeason] = useState(false);
+  const [columns, setColumns] = useState<any>([
+    {
+      title: "Tên hoạt động",
+      dataIndex: "name_hoatdong",
+    },
+    {
+      title: "Môt tả hoạt động",
+      dataIndex: "description_hoatdong",
+      rowSpan: 4,
+    },
+    {
+      title: "Ngày bắt đầu",
+      dataIndex: "date_start",
+    },
+    {
+      title: "Ngày kết thúc",
+      dataIndex: "date_end",
+    },
+    {
+      title: "Hành động",
+      dataIndex: "",
+      key: "x",
+      render: (text: any, record: any) => (
+        <>
+          <span
+            className=""
+            onClick={() => handleEditActivity(record?.id_hoatdongmuavu)}
+            style={{
+              display: "inline-block",
+              marginRight: "16px",
+              cursor: "pointer",
+            }}
+          >
+            <EditOutlined />
+          </span>
+          <span className="" style={{ cursor: "pointer" }}>
+            <Popconfirm
+              placement="top"
+              title="Xóa hoạt động?"
+              onConfirm={() => handleConfirmDeleteActivity(record)}
+            >
+              <DeleteOutlined />
+            </Popconfirm>
+          </span>
+        </>
+      ),
+    },
+  ]);
+
+  const defaultFilter = {
+    page: 1,
+    limit: 5,
+    search: "",
+  };
 
   const [filter, setFilter] = useState({
     page: searchParams.get("page") || 1,
@@ -64,59 +123,6 @@ const DetailSeaSon = (props: Props) => {
   }, [filter]);
 
   const htx = useSelector((state: any) => state.htx.role);
-
-  const columns = useMemo(() => {
-    const columns: ColumnsType<any> = [
-      {
-        title: "Tên hoạt động",
-        dataIndex: "name_hoatdong",
-      },
-      {
-        title: "Môt tả hoạt động",
-        dataIndex: "description_hoatdong",
-        rowSpan: 4,
-      },
-      {
-        title: "Ngày bắt đầu",
-        dataIndex: "date_start",
-      },
-      {
-        title: "Ngày kết thúc",
-        dataIndex: "date_end",
-      },
-      {
-        title: "Hành động",
-        dataIndex: "",
-        key: "x",
-        render: (text, record: any) => (
-          <>
-            <span
-              className=""
-              onClick={() => handleEditActivity(record?.id_hoatdongmuavu)}
-              style={{
-                display: "inline-block",
-                marginRight: "16px",
-                cursor: "pointer",
-              }}
-            >
-              <EditOutlined />
-            </span>
-            <span className="" style={{ cursor: "pointer" }}>
-              <Popconfirm
-                placement="top"
-                title="Xóa hoạt động?"
-                onConfirm={() => handleConfirmDeleteActivity(record)}
-              >
-                <DeleteOutlined />
-              </Popconfirm>
-            </span>
-          </>
-        ),
-      },
-    ];
-
-    return columns;
-  }, []);
 
   const seasonForm = [
     {
@@ -284,10 +290,12 @@ const DetailSeaSon = (props: Props) => {
   );
 
   const mutation_update_activity = useMutation((data: any) =>
-    activityApi.update(data)
+    activityApi.update(data, data?.id_hoatdongmuavu || "")
   );
 
   const handlePagination = (page: number) => {
+    setCurrentPage(page);
+
     setFilter((pre) => {
       return {
         ...pre,
@@ -300,13 +308,14 @@ const DetailSeaSon = (props: Props) => {
     setFilter((pre) => {
       return {
         ...pre,
+        page: 1,
         search: value?.search?.trim() || "",
       };
     });
   };
 
   const mutation_calendar = useMutation((data: any) =>
-    calendarApi.updateCalendar(data)
+    calendarApi.updateCalendar(data, data?.id_lichmuavu || "")
   );
 
   const handleFormSubmit = (values: any) => {
@@ -379,6 +388,18 @@ const DetailSeaSon = (props: Props) => {
     } finally {
       setLoadingDetailAct(false);
     }
+  };
+
+  const handleResetField = () => {
+    setFilter(defaultFilter);
+    setCurrentPage(1);
+
+    activity.refetch();
+    form2.resetFields();
+  };
+
+  const handleFilterCol = (data: any) => {
+    setColumns(data);
   };
 
   return (
@@ -482,6 +503,7 @@ const DetailSeaSon = (props: Props) => {
                 <Form.Item name="search">
                   <Space>
                     <Input
+                      ref={inputRef}
                       defaultValue={filter.search}
                       placeholder="Tìm kiếm hoạt động"
                     ></Input>
@@ -492,6 +514,24 @@ const DetailSeaSon = (props: Props) => {
                     >
                       Tìm kiếm
                     </Button>
+
+                    <Popover
+                      placement="topLeft"
+                      title={"Thao tác mở rộng"}
+                      content={
+                        <ActionOfList
+                          onSetFilterCol={handleFilterCol}
+                          columns={columns}
+                          onRefetch={() => activity.refetch()}
+                          onReset={handleResetField}
+                        ></ActionOfList>
+                      }
+                      trigger="click"
+                    >
+                      <Button type="primary">
+                        <PlusOutlined />
+                      </Button>
+                    </Popover>
                   </Space>
                 </Form.Item>
               </Form>
@@ -513,6 +553,7 @@ const DetailSeaSon = (props: Props) => {
             total={activity?.data?.meta?.total}
             pageSize={filter.limit as number}
             onChange={handlePagination}
+            current={currentPage}
           />
         )}
       </div>
@@ -585,7 +626,10 @@ const DetailSeaSon = (props: Props) => {
                     },
                   ]}
                 >
-                  <DatePicker style={{ width: "100%" }} />
+                  <DatePicker
+                    placeholder="Ngày bắt đầu"
+                    style={{ width: "100%" }}
+                  />
                 </Form.Item>
                 <Form.Item
                   name="date_end"
@@ -597,7 +641,7 @@ const DetailSeaSon = (props: Props) => {
                     },
                     ({ getFieldValue }) => ({
                       validator(_, value) {
-                        if (!value || getFieldValue("date_start") < value) {
+                        if (!value || getFieldValue("date_start") <= value) {
                           return Promise.resolve();
                         }
                         return Promise.reject(
@@ -607,7 +651,10 @@ const DetailSeaSon = (props: Props) => {
                     }),
                   ]}
                 >
-                  <DatePicker style={{ width: "100%" }} />
+                  <DatePicker
+                    placeholder="Ngày kết thúc"
+                    style={{ width: "100%" }}
+                  />
                 </Form.Item>
               </Col>
             </Row>

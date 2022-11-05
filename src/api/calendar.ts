@@ -13,8 +13,8 @@ const calendarApi = {
     return axiosClient.post(url, data);
   },
 
-  updateCalendar(data: AddCalendar) {
-    const url = "lichmuavu/update";
+  updateCalendar(data: AddCalendar, id: string | number) {
+    const url = `lichmuavu/update/${id}`;
     return axiosClient.put(url, data);
   },
 

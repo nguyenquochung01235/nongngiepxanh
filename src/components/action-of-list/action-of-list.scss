@@ -1,0 +1,14 @@
+@use "../../scss/index" as *;
+
+.action-of-list {
+  &-icon {
+    font-size: 20px;
+    color: $text-green;
+    cursor: pointer;
+    display: inline-block;
+
+    &:not(&:first-child) {
+      margin-left: 16px;
+    }
+  }
+}

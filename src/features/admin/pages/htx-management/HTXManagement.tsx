@@ -259,13 +259,13 @@ const HTXManagement = () => {
         onOk={handleCancel}
         open={isModalOpen}
         onCancel={handleCancel}
-        width="50%"
+        width="40%"
         // cancelButtonProps={{ style: { display: "none" } }}
         // okButtonProps={{ style: { display: "none" } }}
       >
         <div className="add-user-to-htx">
           <Row>
-            <Col span={14}>
+            <Col span={24}>
               <div className="add-user-to-htx__search">
                 <Input
                   onChange={(e) => setSearchValue(e.target.value)}
