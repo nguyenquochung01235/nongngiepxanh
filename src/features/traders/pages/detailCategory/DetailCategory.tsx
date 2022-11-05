@@ -329,7 +329,7 @@ const DetailCategory = (props: Props) => {
         open={isModalOpen}
         onCancel={handleCancel}
         bodyStyle={{ height: "auto" }}
-        width="70%"
+        width={500}
       >
         <Spin spinning={loadingDetailSup}>
           <Form
@@ -339,8 +339,8 @@ const DetailCategory = (props: Props) => {
             name="add supplier"
             onFinish={onSubmit}
           >
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 24 }}>
-              <Col lg={12} md={12} sm={24} xs={24}>
+            <Row>
+              <Col lg={24} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="name_category_vattu"
                   label="Tên vật tư"

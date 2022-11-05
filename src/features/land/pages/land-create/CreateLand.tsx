@@ -46,7 +46,7 @@ const CreateLand = (props: Props) => {
     loading: false,
     onSubmit: handleFormSubmit,
     name: "season",
-    buttonSubmit: "Cập nhật",
+    buttonSubmit: "Tạo thửa đất",
     hideBtnSubmit: false,
     data: landForm,
   };
