@@ -45,6 +45,7 @@ type Props = {
   name?: string;
   deleteId?: string;
   allowCreate?: boolean;
+  allowDelete?: boolean;
   fullCol?: boolean;
 };
 
@@ -85,6 +86,7 @@ const CommonPage = (props: Props) => {
     name,
     deleteId,
     allowCreate = true,
+    allowDelete = true,
     fullCol = false,
   } = props;
 
@@ -101,6 +103,7 @@ const CommonPage = (props: Props) => {
   useEffect(() => {
     setIsModalOpen(isShowModal);
   }, [isShowModal]);
+  console.log(modalWidth, commonUrl);
 
   useEffect(() => {
     refetch();

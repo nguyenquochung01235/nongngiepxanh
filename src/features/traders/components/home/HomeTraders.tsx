@@ -23,6 +23,7 @@ import PreviewContract from "../../../../components/preview/PreviewContract";
 import Profile from "../../../../components/profile/Profile";
 import { PATH } from "../../../../enum";
 import { handleLogout } from "../../../../utils/logout";
+import Dashboard from "../../../admin/pages/dashboard/Dashboard";
 import CreateCategoryPertocodes from "../../pages/category-pesticides-management/CategoryPertocodesManagement";
 import CreateContract from "../../pages/create-contract/CreateContract";
 import DetailContract from "../../pages/detail-contract/DetailContract";
@@ -161,6 +162,10 @@ const HomeTraders = () => {
           }}
         >
           <Routes>
+            <Route
+              path={PATH.DASHBOARD}
+              element={<Dashboard></Dashboard>}
+            ></Route>
             <Route
               path={PATH.CATEGORY_MANAGEMENT}
               element={<CreateCategoryPertocodes></CreateCategoryPertocodes>}

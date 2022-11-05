@@ -30,6 +30,7 @@ import { toggleLoading } from "../../../../redux/loadingSlice";
 import { setTheme } from "../../../../utils/changeTheme";
 import { handleLogout } from "../../../../utils/logout";
 import Calendar from "../../../calendar/Calendar";
+import Map from "../../../land/components/map/Map";
 import CreateLand from "../../../land/pages/land-create/CreateLand";
 import Landmanagement from "../../../land/pages/land-management/Landmanagement";
 import StoryOfSeason from "../../../story/pages/StoryOfSeason";
@@ -353,6 +354,7 @@ const HomeAdmin = () => {
                           element={
                             <ContractManagement
                               allowCreate={false}
+                              allowDelete={false}
                               baseUrl="htx/contract-management"
                             ></ContractManagement>
                           }
@@ -399,11 +401,13 @@ const HomeAdmin = () => {
                       path="/manage-land/create"
                       element={<CreateLand></CreateLand>}
                     ></Route>
+                    <Route path="/map" element={<Map></Map>}></Route>
                     <Route
                       path={PATH.CONTRACT_MANAGEMENT}
                       element={
                         <ContractManagement
                           allowCreate={false}
+                          allowDelete={false}
                           baseUrl="htx/contract-management"
                         ></ContractManagement>
                       }
