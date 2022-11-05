@@ -11,10 +11,11 @@ import { validateMessage } from "../../../../utils/validateMessage";
 type Props = {
   baseUrl?: string;
   allowCreate?: boolean;
+  allowDelete?: boolean;
 };
 
 const ContractManagement = (props: Props) => {
-  const { baseUrl, allowCreate = true } = props;
+  const { baseUrl, allowCreate = true, allowDelete = true } = props;
   const [deleteId, setDeleteId] = useState<any>();
   const navigate = useNavigate();
 
@@ -62,17 +63,19 @@ const ContractManagement = (props: Props) => {
           >
             <EditOutlined />
           </span>
-          <span style={{ cursor: "pointer" }} className="">
-            <Popconfirm
-              placement="top"
-              title="Xóa hợp đồng?"
-              onConfirm={() =>
-                handleConfirmDeleteContract(record.id_hopdongmuaban || "")
-              }
-            >
-              <DeleteOutlined />
-            </Popconfirm>
-          </span>
+          {allowDelete && (
+            <span style={{ cursor: "pointer" }} className="">
+              <Popconfirm
+                placement="top"
+                title="Xóa hợp đồng?"
+                onConfirm={() =>
+                  handleConfirmDeleteContract(record.id_hopdongmuaban || "")
+                }
+              >
+                <DeleteOutlined />
+              </Popconfirm>
+            </span>
+          )}
         </>
       ),
     },
@@ -91,6 +94,7 @@ const ContractManagement = (props: Props) => {
   return (
     <CommonPage
       allowCreate={allowCreate}
+      allowDelete={allowDelete}
       deleteId={deleteId}
       newPage
       linkToNewPage="/trader/contract-management/contract-create"

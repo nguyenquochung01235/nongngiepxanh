@@ -255,3 +255,19 @@ div::-webkit-scrollbar-thumb {
 .ant-form-item-label {
   padding: 0 !important;
 }
+
+.ant-table-thead > tr > th {
+  background-color: $white-color !important;
+  font-weight: 600;
+  font-size: 13px;
+  color: $text-green;
+}
+
+.ant-input:focus,
+.ant-input-focused {
+  box-shadow: none;
+}
+
+.ant-table-tbody > tr > td {
+  font-size: 13px;
+}

@@ -44,11 +44,7 @@ const LandManagement = (props: Props) => {
         <>
           <span
             className=""
-            onClick={() => {
-              navigate(
-                "/trader/contract-management/detail/" + record?.id_hopdongmuaban
-              );
-            }}
+            onClick={() => {}}
             style={{
               display: "inline-block",
               marginRight: "16px",
@@ -60,7 +56,7 @@ const LandManagement = (props: Props) => {
           <span style={{ cursor: "pointer" }} className="">
             <Popconfirm
               placement="top"
-              title="Xóa hợp đồng?"
+              title="Xóa thửa đất?"
               onConfirm={() =>
                 handleConfirmDeleteContract(record.id_hopdongmuaban || "")
               }
