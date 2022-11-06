@@ -8,7 +8,7 @@ if (tokenLocal) {
 }
 
 const axiosClient = axios.create({
-  baseURL: "http://127.0.0.1:8000/api",
+  baseURL: "https://ctu-agriculture.herokuapp.com/api",
 });
 
 // Add a request interceptor

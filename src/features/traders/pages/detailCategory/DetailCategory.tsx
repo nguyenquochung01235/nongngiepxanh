@@ -11,6 +11,7 @@ import {
   Skeleton,
   Space,
   Spin,
+  Switch,
   Table,
   TableColumnsType,
 } from "antd";
@@ -82,6 +83,11 @@ const DetailCategory = (props: Props) => {
       {
         title: "Hoạt động",
         dataIndex: "active",
+        render: (text, record: any) => (
+          <>
+            <Switch checked={record?.active || false}></Switch>
+          </>
+        ),
       },
       {
         title: "Hành động",

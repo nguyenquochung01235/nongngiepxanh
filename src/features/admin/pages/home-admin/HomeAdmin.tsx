@@ -23,6 +23,7 @@ import {
 import userApi from "../../../../api/userApi";
 import logo from "../../../../assets/images/admin-logo.jpg";
 import NotFound from "../../../../components/not-found/NotFound";
+import Notification from "../../../../components/notification/Notification";
 import Profile from "../../../../components/profile/Profile";
 import { COMMON, PATH } from "../../../../enum";
 import { hasHTX, reset, setRole } from "../../../../redux/htxSlice";
@@ -281,7 +282,7 @@ const HomeAdmin = () => {
                   </Dropdown>
                   <div className="notification ml-16 center">
                     <Dropdown
-                      overlay={menuNotification}
+                      overlay={<Notification></Notification>}
                       placement="bottomRight"
                       trigger={["click"]}
                       arrow

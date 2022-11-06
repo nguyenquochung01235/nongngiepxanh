@@ -162,7 +162,7 @@ const CreateContract = (props: Props) => {
               <Col lg={12} md={12} sm={24} xs={24}>
                 <div
                   className="add-user-to-htx__search"
-                  style={{ position: "relative", top: "2px" }}
+                  style={{ position: "relative", top: "0" }}
                 >
                   <Input
                     defaultValue={searchUserStore?.phone_number}
@@ -356,12 +356,80 @@ const CreateContract = (props: Props) => {
                   <Col lg={24} md={24} sm={24} xs={24}>
                     <CKEditor
                       editor={ClassicEditor}
+                      config={{
+                        toolbar: [
+                          "selectAll",
+                          "undo",
+                          "redo",
+                          "bold",
+                          "italic",
+                          "blockQuote",
+                          "ckfinder",
+                          "imageTextAlternative",
+                          "imageUpload",
+                          "heading",
+                          "imageStyle:full",
+                          "imageStyle:side",
+                          "indent",
+                          "outdent",
+                          "link",
+                          "numberedList",
+                          "bulletedList",
+                          "mediaEmbed",
+                          "insertTable",
+                          "tableColumn",
+                          "tableRow",
+                          "mergeTableCells",
+                          "fontBackgroundColor",
+                          "fontColor",
+                        ],
+                        image: {
+                          // Configure the available styles.
+                          styles: ["alignLeft", "alignCenter", "alignRight"],
+                          sizes: ["50%", "75%", "100%"],
+
+                          // Configure the available image resize options.
+                          resizeOptions: [
+                            {
+                              name: "imageResize:original",
+                              label: "Original",
+                              value: null,
+                            },
+                            {
+                              name: "imageResize:50",
+                              label: "50%",
+                              value: "50",
+                            },
+                            {
+                              name: "imageResize:75",
+                              label: "75%",
+                              value: "75",
+                            },
+                          ],
+
+                          // You need to configure the image toolbar, too, so it shows the new style
+                          // buttons as well as the resize buttons.
+                          toolbar: [
+                            "imageStyle:alignLeft",
+                            "imageStyle:alignCenter",
+                            "imageStyle:alignRight",
+                            "|",
+                            "imageResize",
+                            "|",
+                            "imageTextAlternative",
+                          ],
+                        },
+                      }}
                       data=""
                       onChange={(event: any, editor: any) => {
                         const data = editor.getData();
+
                         setCkData(data);
                       }}
                     />
+                    <div style={{ color: "#ff4d4f", margin: "8px 0 0 0" }}>
+                      {ckData === "" && "Trường này không được bỏ trống"}
+                    </div>
                   </Col>
                 </Row>
                 <br />
@@ -369,6 +437,7 @@ const CreateContract = (props: Props) => {
                   <div className="common-form-submit">
                     <Space>
                       <Button
+                        disabled={ckData === ""}
                         form={"create-contract"}
                         type="primary"
                         htmlType="submit"
