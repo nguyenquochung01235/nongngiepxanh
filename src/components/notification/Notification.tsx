@@ -29,7 +29,7 @@ const Notification = (props: Props) => {
         return {
           key: noti?.id || "",
           label: (
-            <div style={{ margin: "4px 0", maxWidth: "350px" }}>
+            <div style={{ margin: "4px 0", maxWidth: "300px" }}>
               {noti?.message || ""}
             </div>
           ),
@@ -56,7 +56,7 @@ const Notification = (props: Props) => {
       label: (
         <div
           style={{
-            maxWidth: "350px",
+            maxWidth: "300px",
             textAlign: "center",
             fontSize: "24px",
             margin: "4px 0",
@@ -78,7 +78,7 @@ const Notification = (props: Props) => {
               label: (
                 <div
                   style={{
-                    width: "350px",
+                    width: "300px",
                     textAlign: "center",
                     padding: "12px 0",
                   }}
