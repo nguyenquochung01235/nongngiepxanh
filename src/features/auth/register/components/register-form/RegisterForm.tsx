@@ -1,11 +1,12 @@
 import { Button, Col, DatePicker, Form, Input, Row, Select } from "antd";
-import { Moment } from "moment";
+import "moment/locale/zh-cn";
 import { Link } from "react-router-dom";
 import AnimateComp from "../../../../../components/animate/AnimateCom";
 import { IRoleOfUser } from "../../../../../model";
 import { formatMoment } from "../../../../../utils/formatMoment";
 import { validateMessage } from "../../../../../utils/validateMessage";
 import "./register-form.scss";
+
 const { Option } = Select;
 
 type Props = {
@@ -88,7 +89,7 @@ const RegisterForm = ({ userRole, onSubmit, loading }: Props) => {
                   },
                 ]}
               >
-                <DatePicker style={{ width: "100%" }} />
+                <DatePicker placeholder="Ngày sinh" style={{ width: "100%" }} />
               </Form.Item>
 
               <Form.Item

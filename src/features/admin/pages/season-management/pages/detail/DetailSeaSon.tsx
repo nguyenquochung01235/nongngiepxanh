@@ -259,6 +259,8 @@ const DetailSeaSon = (props: Props) => {
     values.id_lichmuavu = id || null;
 
     if (activityDetail && Object.keys(activityDetail).length > 0) {
+      console.log(activityDetail, values.id_hoatdongmuavu);
+
       // values.id_lichmuavu = id || null; ??
 
       mutation_update_activity.mutate(values, {

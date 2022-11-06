@@ -8,23 +8,9 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;1,300;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
     />
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <!-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script> -->
     <script type="module" src="/src/main.tsx"></script>
 
-    <script>
-      // Enable pusher logging - don't include this in production
-      Pusher.logToConsole = true;
-
-      var pusher = new Pusher("a4b9a95d179cda3450fe", {
-        cluster: "ap1",
-      });
-
-      var channel = pusher.subscribe("notification.57");
-      channel.bind("notification", function (data) {
-        alert(JSON.stringify(data));
-        console.log(JSON.stringify(data));
-      });
-    </script>
     <title>Nông nghiệp xanh</title>
   </head>
   <body>

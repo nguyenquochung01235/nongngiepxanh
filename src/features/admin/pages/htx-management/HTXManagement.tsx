@@ -172,7 +172,7 @@ const HTXManagement = () => {
           style={{ color: "#333 !important" }}
           // checkedChildren="Hoạt động"
           // unCheckedChildren="Đang Ẩn"
-          defaultChecked={item.xavien_active}
+          checked={item?.xavien_active || false}
           onChange={() => handleChangeSwitch(item.id_user)}
         />
       );
