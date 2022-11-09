@@ -33,7 +33,7 @@ const AutoComplete = ({
   const [searchData, setSearchData] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const [selectValue, setSelectValue] = useState<string>("");
-  const timer = useRef<number>();
+  const timer = useRef<any>();
 
   useEffect(() => {
     (() => {
@@ -47,7 +47,9 @@ const AutoComplete = ({
         try {
           console.log(type);
 
-          const res = await commontApi.autoComplete(type, params);
+          const res = await commontApi.autoComplete(type, {
+            search: searchValue,
+          });
           setSearchData(res.data);
         } catch (error) {
           console.log(error);

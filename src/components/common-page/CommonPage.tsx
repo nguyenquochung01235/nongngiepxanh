@@ -47,6 +47,8 @@ type Props = {
   allowCreate?: boolean;
   allowDelete?: boolean;
   fullCol?: boolean;
+  refetchPage?: string;
+  tableLoading?: boolean;
 };
 
 const CommonPage = (props: Props) => {
@@ -88,9 +90,13 @@ const CommonPage = (props: Props) => {
     allowCreate = true,
     allowDelete = true,
     fullCol = false,
+    refetchPage,
+    tableLoading = false,
   } = props;
 
-  console.log(modalWidth);
+  useEffect(() => {
+    refetch();
+  }, [refetchPage]);
 
   useEffect(() => {
     (() => {
@@ -103,7 +109,6 @@ const CommonPage = (props: Props) => {
   useEffect(() => {
     setIsModalOpen(isShowModal);
   }, [isShowModal]);
-  console.log(modalWidth, commonUrl);
 
   useEffect(() => {
     refetch();
@@ -317,7 +322,7 @@ const CommonPage = (props: Props) => {
           </Form>
         </div>
         <Table
-          loading={isLoading}
+          loading={isLoading || tableLoading}
           columns={tableColumns}
           dataSource={data?.data || []}
           pagination={false}

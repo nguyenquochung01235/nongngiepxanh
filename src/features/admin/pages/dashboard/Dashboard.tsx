@@ -3,16 +3,23 @@ import { useQuery } from "@tanstack/react-query";
 import { Col, Row, Spin } from "antd";
 import React, { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
+import commontApi from "../../../../api/common";
 import htxApi from "../../../../api/htx";
 import Card from "../../../home/components/card/Card";
 
-type Props = {};
+type Props = {
+  url: string;
+};
 
-const Dashboard = (props: Props) => {
+const Dashboard = ({ url = "htx/dash-board" }: Props) => {
   const fetchUserList = () => {
-    return htxApi.dashboard();
+    return commontApi.dashboard(url);
   };
-  const dashboard: any = useQuery<any>(["htx/dashboard"], fetchUserList);
+  const dashboard: any = useQuery<any>([url], fetchUserList);
+
+  if (dashboard.data) {
+    console.log(dashboard.data);
+  }
 
   let chart: any = {
     series: [14, 23, 21, 17, 15, 10, 12, 17, 21],
@@ -143,74 +150,149 @@ const Dashboard = (props: Props) => {
       <Row gutter={[16, 16]}>
         <Col lg={14} md={14} sm={24} xs={24}>
           <Row gutter={[16, 16]} className="row-card">
-            <Col lg={12} md={12} sm={24} xs={24}>
-              <Card>
-                <div className="card-icon">
-                  <DollarCircleOutlined />
-                </div>
-                <div className="card-total">
-                  <div className="card-total-number">
-                    {dashboard.isLoading ? (
-                      <Spin></Spin>
-                    ) : (
-                      dashboard?.data?.data?.hopdong_count || 0
-                    )}
-                  </div>
-                  <div className="card-total-text">Hoạt động</div>
-                </div>
-              </Card>
-            </Col>
-            <Col lg={12} md={12} sm={24} xs={24}>
-              <Card>
-                <div className="card-icon">
-                  <DollarCircleOutlined />
-                </div>
-                <div className="card-total">
-                  <div className="card-total-number">
-                    {dashboard.isLoading ? (
-                      <Spin></Spin>
-                    ) : (
-                      dashboard?.data?.data?.xavien_count || 0
-                    )}
-                  </div>
-                  <div className="card-total-text">Xã viên</div>
-                </div>
-              </Card>
-            </Col>
-            <Col lg={12} md={12} sm={24} xs={24}>
-              <Card>
-                <div className="card-icon">
-                  <DollarCircleOutlined />
-                </div>
-                <div className="card-total">
-                  <div className="card-total-number">
-                    {dashboard.isLoading ? (
-                      <Spin></Spin>
-                    ) : (
-                      dashboard?.data?.data?.lichmuavu_count || 0
-                    )}
-                  </div>
-                  <div className="card-total-text">Mùa vụ</div>
-                </div>
-              </Card>
-            </Col>
-            <Col lg={12} md={12} sm={24} xs={24}>
-              <Card>
-                <div className="card-icon">
-                  <DollarCircleOutlined />
-                </div>
-                <div className="card-total">
-                  <div className="card-total-number">
-                    {dashboard.isLoading ? (
-                      <Spin></Spin>
-                    ) : (
-                      dashboard?.data?.data?.hoatdongmuavu_count || 0
-                    )}
-                  </div>
-                  <div className="card-total-text">Hoạt động mùa vụ</div>
-                </div>
-              </Card>
-            </Col>
+            {url.includes("htx") ? (
+              <>
+                <Col lg={12} md={12} sm={24} xs={24}>
+                  <Card>
+                    <div className="card-icon">
+                      <DollarCircleOutlined />
+                    </div>
+                    <div className="card-total">
+                      <div className="card-total-number">
+                        {dashboard.isLoading ? (
+                          <Spin></Spin>
+                        ) : (
+                          dashboard?.data?.data?.hopdong_count || 0
+                        )}
+                      </div>
+                      <div className="card-total-text">Hoạt động</div>
+                    </div>
+                  </Card>
+                </Col>
+                <Col lg={12} md={12} sm={24} xs={24}>
+                  <Card>
+                    <div className="card-icon">
+                      <DollarCircleOutlined />
+                    </div>
+                    <div className="card-total">
+                      <div className="card-total-number">
+                        {dashboard.isLoading ? (
+                          <Spin></Spin>
+                        ) : (
+                          dashboard?.data?.data?.xavien_count || 0
+                        )}
+                      </div>
+                      <div className="card-total-text">Xã viên</div>
+                    </div>
+                  </Card>
+                </Col>
+                <Col lg={12} md={12} sm={24} xs={24}>
+                  <Card>
+                    <div className="card-icon">
+                      <DollarCircleOutlined />
+                    </div>
+                    <div className="card-total">
+                      <div className="card-total-number">
+                        {dashboard.isLoading ? (
+                          <Spin></Spin>
+                        ) : (
+                          dashboard?.data?.data?.lichmuavu_count || 0
+                        )}
+                      </div>
+                      <div className="card-total-text">Mùa vụ</div>
+                    </div>
+                  </Card>
+                </Col>
+                <Col lg={12} md={12} sm={24} xs={24}>
+                  <Card>
+                    <div className="card-icon">
+                      <DollarCircleOutlined />
+                    </div>
+                    <div className="card-total">
+                      <div className="card-total-number">
+                        {dashboard.isLoading ? (
+                          <Spin></Spin>
+                        ) : (
+                          dashboard?.data?.data?.hoatdongmuavu_count || 0
+                        )}
+                      </div>
+                      <div className="card-total-text">Hoạt động mùa vụ</div>
+                    </div>
+                  </Card>
+                </Col>
+              </>
+            ) : (
+              <>
+                <Col lg={12} md={12} sm={24} xs={24}>
+                  <Card>
+                    <div className="card-icon">
+                      <DollarCircleOutlined />
+                    </div>
+                    <div className="card-total">
+                      <div className="card-total-number">
+                        {dashboard.isLoading ? (
+                          <Spin></Spin>
+                        ) : (
+                          dashboard?.data?.data?.danhmuc_count || 0
+                        )}
+                      </div>
+                      <div className="card-total-text">Danh mục</div>
+                    </div>
+                  </Card>
+                </Col>
+                <Col lg={12} md={12} sm={24} xs={24}>
+                  <Card>
+                    <div className="card-icon">
+                      <DollarCircleOutlined />
+                    </div>
+                    <div className="card-total">
+                      <div className="card-total-number">
+                        {dashboard.isLoading ? (
+                          <Spin></Spin>
+                        ) : (
+                          dashboard?.data?.data?.hopdong_count || 0
+                        )}
+                      </div>
+                      <div className="card-total-text">Hoạt động</div>
+                    </div>
+                  </Card>
+                </Col>
+                <Col lg={12} md={12} sm={24} xs={24}>
+                  <Card>
+                    <div className="card-icon">
+                      <DollarCircleOutlined />
+                    </div>
+                    <div className="card-total">
+                      <div className="card-total-number">
+                        {dashboard.isLoading ? (
+                          <Spin></Spin>
+                        ) : (
+                          dashboard?.data?.data?.lohang_count || 0
+                        )}
+                      </div>
+                      <div className="card-total-text">Lô hàng</div>
+                    </div>
+                  </Card>
+                </Col>
+                <Col lg={12} md={12} sm={24} xs={24}>
+                  <Card>
+                    <div className="card-icon">
+                      <DollarCircleOutlined />
+                    </div>
+                    <div className="card-total">
+                      <div className="card-total-number">
+                        {dashboard.isLoading ? (
+                          <Spin></Spin>
+                        ) : (
+                          dashboard?.data?.data?.sanluong_ount || 0
+                        )}
+                      </div>
+                      <div className="card-total-text">Sản lượng</div>
+                    </div>
+                  </Card>
+                </Col>
+              </>
+            )}
           </Row>
         </Col>
         <Col lg={10} md={10} sm={24} xs={24}>

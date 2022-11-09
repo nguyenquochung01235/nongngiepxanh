@@ -1,23 +1,30 @@
-import { LoadingOutlined } from "@ant-design/icons";
+import { BellOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { Menu, Skeleton, Spin } from "antd";
+import { Badge, Menu, Skeleton, Spin } from "antd";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import notificationApi from "../../api/notification";
+import { setIsReadAll } from "../../redux/notificationSlice";
+import "./notification.scss";
 
 type Props = {};
 
 const Notification = (props: Props) => {
-  const [page, setPage] = useState(1);
+  const dispatch = useDispatch();
 
-  const fetchNotification = ({ pageParam = 0 }) => {
+  const fetchNotification = ({ pageParam = 1 }) => {
     return notificationApi.getAll({ page: pageParam });
   };
 
   const notificationQuery = useInfiniteQuery<any>({
     queryKey: ["notification"],
     queryFn: fetchNotification,
-    getNextPageParam: (lastPage, pages) => {
-      return pages.length + 1;
+    getNextPageParam: (lastPage, pages: any) => {
+      if (lastPage?.data?.length < 10) {
+        return;
+      } else {
+        return pages.length + 1;
+      }
     },
   });
 
@@ -25,16 +32,36 @@ const Notification = (props: Props) => {
 
   if (notificationQuery?.data?.pages) {
     notificationQuery?.data?.pages.map((group: any, i) => {
-      result = group?.data?.map((noti: any, index: number) => {
+      const temp = group?.data?.map((noti: any, index: number) => {
         return {
+          status: noti?.status || null,
           key: noti?.id || "",
           label: (
-            <div style={{ margin: "4px 0", maxWidth: "300px" }}>
-              {noti?.message || ""}
+            <div
+              style={{
+                margin: "4px 0",
+                maxWidth: "300px",
+                display: "flex",
+                alignItems: "center",
+              }}
+              className={!noti?.status ? "new" : ""}
+            >
+              <span className="icon-noti">
+                <BellOutlined />
+              </span>
+              <span style={{ display: "flex" }}>
+                {" "}
+                <span className="content-noti"> {noti?.message || ""}</span>
+                <div> {!noti?.status && <Badge status="success" />}</div>
+              </span>
             </div>
           ),
         };
       });
+      result = [...result, ...temp];
+
+      // const isReadAll = result?.every((item: any) => item?.status === 1);
+      // dispatch(setIsReadAll(isReadAll));
     });
   }
 
@@ -44,9 +71,7 @@ const Notification = (props: Props) => {
     const offset = height - scrollY;
 
     if (offset == 0 || offset == 1) {
-      if (result && result.length >= 10) {
-        notificationQuery.fetchNextPage();
-      }
+      notificationQuery.fetchNextPage();
     }
   };
 
@@ -94,14 +119,19 @@ const Notification = (props: Props) => {
         ></Menu>
       ) : (
         <>
-          <Menu
-            onScroll={handleScroll}
-            style={{
-              maxHeight: "400px",
-              overflow: "auto",
-            }}
-            items={result}
-          ></Menu>
+          {result?.length > 0 ? (
+            <Menu
+              onScroll={handleScroll}
+              style={{
+                maxHeight: "400px",
+                overflow: "auto",
+                overflowX: "hidden",
+              }}
+              items={result}
+            ></Menu>
+          ) : (
+            <div className="no-noti">Bạn chưa có thông báo </div>
+          )}
         </>
       )}
     </div>

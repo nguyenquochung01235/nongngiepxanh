@@ -1,3 +1,4 @@
+import { useDispatch, useSelector } from "react-redux";
 import { Route } from "react-router";
 import { Routes } from "react-router-dom";
 import AllPageLoading from "../components/loading/AllPageLoading";
@@ -11,10 +12,33 @@ import Login from "../features/auth/login/pages/login/Login";
 import Register from "../features/auth/register/pages/regsiter/Register";
 import HomePage from "../features/home/pages/home-page/HomePage";
 import HomeTraders from "../features/traders/components/home/HomeTraders";
+import Pusher from "pusher-js";
+import { useEffect } from "react";
+import { addNotification } from "../redux/notificationSlice";
 
 type Props = {};
 
 const RootRouter = (props: Props) => {
+  const user = useSelector((state: any) => state.user.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    var pusher = new Pusher("a4b9a95d179cda3450fe", {
+      cluster: "ap1",
+    });
+
+    console.log(user?.id_user);
+
+    var channel = pusher.subscribe(`notification.${user?.id_user || ""}`);
+    channel.bind("notification", function (data: any) {
+      console.log(data);
+
+      if (data) {
+        dispatch(addNotification(data?.modelsNotification));
+      }
+    });
+  }, []);
+
   return (
     <AllPageLoading>
       <Routes>

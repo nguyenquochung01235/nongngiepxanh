@@ -166,12 +166,12 @@ const SeaSonManagement = () => {
     {
       autoComplete: (
         <AutoComplete
-          keyword="name_gionglua"
           type="gionglua"
           Key="id_gionglua"
           Value="name_gionglua"
           name="id_gionglua"
           lable="Giống lúa"
+          keyword="search"
         ></AutoComplete>
       ),
     },
