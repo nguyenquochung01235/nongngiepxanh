@@ -6,11 +6,11 @@ import riceApi from "../../api/price";
 type Props = {
   Key: string;
   Value: string;
-  onSelect?: Function;
+  onSelect?: (values: any) => void;
   placeholder?: string;
   name?: string;
   lable?: string;
-  type: string;
+  type?: string;
   keyword?: string;
   returnName?: boolean;
   disabled?: boolean;

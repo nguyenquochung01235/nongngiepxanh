@@ -94,7 +94,7 @@ const SeaSonActivity = () => {
   };
 
   const fetchCalendarList = () => {
-    return calendarApi.getAll();
+    return calendarApi.getAll({});
   };
   const { isLoading, isError, data, error, isFetching } = useQuery(
     ["user/list"],
@@ -172,6 +172,7 @@ const SeaSonActivity = () => {
                     onSelect={handleSelect}
                     Key="id_gionglua"
                     Value="name_gionglua"
+                    type="gionglua"
                   ></AutoComplete>
                 </Form.Item>
                 <Form.Item
