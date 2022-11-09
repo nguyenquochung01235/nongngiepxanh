@@ -19,6 +19,11 @@ const commontApi = {
     const url = `/auto-complete/${type}/get-list`;
     return axiosClient.get(url, { params });
   },
+
+  dashboard(role: string) {
+    const url = role;
+    return axiosClient.get(url);
+  },
 };
 
 export default commontApi;

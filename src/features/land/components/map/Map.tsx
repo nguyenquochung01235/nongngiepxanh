@@ -1,19 +1,23 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   DrawingManager,
   GoogleMap,
   LoadScript,
+  Marker,
   Polygon,
 } from "@react-google-maps/api";
+import { Autocomplete } from "@react-google-maps/api";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
+import { Button } from "antd";
+import { useMutation } from "@tanstack/react-query";
+import landApi from "../../../../api/land";
+import { getResponseMessage } from "../../../../utils/getResponseMessage";
+import { getErrorMessage } from "../../../../utils/getErrorMessage";
 
 const mapContainerStyle = {
   height: "500px",
-  width: "1000px",
-};
-
-const center = {
-  lat: 10.045162,
-  lng: 105.746857,
+  width: "1050px",
 };
 
 const outerCoords = [
@@ -40,26 +44,60 @@ const onLoad = (drawingManager: any) => {
   ]);
 };
 
-const onPolygonComplete = (polygon: any) => {
-  const coords = polygon
-    .getPath()
-    .getArray()
-    .map((coord: any) => {
-      return {
-        lat: coord.lat(),
-        lng: coord.lng(),
-      };
-    });
-
-  console.log(JSON.stringify(coords, null, 1));
-  console.log(coords);
-};
-
 const handleMouseOut = (e: any) => {
   console.log(e.latLng);
 };
 
 function Map() {
+  const [center, setCenter] = useState({
+    lat: 10.045162,
+    lng: 105.746857,
+  });
+  const [drawShape, setDrawShape] = useState("");
+  const location: any = useLocation();
+  const [detailland, setDetailLand] = useState<any>();
+  const postion: any = location.state?.position?.address || "";
+
+  useEffect(() => {
+    (async () => {
+      setDetailLand(location.state?.position);
+      try {
+        const res: any = await axios.get(
+          "https://geocoder.ls.hereapi.com/6.2/geocode.json?searchtext=" +
+            postion +
+            "&gen=9&apiKey=PTfk9cxS5nhkaA1zl0_UyvbgplyvsQlu6dv5kVIloMw"
+        );
+        const position =
+          res.data?.Response?.View[0].Result[0].Location.DisplayPosition;
+        console.log(postion);
+        if (position) {
+          setCenter({
+            lat: position.Latitude,
+            lng: position.Longitude,
+          });
+        }
+        console.log(position);
+      } catch (error) {}
+    })();
+  }, [postion]);
+
+  console.log(location.state);
+
+  const onPolygonComplete = (polygon: any) => {
+    const coords = polygon
+      .getPath()
+      .getArray()
+      .map((coord: any) => {
+        return {
+          lat: coord.lat(),
+          lng: coord.lng(),
+        };
+      });
+    setDrawShape(JSON.stringify(coords, null, 1));
+    console.log(JSON.stringify(coords, null, 1));
+    console.log(coords);
+  };
+
   const [path, setPath] = useState([
     {
       lat: 10.099247039652582,
@@ -94,7 +132,7 @@ function Map() {
     listenersRef.current.forEach((lis: any) => lis.remove());
     polygonRef.current = null;
   }, []);
-  console.log("The path state is", path);
+  // console.log("The path state is", path);
   const onLoad2 = useCallback(
     (polygon: any) => {
       polygonRef.current = polygon;
@@ -107,18 +145,59 @@ function Map() {
     },
     [onEdit]
   );
+
+  const onLoadAt = (autocomplete: any) => {};
+  const onLoadMaker = (marker: any) => {
+    console.log("marker: ", marker);
+  };
+
+  const handleUpdateLand = () => {
+    if (Object.keys(detailland || {}).length > 0) {
+      mutation_update_land.mutate(
+        {
+          ...detailland,
+          location: drawShape,
+        },
+        {
+          onSuccess: (res) => {
+            getResponseMessage(res);
+          },
+          onError: (err) => {
+            getErrorMessage(err);
+          },
+        }
+      );
+    }
+  };
+
+  const mutation_update_land = useMutation((data: any) =>
+    landApi.update(data, location.state.position?.id_thuadat || "")
+  );
+
   return (
-    <LoadScript
-      libraries={["drawing"]}
-      googleMapsApiKey="AIzaSyDNI_ZWPqvdS6r6gPVO50I4TlYkfkZdXh8"
-    >
-      <GoogleMap
-        mapTypeId="hybrid"
-        mapContainerStyle={mapContainerStyle}
-        zoom={10}
-        center={center}
+    <>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h2>Cập nhật vị trí thửa đất</h2>
+        <Button
+          loading={mutation_update_land.isLoading}
+          onClick={handleUpdateLand}
+          type="primary"
+        >
+          Cập nhật
+        </Button>
+      </div>
+      <LoadScript
+        libraries={["drawing"]}
+        googleMapsApiKey="AIzaSyDNI_ZWPqvdS6r6gPVO50I4TlYkfkZdXh8"
       >
-        <Polygon
+        <GoogleMap
+          mapTypeId="hybrid"
+          mapContainerStyle={mapContainerStyle}
+          zoom={16}
+          center={center}
+        >
+          <Marker onLoad={onLoadMaker} position={center} />
+          {/* <Polygon
           editable
           draggable
           path={path}
@@ -135,17 +214,18 @@ function Map() {
             fillColor: "#c69",
             fillOpacity: 0.35,
           }}
-        />
-        <DrawingManager
-          options={{
-            drawingControl: true,
-            polygonOptions: { editable: true },
-          }}
-          onLoad={onLoad}
-          onPolygonComplete={onPolygonComplete}
-        ></DrawingManager>
-      </GoogleMap>
-    </LoadScript>
+        /> */}
+          <DrawingManager
+            options={{
+              drawingControl: true,
+              polygonOptions: { editable: true },
+            }}
+            onLoad={onLoad}
+            onPolygonComplete={onPolygonComplete}
+          ></DrawingManager>
+        </GoogleMap>
+      </LoadScript>
+    </>
   );
 }
 

@@ -23,11 +23,6 @@ const htxApi = {
     return axiosClient.delete(url);
   },
 
-  dashboard() {
-    const url = "htx/dash-board";
-    return axiosClient.get(url);
-  },
-
   toggleActive(id: string | number) {
     const url = `htx/update-active/${id}`;
     return axiosClient.put(url);

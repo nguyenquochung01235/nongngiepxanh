@@ -10,7 +10,16 @@ import {
   UserOutlined,
   YuqueOutlined,
 } from "@ant-design/icons";
-import { Button, Drawer, Dropdown, Layout, Menu, Space, Spin } from "antd";
+import {
+  Badge,
+  Button,
+  Drawer,
+  Dropdown,
+  Layout,
+  Menu,
+  Space,
+  Spin,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -28,6 +37,7 @@ import Profile from "../../../../components/profile/Profile";
 import { COMMON, PATH } from "../../../../enum";
 import { hasHTX, reset, setRole } from "../../../../redux/htxSlice";
 import { toggleLoading } from "../../../../redux/loadingSlice";
+import { resetCount } from "../../../../redux/notificationSlice";
 import { setTheme } from "../../../../utils/changeTheme";
 import { handleLogout } from "../../../../utils/logout";
 import Calendar from "../../../calendar/Calendar";
@@ -50,17 +60,19 @@ import "./home-admin.scss";
 const { Header, Sider, Content } = Layout;
 
 const HomeAdmin = () => {
-  const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
-  const htx = useSelector((state: any) => state.htx.hasHTX);
-  const roleHtx = useSelector((state: any) => state.htx);
   const [isNewUser, setIsNewUser] = useState(false);
-  const user = useSelector((state: any) => state.user);
-  const navigate = useNavigate();
   const [roles, setRoles] = useState<any>();
   const [currentPath, setCurrentPath] = useState("");
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const notification = useSelector((state: any) => state.notification);
+  const user = useSelector((state: any) => state.user);
+  const htx = useSelector((state: any) => state.htx.hasHTX);
+  const roleHtx = useSelector((state: any) => state.htx);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const showDrawer = () => {
     setOpen(true);
@@ -280,14 +292,20 @@ const HomeAdmin = () => {
                       alt=""
                     />
                   </Dropdown>
-                  <div className="notification ml-16 center">
+                  <div
+                    onClick={() => dispatch(resetCount())}
+                    className="notification ml-16 center"
+                    style={{ cursor: "pointer" }}
+                  >
                     <Dropdown
                       overlay={<Notification></Notification>}
                       placement="bottomRight"
                       trigger={["click"]}
                       arrow
                     >
-                      <BellOutlined style={{ fontSize: "18px" }} />
+                      <Badge count={notification?.count || 0} showZero={false}>
+                        <BellOutlined style={{ fontSize: "18px" }} />
+                      </Badge>
                     </Dropdown>
                   </div>
                   <div className="app ml-16 center">
@@ -321,7 +339,7 @@ const HomeAdmin = () => {
                   <>
                     <Route
                       path={PATH.DASHBOARD}
-                      element={<Dashboard></Dashboard>}
+                      element={<Dashboard url="htx/dash-board"></Dashboard>}
                     ></Route>
                     {isNewUser && (
                       <Route
@@ -402,7 +420,10 @@ const HomeAdmin = () => {
                       path="/manage-land/create"
                       element={<CreateLand></CreateLand>}
                     ></Route>
-                    <Route path="/map" element={<Map></Map>}></Route>
+                    <Route
+                      path="/manage-land/map"
+                      element={<Map></Map>}
+                    ></Route>
                     <Route
                       path={PATH.CONTRACT_MANAGEMENT}
                       element={

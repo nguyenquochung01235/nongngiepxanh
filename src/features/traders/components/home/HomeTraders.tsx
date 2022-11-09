@@ -4,11 +4,10 @@ import {
   BellOutlined,
   BugOutlined,
   ContainerOutlined,
-  FullscreenExitOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import { Dropdown, Layout, Menu, Space } from "antd";
+import { Badge, Dropdown, Layout, Menu, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -19,27 +18,29 @@ import {
   useNavigate,
 } from "react-router-dom";
 import logo from "../../../../assets/images/admin-logo.jpg";
-import PreviewContract from "../../../../components/preview/PreviewContract";
+import Notification from "../../../../components/notification/Notification";
 import Profile from "../../../../components/profile/Profile";
 import { PATH } from "../../../../enum";
+import { resetCount } from "../../../../redux/notificationSlice";
 import { handleLogout } from "../../../../utils/logout";
 import Dashboard from "../../../admin/pages/dashboard/Dashboard";
 import CreateCategoryPertocodes from "../../pages/category-pesticides-management/CategoryPertocodesManagement";
 import CreateContract from "../../pages/create-contract/CreateContract";
 import DetailContract from "../../pages/detail-contract/DetailContract";
 import DetailCategory from "../../pages/detailCategory/DetailCategory";
-import Supplier from "../../pages/suppiler/Supplier";
 import ContractManagement from "../contract/ContractManagement";
 
 const { Header, Sider, Content } = Layout;
 
 const HomeTraders = () => {
-  const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
-  const user = useSelector((state: any) => state.user);
-  const navigate = useNavigate();
   const [currentPath, setCurrentPath] = useState("");
+
   const location = useLocation();
+  const notification = useSelector((state: any) => state.notification);
+  const user = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     (() => {
@@ -145,8 +146,21 @@ const HomeTraders = () => {
                   alt=""
                 />
               </Dropdown>
-              <div className="notification ml-12 center">
-                <BellOutlined style={{ fontSize: "18px" }} />
+              <div
+                onClick={() => dispatch(resetCount())}
+                className="notification ml-16 center"
+                style={{ cursor: "pointer" }}
+              >
+                <Dropdown
+                  overlay={<Notification></Notification>}
+                  placement="bottomRight"
+                  trigger={["click"]}
+                  arrow
+                >
+                  <Badge count={notification?.count || 0} showZero={false}>
+                    <BellOutlined style={{ fontSize: "18px" }} />
+                  </Badge>
+                </Dropdown>
               </div>
               <div className="app ml-12 center">
                 <AppstoreOutlined style={{ fontSize: "18px" }} />
@@ -164,7 +178,7 @@ const HomeTraders = () => {
           <Routes>
             <Route
               path={PATH.DASHBOARD}
-              element={<Dashboard></Dashboard>}
+              element={<Dashboard url="thuonglai/dash-board"></Dashboard>}
             ></Route>
             <Route
               path={PATH.CATEGORY_MANAGEMENT}

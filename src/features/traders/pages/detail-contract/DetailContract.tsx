@@ -156,20 +156,30 @@ const DetailContract = (props: Props) => {
         ></AutoComplete>
       ),
     },
-
     {
-      autoComplete: (
+      autoComplete: !baseUrl ? (
+        <AutoComplete
+          disabled={!baseUrl}
+          returnName
+          type="danhmucquydinh"
+          Key="id_danhmucquydinh"
+          Value="name_danhmucquydinh"
+          name={"id_danhmucquydinh"}
+          lable="Danh mục quy định"
+        ></AutoComplete>
+      ) : (
         <AutoComplete
           disabled={!!baseUrl}
           returnName
           type="danhmucquydinh"
           Key="id_danhmucquydinh"
           Value="name_danhmucquydinh"
-          name="id_danhmucquydinh"
+          name={"name_danhmucquydinh"}
           lable="Danh mục quy định"
         ></AutoComplete>
       ),
     },
+
     {
       name: "id_lichmuavu",
       label: "Lịch mùa vụ",
@@ -195,6 +205,87 @@ const DetailContract = (props: Props) => {
       ),
     },
     {
+      editor: (
+        <div>
+          <p>Mô tả</p>
+          <CKEditor
+            config={{
+              toolbar: [
+                "selectAll",
+                "undo",
+                "redo",
+                "bold",
+                "italic",
+                "blockQuote",
+                "ckfinder",
+                "imageTextAlternative",
+                "imageUpload",
+                "heading",
+                "imageStyle:full",
+                "imageStyle:side",
+                "indent",
+                "outdent",
+                "link",
+                "numberedList",
+                "bulletedList",
+                "mediaEmbed",
+                "insertTable",
+                "tableColumn",
+                "tableRow",
+                "mergeTableCells",
+                "fontBackgroundColor",
+                "fontColor",
+              ],
+              image: {
+                // Configure the available styles.
+                styles: ["alignLeft", "alignCenter", "alignRight"],
+                sizes: ["50%", "75%", "100%"],
+
+                // Configure the available image resize options.
+                resizeOptions: [
+                  {
+                    name: "imageResize:original",
+                    label: "Original",
+                    value: null,
+                  },
+                  {
+                    name: "imageResize:50",
+                    label: "50%",
+                    value: "50",
+                  },
+                  {
+                    name: "imageResize:75",
+                    label: "75%",
+                    value: "75",
+                  },
+                ],
+
+                // You need to configure the image toolbar, too, so it shows the new style
+                // buttons as well as the resize buttons.
+                toolbar: [
+                  "imageStyle:alignLeft",
+                  "imageStyle:alignCenter",
+                  "imageStyle:alignRight",
+                  "|",
+                  "imageResize",
+                  "|",
+                  "imageTextAlternative",
+                ],
+              },
+            }}
+            editor={ClassicEditor}
+            data={deatailContract?.data?.data?.description_hopdongmuaban || ""}
+            onChange={(event: any, editor: any) => {
+              const data = editor.getData();
+
+              setCkData(data);
+            }}
+          />
+          <br />
+        </div>
+      ),
+    },
+    {
       name: "name_thuonglai",
       label: "Tên thương lái",
       rules: [
@@ -204,6 +295,7 @@ const DetailContract = (props: Props) => {
       ],
       formChildren: <Input disabled placeholder="Id hợp đồng"></Input>,
     },
+
     {
       name: "phone_number_thuonglai",
       label: "Số điện thoại thương lái",
@@ -279,19 +371,7 @@ const DetailContract = (props: Props) => {
       ],
       formChildren: <Input disabled placeholder="Đại diện hợp tác xã"></Input>,
     },
-    {
-      editor: (
-        <div>
-          <p>Mô tả</p>
-          <CKEditor
-            editor={ClassicEditor}
-            data={deatailContract?.data?.data?.description_hopdongmuaban || ""}
-            onChange={(event: any, editor: any) => {}}
-          />
-          <br />
-        </div>
-      ),
-    },
+
     // {
     //   name: "created_at",
     //   label: "Ngày tạo",
@@ -322,10 +402,17 @@ const DetailContract = (props: Props) => {
     const data = {
       id_hopdongmuaban: values.id_hopdongmuaban || "",
       id_lichmuavu: values.id_lichmuavu || "",
-      id_danhmucquydinh: values.id_danhmucquydinh || "",
+      id_danhmucquydinh:
+        values.id_danhmucquydinh ||
+        deatailContract?.data?.data.id_danhmucquydinh ||
+        "",
       id_gionglua: values.id_gionglua || "",
       title_hopdongmuaban: values.title_hopdongmuaban || "",
-      description_hopdongmuaban: "123",
+      description_hopdongmuaban:
+        ckData ||
+        values.description_hopdongmuaban ||
+        deatailContract?.data?.data.description_hopdongmuaban ||
+        "description",
     };
     mutation_update_contract.mutate(data, {
       onSuccess: (res) => {

@@ -1,8 +1,9 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Popconfirm } from "antd";
+import { Popconfirm, Switch } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import contractApi from "../../../../api/contract";
+import landApi from "../../../../api/land";
 import CommonPage from "../../../../components/common-page/CommonPage";
 import { getErrorMessage } from "../../../../utils/getErrorMessage";
 import { getResponseMessage } from "../../../../utils/getResponseMessage";
@@ -14,6 +15,8 @@ type Props = {
 const LandManagement = (props: Props) => {
   const { baseUrl } = props;
   const [deleteId, setDeleteId] = useState<any>();
+  const [refetch, setRefetch] = useState<any>();
+  const [activeLoading, setActiveLoading] = useState(false);
   const navigate = useNavigate();
 
   const modalChildren: any = [];
@@ -30,10 +33,19 @@ const LandManagement = (props: Props) => {
     {
       title: "Vị trí",
       dataIndex: "location",
+      width: "25%",
     },
     {
       title: "Hoạt động",
       dataIndex: "active",
+      render: (text: any, record: any) => (
+        <>
+          <Switch
+            checked={record?.active || false}
+            onChange={(e) => handleActiveLand(record?.id_thuadat || "", e)}
+          ></Switch>
+        </>
+      ),
     },
 
     {
@@ -69,6 +81,19 @@ const LandManagement = (props: Props) => {
     },
   ];
 
+  const handleActiveLand = async (id: string | number, e: any) => {
+    setActiveLoading(true);
+    try {
+      const res = await landApi.active(id);
+      setRefetch(new Date().toISOString());
+      getResponseMessage(res);
+    } catch (error) {
+      getErrorMessage(error);
+    } finally {
+      setActiveLoading(false);
+    }
+  };
+
   const handleConfirmDeleteContract = async (id: string | number) => {
     try {
       setDeleteId(id);
@@ -81,6 +106,8 @@ const LandManagement = (props: Props) => {
 
   return (
     <CommonPage
+      tableLoading={activeLoading}
+      refetchPage={refetch}
       deleteId={deleteId}
       newPage
       linkToNewPage="/htx/manage-land/create"
