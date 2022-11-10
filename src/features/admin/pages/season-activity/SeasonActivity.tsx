@@ -166,7 +166,7 @@ const SeaSonActivity = () => {
                 </Form.Item>
               </Col>
               <Col lg={12} md={12} sm={24} xs={24}>
-                <Form.Item name="id_gionglua" label="Lịch mùa vụ">
+                {/* <Form.Item name="id_gionglua" label="Lịch mùa vụ">
                   <AutoComplete
                     placeholder="lịch mùa vụ"
                     onSelect={handleSelect}
@@ -174,7 +174,7 @@ const SeaSonActivity = () => {
                     Value="name_gionglua"
                     type="gionglua"
                   ></AutoComplete>
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item
                   name="date_end"
                   label="Ngày kết thúc"
