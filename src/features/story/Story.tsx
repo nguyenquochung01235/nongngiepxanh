@@ -53,6 +53,10 @@ const Story = () => {
   const columns = useMemo(() => {
     const columns: ColumnsType<DataType> = [
       {
+        title: "ID",
+        dataIndex: "id_lichmuavu",
+      },
+      {
         title: "Tên lịch mùa vụ",
         dataIndex: "name_lichmuavu",
       },

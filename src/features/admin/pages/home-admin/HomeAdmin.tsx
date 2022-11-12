@@ -48,6 +48,7 @@ import StoryOfSeason from "../../../story/pages/StoryOfSeason";
 import Story from "../../../story/Story";
 import ContractManagement from "../../../traders/components/contract/ContractManagement";
 import DetailContract from "../../../traders/pages/detail-contract/DetailContract";
+import RenderChangeApp from "../../components/render-change-app/RenderChangeApp";
 import AddUserToHTX from "../add-user-htx/AddUserToHTX";
 import CreateHTX from "../create-htx/CreateHTX";
 import Dashboard from "../dashboard/Dashboard";
@@ -87,9 +88,7 @@ const HomeAdmin = () => {
     (async () => {
       setLoading(true);
       try {
-        const res: any = await userApi.roleOfUser({
-          id_user: user?.user.id_user,
-        });
+        const res: any = await userApi.roleOfUser();
 
         if (res.data?.id_hoptacxa) {
           localStorage.setItem("htx", res.data);
@@ -121,7 +120,7 @@ const HomeAdmin = () => {
     {
       key: `${PATH.HTX}${PATH.CREATE_HTX}`,
       icon: <UserOutlined />,
-      label: <Link to={`${PATH.HTX}${PATH.CREATE_HTX}`}>tạo hợp tác xã</Link>,
+      label: <Link to={`${PATH.HTX}${PATH.CREATE_HTX}`}>Tạo hợp tác xã</Link>,
     },
   ];
 
@@ -162,14 +161,14 @@ const HomeAdmin = () => {
       key: `${PATH.HTX}${PATH.MANAGE_HTX}`,
       icon: <UserOutlined />,
       label: (
-        <Link to={`${PATH.HTX}${PATH.MANAGE_HTX}`}>quản lý hợp tác xã</Link>
+        <Link to={`${PATH.HTX}${PATH.MANAGE_HTX}`}>Quản lý hợp tác xã</Link>
       ),
     },
     {
       key: `${PATH.HTX}${PATH.MANAGE_SEASON}`,
       icon: <YuqueOutlined />,
       label: (
-        <Link to={`${PATH.HTX}${PATH.MANAGE_SEASON}`}>quản lý mùa vụ</Link>
+        <Link to={`${PATH.HTX}${PATH.MANAGE_SEASON}`}>Quản lý mùa vụ</Link>
       ),
     },
     {
@@ -234,26 +233,41 @@ const HomeAdmin = () => {
           >
             <div className="logo">
               <Link to={`${PATH.HTX}${PATH.DASHBOARD}`}>
-                <img src={logo} alt="" />
+                <img
+                  src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+                  alt=""
+                />
               </Link>
               {
-                <div
-                  style={
-                    !collapsed
-                      ? {
-                          display: "block",
-                        }
-                      : { display: " none" }
-                  }
-                  className="logo-title opacity"
-                >
-                  {roleHtx?.role?.name_hoptacxa || ""}
+                <div>
+                  <span
+                    style={{
+                      marginLeft: "12px",
+                      fontSize: "11px",
+                      color: "#333",
+                    }}
+                  >
+                    Hợp tác xã
+                  </span>
+                  <div
+                    style={
+                      !collapsed
+                        ? {
+                            display: "block",
+                          }
+                        : { display: "none" }
+                    }
+                    className="logo-title opacity"
+                  >
+                    {roleHtx?.role?.name_hoptacxa || ""}
+                  </div>
                 </div>
               }
             </div>
             <Menu
               mode="inline"
               defaultSelectedKeys={[currentPath]}
+              selectedKeys={[currentPath]}
               items={
                 htx
                   ? roles?.role === "xavien"
@@ -288,7 +302,7 @@ const HomeAdmin = () => {
                     arrow
                   >
                     <img
-                      src="https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/309618529_609451127526535_5667139700875500162_n.jpg?stp=cp6_dst-jpg&_nc_cat=1&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=svpfCvasj-sAX8vjFB7&_nc_ht=scontent.fsgn2-8.fna&oh=00_AT8020XjyBLhVkGFhZIH4_J473VUuK2tzkP4N5qEB0y9JQ&oe=63477AA7"
+                      src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
                       alt=""
                     />
                   </Dropdown>
@@ -318,14 +332,15 @@ const HomeAdmin = () => {
               </div>
             </Header>
             <Drawer
-              title="Tùy chỉnh giao diện"
+              title="Chuyển đổi tài khoản"
               placement="right"
               onClose={onClose}
               open={open}
               width={250}
             >
-              <p>Tùy chỉnh giao diện</p>
-              <Button onClick={handleChangeTheme}>Change theme</Button>
+              <RenderChangeApp
+                account={user?.user?.account || []}
+              ></RenderChangeApp>
             </Drawer>
             <Content
               style={{
@@ -374,6 +389,7 @@ const HomeAdmin = () => {
                             <ContractManagement
                               allowCreate={false}
                               allowDelete={false}
+                              allowUpdate={false}
                               baseUrl="htx/contract-management"
                             ></ContractManagement>
                           }
@@ -381,7 +397,10 @@ const HomeAdmin = () => {
                         <Route
                           path={`${PATH.CONTRACT_MANAGEMENT}${PATH.CONTRACT_DETAIL}`}
                           element={
-                            <DetailContract baseUrl="htx/contract-management"></DetailContract>
+                            <DetailContract
+                              edit={false}
+                              baseUrl="htx/contract-management"
+                            ></DetailContract>
                           }
                         ></Route>
                         <Route path="*" element={<NotFound />} />
@@ -414,7 +433,7 @@ const HomeAdmin = () => {
                     ></Route>
                     <Route
                       path={PATH.PROFILE}
-                      element={<Profile></Profile>}
+                      element={<Profile name="xavien"></Profile>}
                     ></Route>
                     <Route
                       path="/manage-land/create"

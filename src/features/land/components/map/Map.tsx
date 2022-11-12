@@ -153,6 +153,8 @@ function Map() {
 
   const handleUpdateLand = () => {
     if (Object.keys(detailland || {}).length > 0) {
+      delete detailland.thumbnail;
+
       mutation_update_land.mutate(
         {
           ...detailland,

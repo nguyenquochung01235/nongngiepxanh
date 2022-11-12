@@ -1,8 +1,8 @@
 import axiosClient from "./axiosClient";
 
 const storyApi = {
-  getAll(params: any) {
-    const url = "nhatkydongruong/get-list";
+  getAll(id: string | number, params: any) {
+    const url = `nhatkydongruong/get-list/${id}`;
     return axiosClient.get(url, { params });
   },
 

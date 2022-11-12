@@ -46,6 +46,7 @@ type Props = {
   deleteId?: string;
   allowCreate?: boolean;
   allowDelete?: boolean;
+  allowUpdate?: boolean;
   fullCol?: boolean;
   refetchPage?: string;
   tableLoading?: boolean;

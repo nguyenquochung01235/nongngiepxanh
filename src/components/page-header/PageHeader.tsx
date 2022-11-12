@@ -7,6 +7,7 @@ type Props = {
   loading?: boolean;
   disabled?: boolean;
   headerBreadcrumb?: any;
+  edit?: boolean;
 };
 
 const PageHeader = ({
@@ -14,6 +15,7 @@ const PageHeader = ({
   loading = false,
   disabled = false,
   headerBreadcrumb,
+  edit,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -34,15 +36,17 @@ const PageHeader = ({
         <Button loading={loading} onClick={() => navigate(-2)}>
           Trở lại
         </Button>
-        <Button
-          disabled={disabled}
-          loading={loading}
-          form={form}
-          htmlType="submit"
-          type="primary"
-        >
-          Lưu
-        </Button>
+        {edit !== false && (
+          <Button
+            disabled={disabled}
+            loading={loading}
+            form={form}
+            htmlType="submit"
+            type="primary"
+          >
+            Lưu
+          </Button>
+        )}
       </div>
     </div>
   );
