@@ -1,5 +1,6 @@
 import { Button, Col, Form, Row, Spin } from "antd";
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { validateMessage } from "../../utils/validateMessage";
 
 type Props = {
@@ -11,6 +12,7 @@ type Props = {
   hideBtnSubmit?: boolean;
   initialValues?: any;
   onDisable?: any;
+  goBackUrl?: string;
 };
 
 const FormComponent = ({
@@ -22,6 +24,7 @@ const FormComponent = ({
   hideBtnSubmit,
   initialValues = {},
   onDisable,
+  goBackUrl,
 }: Props) => {
   const [formCommon] = Form.useForm();
 
@@ -60,6 +63,8 @@ const FormComponent = ({
   }
 
   const handleSubmitForm = (values: any) => {
+    console.log(values);
+
     if (onSubmit) {
       onSubmit(values);
     }
@@ -80,15 +85,20 @@ const FormComponent = ({
     }, 200);
   };
 
+  const handleSubmitFormFailed = (a: any) => {
+    console.log(a);
+  };
+
   return (
     <div>
       <Form
         onFieldsChange={handleFieldsChange}
         form={formCommon}
         layout="vertical"
-        name={name || ""}
+        name={name}
         validateMessages={validateMessage()}
         onFinish={handleSubmitForm}
+        onFinishFailed={handleSubmitFormFailed}
         initialValues={initialValues}
       >
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 24 }}>
@@ -105,6 +115,11 @@ const FormComponent = ({
             >
               {buttonSubmit || "Thực hiện"}
             </Button>
+            {goBackUrl && (
+              <Button style={{ marginLeft: "4px" }}>
+                <Link to={goBackUrl}>Trở về</Link>
+              </Button>
+            )}
           </div>
         </Row>
       </Form>

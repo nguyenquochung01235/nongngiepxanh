@@ -24,6 +24,8 @@ import FormComponent from "../../../../../../components/form-component/FormCompo
 import { formatMoment } from "../../../../../../utils/formatMoment";
 import { validateMessage } from "../../../../../../utils/validateMessage";
 import queryString from "query-string";
+import { getResponseMessage } from "../../../../../../utils/getResponseMessage";
+import { getErrorMessage } from "../../../../../../utils/getErrorMessage";
 
 interface DataType {
   key: React.Key;
@@ -56,6 +58,10 @@ const SeaSonManagement = () => {
 
   const columns = useMemo(() => {
     const columns: ColumnsType<DataType> = [
+      {
+        title: "ID",
+        dataIndex: "id_lichmuavu",
+      },
       {
         title: "Tên lịch mùa vụ",
         dataIndex: "name_lichmuavu",
@@ -108,8 +114,14 @@ const SeaSonManagement = () => {
     return columns;
   }, []);
 
-  const handleConfirmDeleteSeason = (record: any) => {
-    console.log(record);
+  const handleConfirmDeleteSeason = async (record: any) => {
+    try {
+      const res = await calendarApi.delete(record?.id_lichmuavu || "");
+      getResponseMessage(res);
+      refetch();
+    } catch (error) {
+      getErrorMessage(error);
+    }
   };
 
   const showModal = () => {

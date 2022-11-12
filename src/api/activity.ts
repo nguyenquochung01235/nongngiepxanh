@@ -3,8 +3,11 @@ import { ListParams, ListResponse } from "./../model/common";
 import axiosClient from "./axiosClient";
 
 const activityApi = {
-  getAll(params: ListParams): Promise<ListResponse<ListActivity>> {
-    const url = "hoatdongmuavu/get-list";
+  getAll(
+    id: string | number,
+    params: ListParams
+  ): Promise<ListResponse<ListActivity>> {
+    const url = `hoatdongmuavu/get-list/${id}`;
     return axiosClient.get(url, { params });
   },
 

@@ -62,7 +62,7 @@ const HTXManagement = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "id_xã viên",
+      title: "ID",
       dataIndex: "id_xavien",
       filterMode: "tree",
       filterSearch: true,
@@ -87,7 +87,7 @@ const HTXManagement = () => {
             }}
             src={
               record?.thumbnail ||
-              "https://scontent.fsgn2-1.fna.fbcdn.net/v/t39.30808-6/309685743_1781383138924088_4335957281887489023_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=-q4rabpkPusAX9KFM0B&_nc_ht=scontent.fsgn2-1.fna&oh=00_AT__1jLpnxatNs-W-iyKjHdDXNtF-aU0LUl7XTGU-gecFA&oe=6345A758"
+              "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
             }
             alt=""
           />

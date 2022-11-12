@@ -16,6 +16,11 @@ const landApi = {
     const url = `thuadat/update/${id}`;
     return axiosClient.post(url, data);
   },
+
+  delete(id: string | number) {
+    const url = `thuadat/delete/${id}`;
+    return axiosClient.delete(url);
+  },
 };
 
 export default landApi;

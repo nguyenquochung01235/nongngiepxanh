@@ -1,14 +1,27 @@
-import { DatePicker, Input } from "antd";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { DatePicker, Input, Spin } from "antd";
 import React from "react";
 import { useSelector } from "react-redux";
+import commontApi from "../../api/common";
 import { convertToMoment } from "../../utils/convertToMoment";
+import { getErrorMessage } from "../../utils/getErrorMessage";
+import { getResponseMessage } from "../../utils/getResponseMessage";
 import FormComponent from "../form-component/FormComponent";
 import "./profile.scss";
 
-type Props = {};
+type Props = {
+  name: string;
+};
 
-const Profile = (props: Props) => {
+const Profile = ({ name }: Props) => {
   let user = useSelector((state: any) => state.user.user);
+
+  const fetchProfile = () => {
+    return commontApi.getDetail(name);
+  };
+
+  const profile = useQuery(["profile"], fetchProfile);
+  let result: any = {};
 
   const profileForm = [
     {
@@ -70,46 +83,63 @@ const Profile = (props: Props) => {
     },
   ];
 
-  if (user) {
+  if (profile?.data) {
+    result = profile?.data?.data;
+
     const date = [
       {
         key: "dob",
-        value: user.dob,
+        value: result?.dob,
       },
     ];
 
     if (convertToMoment(date)) {
-      user = {
-        ...user,
+      result = {
+        ...result,
         ...convertToMoment(date),
       };
     }
   }
 
   const handleFormSubmit = (values: any) => {
-    console.log(values);
+    mutatationUpdateProfile.mutate(values, {
+      onSuccess: (res) => {
+        getResponseMessage(res);
+      },
+      onError: (err) => {
+        getErrorMessage(err);
+      },
+    });
   };
 
+  const mutatationUpdateProfile = useMutation((data) =>
+    commontApi.updateProfile(name, data)
+  );
+
   let formComponentProps: any = {
-    loading: false,
+    loading: mutatationUpdateProfile.isLoading,
     onSubmit: handleFormSubmit,
-    name: "season",
+    name: "profile",
     buttonSubmit: "Cập nhật",
     data: profileForm,
     hideBtnSubmit: false,
   };
 
-  if (Object.keys(user).length > 0) {
+  if (Object.keys(result).length > 0) {
     formComponentProps = {
       ...formComponentProps,
-      initialValues: user,
+      initialValues: result,
     };
   }
   return (
-    <div className="profile">
-      <h3>Cập nhật thông tin cá nhân</h3>
-      <FormComponent {...formComponentProps}></FormComponent>
-    </div>
+    <Spin spinning={profile.isLoading}>
+      <div className="profile">
+        <h3>Cập nhật thông tin cá nhân</h3>
+        {Object.keys(result).length > 0 && (
+          <FormComponent {...formComponentProps}></FormComponent>
+        )}
+      </div>
+    </Spin>
   );
 };
 

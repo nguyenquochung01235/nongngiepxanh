@@ -55,6 +55,10 @@ const DetailSeaSon = (props: Props) => {
   const [disableBtnUpdateSeason, setDisableBtnUpdateSeason] = useState(false);
   const [columns, setColumns] = useState<any>([
     {
+      title: "ID",
+      dataIndex: "id_hoatdongmuavu",
+    },
+    {
       title: "Tên hoạt động",
       dataIndex: "name_hoatdong",
     },
@@ -226,9 +230,7 @@ const DetailSeaSon = (props: Props) => {
   }
 
   const fetchActivitySeason = (filter: any) => {
-    return activityApi.getAll({
-      id_lichmuavu: id,
-      id_hoptacxa: htx.id_hoptacxa,
+    return activityApi.getAll(id as string, {
       ...filter,
     });
   };
@@ -404,6 +406,26 @@ const DetailSeaSon = (props: Props) => {
     setColumns(data);
   };
 
+  const handleAppyActivity = () => {
+    mutation_apply_activity.mutate(
+      {
+        id_lichmuavu: id || "",
+      },
+      {
+        onSuccess: (res) => {
+          getResponseMessage(res);
+        },
+        onError: (err) => {
+          getErrorMessage(err);
+        },
+      }
+    );
+  };
+
+  const mutation_apply_activity = useMutation((id: any) =>
+    calendarApi.apply(id)
+  );
+
   return (
     <div className="detail-season">
       <PageHeader
@@ -459,18 +481,6 @@ const DetailSeaSon = (props: Props) => {
               justifyContent: "space-between",
             }}
           >
-            <Space>
-              <Skeleton.Button
-                active={true}
-                shape="default"
-                style={{ width: "150px" }}
-              />
-              <Skeleton.Button
-                active={true}
-                shape="default"
-                style={{ width: "150px" }}
-              />
-            </Space>
             <Skeleton.Button
               active={true}
               shape="default"
@@ -491,7 +501,13 @@ const DetailSeaSon = (props: Props) => {
                 </Button>
               </div>
               <div className="apply-activity">
-                <Button type="primary">Áp lịch mùa vụ</Button>
+                <Button
+                  loading={mutation_apply_activity.isLoading}
+                  type="primary"
+                  onClick={handleAppyActivity}
+                >
+                  Áp lịch mùa vụ
+                </Button>
               </div>
             </div>
             <div className="seach-activity">
@@ -603,7 +619,7 @@ const DetailSeaSon = (props: Props) => {
                     rows={4}
                   ></Input.TextArea>
                 </Form.Item>
-                <Form.Item>
+                <Form.Item className="mb-0">
                   <Button
                     form="add activity season"
                     type="primary"
