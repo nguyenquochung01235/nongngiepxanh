@@ -37,7 +37,6 @@ const StoryOfSeason = (props: Props) => {
     page: searchParams.get("page") || 1,
     limit: searchParams.get("limit") || 5,
     search: searchParams.get("search") || "",
-    id_lichmuavu: id || "",
   });
 
   useEffect(() => {
@@ -50,7 +49,7 @@ const StoryOfSeason = (props: Props) => {
 
   const columns = [
     {
-      title: "Id",
+      title: "ID",
       dataIndex: "id_nhatkydongruong",
     },
     {
@@ -199,7 +198,7 @@ const StoryOfSeason = (props: Props) => {
   };
 
   const fetchActivityOfSeasonList = (filter: any) => {
-    return storyApi.getAll(filter);
+    return storyApi.getAll(id as string, filter);
   };
 
   const { isLoading, isError, data, error, isFetching, refetch } = useQuery(

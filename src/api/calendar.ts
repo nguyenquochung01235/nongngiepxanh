@@ -22,6 +22,16 @@ const calendarApi = {
     const url = `lichmuavu/get-detail/${id}`;
     return axiosClient.get(url);
   },
+
+  delete(id: string | number) {
+    const url = `lichmuavu/delete/${id}`;
+    return axiosClient.delete(url);
+  },
+
+  apply(data: any) {
+    const url = "nhatkydongruong/attach";
+    return axiosClient.post(url, data);
+  },
 };
 
 export default calendarApi;

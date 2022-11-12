@@ -13,8 +13,11 @@ import Register from "../features/auth/register/pages/regsiter/Register";
 import HomePage from "../features/home/pages/home-page/HomePage";
 import HomeTraders from "../features/traders/components/home/HomeTraders";
 import Pusher from "pusher-js";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { addNotification } from "../redux/notificationSlice";
+import UserDetail from "../components/user-detail/UserDetail";
+import { notification } from "antd";
+import { NotificationPlacement } from "antd/lib/notification";
 
 type Props = {};
 
@@ -27,14 +30,18 @@ const RootRouter = (props: Props) => {
       cluster: "ap1",
     });
 
-    console.log(user?.id_user);
-
     var channel = pusher.subscribe(`notification.${user?.id_user || ""}`);
-    channel.bind("notification", function (data: any) {
-      console.log(data);
 
-      if (data) {
-        dispatch(addNotification(data?.modelsNotification));
+    channel.bind("notification", async function (data: any) {
+      if (data?.modelsNotification) {
+        notification.info({
+          message: `Thông báo`,
+          description: data?.modelsNotification.message,
+          placement: "bottomRight",
+          duration: 5,
+        });
+
+        await dispatch(addNotification(data?.modelsNotification));
       }
     });
   }, []);
@@ -46,6 +53,10 @@ const RootRouter = (props: Props) => {
         <Route path="/" element={<HomePage></HomePage>}></Route>
         <Route path={PATH.LOGIN} element={<Login></Login>}></Route>
         <Route path={PATH.REGISTER} element={<Register></Register>}></Route>
+        <Route
+          path={"/user-detail"}
+          element={<UserDetail></UserDetail>}
+        ></Route>
         <Route path={`${PATH.HTX}/*`} element={<HomeAdmin></HomeAdmin>}></Route>
         <Route
           path={PATH.PREVIEW}

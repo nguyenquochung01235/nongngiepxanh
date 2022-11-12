@@ -46,7 +46,7 @@ const CategoryPertocodesManagement = (props: Props) => {
 
   const tableColumns = [
     {
-      title: "ID danh mục ",
+      title: "ID",
       dataIndex: "id_danhmucquydinh",
     },
     {
@@ -94,10 +94,9 @@ const CategoryPertocodesManagement = (props: Props) => {
   ];
 
   const handleConfirmDeleteCategory = async (id: string) => {
-    setDeleteId(id);
-
     try {
       const res = await categoryApi.delete(id);
+      setDeleteId(id);
       getResponseMessage(res);
     } catch (error) {
       getErrorMessage(error);

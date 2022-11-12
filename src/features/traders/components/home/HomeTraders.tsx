@@ -113,8 +113,25 @@ const HomeTraders = () => {
       >
         <div className="logo">
           <Link to={`${PATH.TRADER}${PATH.DASHBOARD}`}>
-            <img src={logo} alt="" />
+            <img
+              src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+              alt=""
+            />
           </Link>
+          {
+            <div
+              style={
+                !collapsed
+                  ? {
+                      display: "block",
+                    }
+                  : { display: "none" }
+              }
+              className="logo-title opacity"
+            >
+              Thương Lái
+            </div>
+          }
         </div>
         {currentPath && (
           <Menu
@@ -142,7 +159,7 @@ const HomeTraders = () => {
             <Space align="center">
               <Dropdown overlay={menu} arrow trigger={["click"]}>
                 <img
-                  src="https://scontent.fsgn2-8.fna.fbcdn.net/v/t39.30808-6/309618529_609451127526535_5667139700875500162_n.jpg?stp=cp6_dst-jpg&_nc_cat=1&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=svpfCvasj-sAX8vjFB7&_nc_ht=scontent.fsgn2-8.fna&oh=00_AT8020XjyBLhVkGFhZIH4_J473VUuK2tzkP4N5qEB0y9JQ&oe=63477AA7"
+                  src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
                   alt=""
                 />
               </Dropdown>
@@ -208,7 +225,10 @@ const HomeTraders = () => {
               path={`${PATH.SUPPLIER}`}
               element={<Supplier></Supplier>}
             ></Route> */}
-            <Route path={PATH.PROFILE} element={<Profile></Profile>}></Route>
+            <Route
+              path={PATH.PROFILE}
+              element={<Profile name="thuonglai"></Profile>}
+            ></Route>
           </Routes>
         </Content>
       </Layout>

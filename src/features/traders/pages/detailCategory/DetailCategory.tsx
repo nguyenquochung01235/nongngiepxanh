@@ -358,7 +358,7 @@ const DetailCategory = (props: Props) => {
                 >
                   <Input placeholder="Tên vật tư" />
                 </Form.Item>
-                <Form.Item>
+                <Form.Item className="mb-0">
                   <Button
                     form="add supplier"
                     type="primary"

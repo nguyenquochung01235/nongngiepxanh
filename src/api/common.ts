@@ -24,6 +24,16 @@ const commontApi = {
     const url = role;
     return axiosClient.get(url);
   },
+
+  getDetail(name: string) {
+    const url = `${name}/get-detail`;
+    return axiosClient.get(url);
+  },
+
+  updateProfile(name: string, data: any) {
+    const url = `${name}/update`;
+    return axiosClient.post(url, data);
+  },
 };
 
 export default commontApi;

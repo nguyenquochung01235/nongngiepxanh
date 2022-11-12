@@ -13,6 +13,7 @@ import { getResponseMessage } from "../../../../utils/getResponseMessage";
 
 type Props = {
   baseUrl?: string;
+  edit?: boolean;
 };
 
 // {
@@ -43,7 +44,7 @@ type Props = {
 // }
 
 const DetailContract = (props: Props) => {
-  const { baseUrl } = props;
+  const { baseUrl, edit } = props;
   const { id } = useParams();
   const [refesh, setRefresh] = useState(false);
   const [ckData, setCkData] = useState();
@@ -293,7 +294,7 @@ const DetailContract = (props: Props) => {
           required: true,
         },
       ],
-      formChildren: <Input disabled placeholder="Id hợp đồng"></Input>,
+      formChildren: <Input disabled placeholder="Tên thương lái"></Input>,
     },
 
     {
@@ -399,6 +400,8 @@ const DetailContract = (props: Props) => {
   ];
 
   const handleFormSubmit = (values: any) => {
+    console.log(values);
+
     const data = {
       id_hopdongmuaban: values.id_hopdongmuaban || "",
       id_lichmuavu: values.id_lichmuavu || "",
@@ -414,6 +417,7 @@ const DetailContract = (props: Props) => {
         deatailContract?.data?.data.description_hopdongmuaban ||
         "description",
     };
+
     mutation_update_contract.mutate(data, {
       onSuccess: (res) => {
         getResponseMessage(res);
@@ -437,7 +441,7 @@ const DetailContract = (props: Props) => {
       path: "/contract-management",
     },
     {
-      name: "chi tiết",
+      name: "Chi tiết",
       path: "/detail",
     },
   ];
@@ -446,6 +450,7 @@ const DetailContract = (props: Props) => {
     <Spin spinning={deatailContract.isLoading}>
       <div className="detail-contract" style={{ minHeight: "100vh" }}>
         <PageHeader
+          edit={edit}
           headerBreadcrumb={headerBreadcrumb}
           form="detail-contract"
           loading={mutation_update_contract.isLoading}

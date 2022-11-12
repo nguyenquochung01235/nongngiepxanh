@@ -70,7 +70,7 @@ const LandManagement = (props: Props) => {
               placement="top"
               title="Xóa thửa đất?"
               onConfirm={() =>
-                handleConfirmDeleteContract(record.id_hopdongmuaban || "")
+                handleConfirmDeleteLand(record?.id_thuadat || "")
               }
             >
               <DeleteOutlined />
@@ -94,10 +94,10 @@ const LandManagement = (props: Props) => {
     }
   };
 
-  const handleConfirmDeleteContract = async (id: string | number) => {
+  const handleConfirmDeleteLand = async (id: string | number) => {
     try {
       setDeleteId(id);
-      const res = await contractApi.delete(id);
+      const res = await landApi.delete(id);
       getResponseMessage(res);
     } catch (error) {
       getErrorMessage(error);

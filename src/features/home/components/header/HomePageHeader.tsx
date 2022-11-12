@@ -34,17 +34,30 @@ const HomePageHeader = (props: Props) => {
     }
   });
   user &&
-    data.push({
-      label: (
-        <span
-          onClick={() => handleLogout(navigate)}
-          className="account-dropdown"
-        >
-          Đăng xuất
-        </span>
-      ),
-      key: "logout",
-    });
+    data.push(
+      {
+        label: (
+          <span
+            onClick={() => navigate("/user-detail")}
+            className="account-dropdown"
+          >
+            Thông tin cá nhân
+          </span>
+        ),
+        key: "profile",
+      },
+      {
+        label: (
+          <span
+            onClick={() => handleLogout(navigate)}
+            className="account-dropdown"
+          >
+            Đăng xuất
+          </span>
+        ),
+        key: "logout",
+      }
+    );
   const menu = <Menu items={data || []} />;
 
   return (
@@ -75,6 +88,20 @@ const HomePageHeader = (props: Props) => {
             {user ? (
               <Dropdown overlay={menu} trigger={["click"]} arrow>
                 <div className="cursor-poiner text-small">
+                  <img
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      objectFit: "cover",
+                      borderRadius: "50%",
+                      marginRight: "8px",
+                    }}
+                    src={
+                      user?.avatar ||
+                      "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+                    }
+                    alt=""
+                  />
                   <a
                     style={{ color: "inherit" }}
                     onClick={(e) => e.preventDefault()}

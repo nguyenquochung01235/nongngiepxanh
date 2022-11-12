@@ -1,5 +1,5 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Col, Form, Input, Popconfirm, Row } from "antd";
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { Col, Form, Input, Popconfirm, Row, Tooltip } from "antd";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import contractApi from "../../../../api/contract";
@@ -12,16 +12,26 @@ type Props = {
   baseUrl?: string;
   allowCreate?: boolean;
   allowDelete?: boolean;
+  allowUpdate?: boolean;
 };
 
 const ContractManagement = (props: Props) => {
-  const { baseUrl, allowCreate = true, allowDelete = true } = props;
+  const {
+    baseUrl,
+    allowCreate = true,
+    allowDelete = true,
+    allowUpdate = true,
+  } = props;
   const [deleteId, setDeleteId] = useState<any>();
   const navigate = useNavigate();
 
   const modalChildren: any = [];
 
   const tableColumns = [
+    {
+      title: "ID",
+      dataIndex: "id_hopdongmuaban",
+    },
     {
       title: "Thương lái",
       dataIndex: "name_thuonglai",
@@ -62,7 +72,9 @@ const ContractManagement = (props: Props) => {
               cursor: "pointer",
             }}
           >
-            <EditOutlined />
+            <Tooltip title="Xem chi tiết" key={"contract"}>
+              <EyeOutlined />
+            </Tooltip>
           </span>
           {allowDelete && (
             <span style={{ cursor: "pointer" }} className="">
@@ -97,6 +109,7 @@ const ContractManagement = (props: Props) => {
       allowCreate={allowCreate}
       allowDelete={allowDelete}
       deleteId={deleteId}
+      allowUpdate={allowUpdate}
       newPage
       linkToNewPage="/trader/contract-management/contract-create"
       buttonTitle="Tạo hợp đồng"

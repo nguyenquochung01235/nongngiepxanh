@@ -21,11 +21,19 @@ body {
   font-weight: 600;
 }
 
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
 .link-to {
   font-size: 12px;
   font-weight: 600;
   display: inline-block;
   margin: 0 16px;
+}
+
+.radius-6 {
+  border-radius: $radius-6 !important;
 }
 
 .ant-collapse {
@@ -188,10 +196,6 @@ ul::-webkit-scrollbar-thumb {
   border-radius: $radius-6 !important;
 }
 
-.ant-input {
-  transition: all 0.5s $transition !important;
-}
-
 .ant-form-item-explain-error {
   margin: 8px 0 12px 0;
 }
@@ -283,4 +287,24 @@ ul::-webkit-scrollbar-thumb {
 
 .ant-table-tbody > tr > td {
   font-size: 13px;
+}
+
+.ant-form-item-explain-error {
+  font-size: 13px;
+}
+
+.ant-form-item-with-help .ant-form-item-explain {
+  height: 40px !important;
+}
+
+.ant-menu-root.ant-menu-vertical,
+.ant-menu-root.ant-menu-vertical-left,
+.ant-menu-root.ant-menu-vertical-right,
+.ant-menu-root.ant-menu-inline {
+  border: none;
+}
+
+.ant-drawer-body,
+.ant-drawer-header {
+  padding: 12px !important;
 }

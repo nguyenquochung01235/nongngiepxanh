@@ -26,8 +26,18 @@ const userApi = {
     return axiosClient.get(url, { params });
   },
 
-  roleOfUser(data: any) {
-    const url = "xavien/role";
+  roleOfUser() {
+    const url = `xavien/role`;
+    return axiosClient.get(url);
+  },
+
+  getDetail() {
+    const url = "user/detail";
+    return axiosClient.get(url);
+  },
+
+  updateUser(data: any) {
+    const url = "user/update";
     return axiosClient.post(url, data);
   },
 };
