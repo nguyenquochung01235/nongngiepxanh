@@ -94,11 +94,7 @@ const SeaSonActivity = () => {
   };
 
   const fetchCalendarList = () => {
-<<<<<<< HEAD
     return calendarApi.getAll({});
-=======
-    // return calendarApi.getAll();
->>>>>>> develop
   };
   const { isLoading, isError, data, error, isFetching } = useQuery(
     ["user/list"],
