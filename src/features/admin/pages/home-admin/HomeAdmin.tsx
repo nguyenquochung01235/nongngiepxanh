@@ -100,8 +100,10 @@ const HomeAdmin = () => {
           dispatch(setRole(res.data));
           setRoles(res.data);
 
-          if (changeRole) {
-            dispatch(isChairman());
+          if (changeRole === "chunhiem") {
+            dispatch(isChairman(true));
+          } else {
+            dispatch(isChairman(false));
           }
         } else {
           setIsNewUser(true);
