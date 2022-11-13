@@ -17,6 +17,13 @@ body {
   text-transform: uppercase;
 }
 
+.image-in-table {
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-rounded;
+  object-fit: cover;
+}
+
 .bold {
   font-weight: 600;
 }
@@ -307,4 +314,9 @@ ul::-webkit-scrollbar-thumb {
 .ant-drawer-body,
 .ant-drawer-header {
   padding: 12px !important;
+}
+
+.ant-table {
+  max-width: 100%;
+  overflow-x: auto;
 }

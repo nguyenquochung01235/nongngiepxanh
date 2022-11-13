@@ -26,8 +26,14 @@ const userApi = {
     return axiosClient.get(url, { params });
   },
 
-  roleOfUser() {
-    const url = `xavien/role`;
+  roleOfUser(role: string | undefined) {
+    let url = "";
+    if (role) {
+      url = `xavien/role?type=${role}`;
+    } else {
+      url = `xavien/role`;
+    }
+
     return axiosClient.get(url);
   },
 

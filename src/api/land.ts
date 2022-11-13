@@ -7,6 +7,11 @@ const landApi = {
     return axiosClient.get(url, params);
   },
 
+  getDetail(id: any) {
+    const url = `thuadat/get-detail/${id}`;
+    return axiosClient.get(url);
+  },
+
   create(data: any) {
     const url = "thuadat/create";
     return axiosClient.post(url, data);

@@ -9,66 +9,58 @@ type Props = {
 };
 
 const RenderChangeApp = ({ account = [] }: Props) => {
-  const role = useSelector((state: any) => state.htx.role);
-  const dispatch = useDispatch();
+  const htx = useSelector((state: any) => state.htx.role);
+  const isChairman = useSelector((state: any) => state.htx.isChairman);
+
+  let items: any = [];
   const navigate = useNavigate();
 
-  let menu: any = [];
+  const handleNavigate = (value: string | null) => {
+    navigate("/htx/dashboard", { state: { role: value } });
+  };
 
-  if (account.length > 0) {
-    account.forEach((item: any) => {
-      if (item) {
-        switch (item?.name) {
-          case "Xã Viên":
-            menu.push({ ...item, link: "/htx/dashboard" });
-            break;
-          case "Thuong Lai":
-            menu.push({ ...item, link: "/htx/trader" });
-            break;
-        }
-
-        if (item?.id_account == 1 && item?.name === "Xã Viên") {
-          if (role.role === "chunhiem") {
-            menu.push({
-              id_account: "chunhiem",
-              name: "Hợp Tác Xã",
-              link: "/htx/dashboard",
-            });
-          }
-        }
-      }
-    });
+  if ((htx && htx?.role === "chunhiem") || isChairman) {
+    items = [
+      {
+        label: <span>Quản lý Hợp tác xã</span>,
+        key: "chunhiem",
+      },
+      {
+        label: <span>Quản quản lý xã viên</span>,
+        key: "xavien",
+      },
+      {
+        label: <span onClick={() => navigate("/")}>Trang chủ</span>,
+        key: "home",
+      },
+    ];
+  } else {
+    items = [
+      {
+        label: <span>Quản quản lý xã viên</span>,
+        key: "xavien",
+      },
+      {
+        label: <span onClick={() => navigate("/")}>Trang chủ</span>,
+        key: "home",
+      },
+    ];
   }
 
-  const handleNavigate = (link: string, name: string) => {
-    if (name === "Xã Viên") {
-      dispatch(
-        setRole({
-          ...role,
-          role: "xavien",
-        })
-      );
+  const onMenuClick = (e: any) => {
+    if (e.key !== "home") {
+      localStorage.setItem("account", e.key);
+      handleNavigate(e.key || "");
     }
-    navigate(link);
   };
 
   return (
     <div className="change-app">
-      <Menu>
-        {menu.map((item: any, index: number) => {
-          return (
-            <Menu.Item key={item?.name} className="radius-6">
-              <span
-                onClick={() =>
-                  handleNavigate(item?.link || "", item?.name || "")
-                }
-              >
-                {item?.name}
-              </span>
-            </Menu.Item>
-          );
-        })}
-      </Menu>
+      <Menu
+        onClick={onMenuClick}
+        defaultSelectedKeys={[localStorage.getItem("account") || "chunhiem"]}
+        items={items}
+      />
     </div>
   );
 };

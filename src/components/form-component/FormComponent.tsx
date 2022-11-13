@@ -13,6 +13,7 @@ type Props = {
   initialValues?: any;
   onDisable?: any;
   goBackUrl?: string;
+  showBack?: boolean;
 };
 
 const FormComponent = ({
@@ -25,6 +26,7 @@ const FormComponent = ({
   initialValues = {},
   onDisable,
   goBackUrl,
+  showBack,
 }: Props) => {
   const [formCommon] = Form.useForm();
 
@@ -115,7 +117,7 @@ const FormComponent = ({
             >
               {buttonSubmit || "Thực hiện"}
             </Button>
-            {goBackUrl && (
+            {goBackUrl && showBack && (
               <Button style={{ marginLeft: "4px" }}>
                 <Link to={goBackUrl}>Trở về</Link>
               </Button>

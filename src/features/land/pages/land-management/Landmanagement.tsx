@@ -1,4 +1,4 @@
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { Popconfirm, Switch } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -31,9 +31,43 @@ const LandManagement = (props: Props) => {
       dataIndex: "address",
     },
     {
+      title: "Hình ảnh",
+      dataIndex: "thumbnail",
+      render: (text: any, record: any) => (
+        <>
+          <img
+            className="image-in-table"
+            src={
+              record?.thumbnail ||
+              "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
+            }
+            alt=""
+          />
+        </>
+      ),
+    },
+    {
       title: "Vị trí",
       dataIndex: "location",
       width: "25%",
+      render: (text: any, record: any) => (
+        <>
+          <div
+            onClick={() =>
+              navigate("/htx/manage-land/map", {
+                state: {
+                  position: record,
+                  preview: true,
+                },
+              })
+            }
+            style={{ cursor: "pointer" }}
+          >
+            <span style={{ marginRight: "12px" }}> Xem vị trí</span>
+            <EyeOutlined />
+          </div>
+        </>
+      ),
     },
     {
       title: "Hoạt động",
@@ -56,7 +90,9 @@ const LandManagement = (props: Props) => {
         <>
           <span
             className=""
-            onClick={() => {}}
+            onClick={() =>
+              navigate("/htx/manage-land/detail/" + record.id_thuadat || "")
+            }
             style={{
               display: "inline-block",
               marginRight: "16px",
@@ -97,6 +133,7 @@ const LandManagement = (props: Props) => {
   const handleConfirmDeleteLand = async (id: string | number) => {
     try {
       setDeleteId(id);
+      setRefetch(new Date().toISOString());
       const res = await landApi.delete(id);
       getResponseMessage(res);
     } catch (error) {
