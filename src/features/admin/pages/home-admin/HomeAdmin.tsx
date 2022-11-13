@@ -85,7 +85,7 @@ const HomeAdmin = () => {
   };
   const location: any = useLocation();
   const changeRole =
-    localStorage.getItem("account") || location.state?.role || roles?.role;
+    location.state?.role || localStorage.getItem("account") || roles?.role;
   console.log(changeRole);
 
   useEffect(() => {

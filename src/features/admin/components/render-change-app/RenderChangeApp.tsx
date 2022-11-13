@@ -58,7 +58,7 @@ const RenderChangeApp = ({ account = [] }: Props) => {
     <div className="change-app">
       <Menu
         onClick={onMenuClick}
-        defaultSelectedKeys={[localStorage.getItem("account") || "chunhiem"]}
+        defaultSelectedKeys={[htx?.role || "chunhiem"]}
         items={items}
       />
     </div>
