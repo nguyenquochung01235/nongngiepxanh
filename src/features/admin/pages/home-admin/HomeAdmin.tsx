@@ -72,6 +72,7 @@ const HomeAdmin = () => {
   const notification = useSelector((state: any) => state.notification);
   const user = useSelector((state: any) => state.user);
   const htx = useSelector((state: any) => state.htx.hasHTX);
+  const isChairmanSlt = useSelector((state: any) => state.htx.isChairman);
   const roleHtx = useSelector((state: any) => state.htx);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -99,6 +100,10 @@ const HomeAdmin = () => {
           dispatch(hasHTX(true));
           dispatch(setRole(res.data));
           setRoles(res.data);
+
+          if (res.data.role === "xavien" && !isChairmanSlt) {
+            dispatch(isChairman(false));
+          }
 
           if (changeRole === "chunhiem") {
             dispatch(isChairman(true));
