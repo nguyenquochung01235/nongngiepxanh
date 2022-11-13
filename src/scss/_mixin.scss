@@ -10,7 +10,7 @@
 @mixin heading {
   text-transform: uppercase;
   text-align: center;
-  padding: 8px 0;
+  padding: 8px 0 20px 0;
   font-size: $font-size-heading;
   font-weight: $font-weight-heading;
   cursor: pointer;

@@ -2,10 +2,12 @@
 
 .login-form {
   width: $login-form-width;
+  max-width: $login-form-width;
   padding: 16px 32px;
   box-shadow: $box-shadow;
   border-radius: $radius-1;
   background-color: $white-color;
+  height: 300px;
 
   &__heading {
     @include heading();

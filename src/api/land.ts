@@ -2,6 +2,16 @@ import { ListParams } from "../model/common";
 import axiosClient from "./axiosClient";
 
 const landApi = {
+  getAll(params: any) {
+    const url = "thuadat/get-list";
+    return axiosClient.get(url, params);
+  },
+
+  getDetail(id: any) {
+    const url = `thuadat/get-detail/${id}`;
+    return axiosClient.get(url);
+  },
+
   create(data: any) {
     const url = "thuadat/create";
     return axiosClient.post(url, data);

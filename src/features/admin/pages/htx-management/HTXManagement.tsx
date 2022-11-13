@@ -239,8 +239,8 @@ const HTXManagement = () => {
 
     mutation_addUser.mutate(data, {
       onSuccess: () => {
-        setIsModalOpen(false);
         message.success("Thêm xã viên thành công");
+        setIsModalOpen(false);
         refetch();
       },
       onError: (error) => {
@@ -248,8 +248,6 @@ const HTXManagement = () => {
       },
     });
   };
-
-  console.log(result);
 
   return (
     <div className="htx-management">
@@ -293,7 +291,7 @@ const HTXManagement = () => {
           {user && (
             <Row>
               <Col span={24} className="add-user-to-htx-des">
-                <Descriptions title="Thông tin xã viên">
+                {/* <Descriptions title="Thông tin xã viên">
                   <Descriptions.Item label="Tên Xã Viên">
                     {user && user?.fullname}
                   </Descriptions.Item>
@@ -306,9 +304,36 @@ const HTXManagement = () => {
                   <Descriptions.Item label="Ngày sinh">
                     {user && user?.dob}
                   </Descriptions.Item>
-                </Descriptions>
+                </Descriptions> */}
+                {user && (
+                  <>
+                    <p className="align-center">
+                      <span className="trader-label">Họ tên:</span>
+                      <span className="trader-detail">
+                        {user?.fullname || ""}
+                      </span>
+                    </p>
+                    <p className="align-center">
+                      <span className="trader-label"> Số điện thoại: </span>
+                      <span className="trader-detail">
+                        {user?.phone_number || ""}
+                      </span>
+                    </p>
+                    <p className="align-center">
+                      <span className="trader-label"> Đại chỉ: </span>
+                      <span className="trader-detail">
+                        {user?.address || ""}
+                      </span>
+                    </p>
+                    <p className="align-center">
+                      <span className="trader-label">Ngày sinh</span>
+                      <span className="trader-detail">{user?.dob || ""}</span>
+                    </p>
+                    <br />
+                  </>
+                )}
               </Col>
-              <br />
+
               <Col span={24}>
                 <Button
                   loading={mutation_addUser.isLoading}
