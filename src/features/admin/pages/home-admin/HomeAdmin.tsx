@@ -105,7 +105,6 @@ const HomeAdmin = () => {
             localStorage.setItem("account", "chunhiem");
           } else {
             dispatch(isChairman(false));
-            localStorage.setItem("account", "xavien");
           }
         } else {
           setIsNewUser(true);
