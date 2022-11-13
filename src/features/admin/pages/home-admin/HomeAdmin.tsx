@@ -35,13 +35,14 @@ import NotFound from "../../../../components/not-found/NotFound";
 import Notification from "../../../../components/notification/Notification";
 import Profile from "../../../../components/profile/Profile";
 import { COMMON, PATH } from "../../../../enum";
-import { hasHTX, reset, setRole } from "../../../../redux/htxSlice";
+import { hasHTX, isChairman, reset, setRole } from "../../../../redux/htxSlice";
 import { toggleLoading } from "../../../../redux/loadingSlice";
 import { resetCount } from "../../../../redux/notificationSlice";
 import { setTheme } from "../../../../utils/changeTheme";
 import { handleLogout } from "../../../../utils/logout";
 import Calendar from "../../../calendar/Calendar";
 import Map from "../../../land/components/map/Map";
+import DetailLand from "../../../land/pages/detail-land/DetailLand";
 import CreateLand from "../../../land/pages/land-create/CreateLand";
 import Landmanagement from "../../../land/pages/land-management/Landmanagement";
 import StoryOfSeason from "../../../story/pages/StoryOfSeason";
@@ -82,19 +83,26 @@ const HomeAdmin = () => {
   const onClose = () => {
     setOpen(false);
   };
-  const location = useLocation();
+  const location: any = useLocation();
+  const changeRole =
+    localStorage.getItem("account") || location.state?.role || roles?.role;
+  console.log(changeRole);
 
   useEffect(() => {
     (async () => {
       setLoading(true);
       try {
-        const res: any = await userApi.roleOfUser();
+        const res: any = await userApi.roleOfUser(changeRole);
 
         if (res.data?.id_hoptacxa) {
           localStorage.setItem("htx", res.data);
           dispatch(hasHTX(true));
           dispatch(setRole(res.data));
           setRoles(res.data);
+
+          if (changeRole) {
+            dispatch(isChairman());
+          }
         } else {
           setIsNewUser(true);
           dispatch(reset());
@@ -105,7 +113,7 @@ const HomeAdmin = () => {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [changeRole, localStorage.getItem("account")]);
 
   useEffect(() => {
     setCurrentPath("/htx/" + location.pathname.split("/")[2]);
@@ -332,7 +340,7 @@ const HomeAdmin = () => {
               </div>
             </Header>
             <Drawer
-              title="Chuyển đổi tài khoản"
+              title="Chuyển đổi nhanh"
               placement="right"
               onClose={onClose}
               open={open}
@@ -363,7 +371,8 @@ const HomeAdmin = () => {
                       ></Route>
                     )}
 
-                    {roles?.role === "xavien" && (
+                    {(roles?.role === "xavien" ||
+                      roles?.role === "chunhiem") && (
                       <>
                         <Route
                           path="/manage-story"
@@ -378,6 +387,10 @@ const HomeAdmin = () => {
                         <Route
                           path="/manage-land/create"
                           element={<CreateLand></CreateLand>}
+                        ></Route>
+                        <Route
+                          path="/manage-land/detail/:id"
+                          element={<DetailLand></DetailLand>}
                         ></Route>
                         <Route
                           path="/manage-story/detail/:id"
@@ -398,7 +411,7 @@ const HomeAdmin = () => {
                           path={`${PATH.CONTRACT_MANAGEMENT}${PATH.CONTRACT_DETAIL}`}
                           element={
                             <DetailContract
-                              edit={false}
+                              edit={roles?.role === "xavien" ? false : true}
                               baseUrl="htx/contract-management"
                             ></DetailContract>
                           }

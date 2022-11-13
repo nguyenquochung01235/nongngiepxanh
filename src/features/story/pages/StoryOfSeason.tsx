@@ -55,6 +55,10 @@ const StoryOfSeason = (props: Props) => {
       dataIndex: "id_nhatkydongruong",
     },
     {
+      title: "ID thửa đất",
+      dataIndex: "id_thuadat",
+    },
+    {
       title: "Tên hoạt động",
       dataIndex: "name_hoatdong",
     },

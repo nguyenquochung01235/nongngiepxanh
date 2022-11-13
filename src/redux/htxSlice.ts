@@ -8,11 +8,13 @@ export interface roleOfUser {
 export interface HasHTX {
   hasHTX: boolean;
   role: any;
+  isChairman?: any;
 }
 
 const initialState: HasHTX = {
   hasHTX: false,
   role: localStorage.getItem("htx") || {},
+  isChairman: false,
 };
 
 const htxSlice = createSlice({
@@ -25,6 +27,9 @@ const htxSlice = createSlice({
     setRole(state, action) {
       state.role = action.payload;
     },
+    isChairman(state) {
+      state.isChairman = true;
+    },
     reset(state) {
       state.hasHTX = false;
       state.role = {};
@@ -33,7 +38,7 @@ const htxSlice = createSlice({
 });
 
 //actions
-export const { hasHTX, setRole, reset } = htxSlice.actions;
+export const { hasHTX, setRole, reset, isChairman } = htxSlice.actions;
 
 // reducer
 export default htxSlice.reducer;

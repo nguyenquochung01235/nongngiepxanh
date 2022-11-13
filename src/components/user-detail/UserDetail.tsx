@@ -1,19 +1,27 @@
 import { width } from "@mui/system";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Col, DatePicker, Input, Row, Skeleton, Space, Spin } from "antd";
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import userApi from "../../api/userApi";
+import { storeUser } from "../../redux/userSlice";
 import { convertToMoment } from "../../utils/convertToMoment";
 import { formatMoment } from "../../utils/formatMoment";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { getResponseMessage } from "../../utils/getResponseMessage";
 import FormComponent from "../form-component/FormComponent";
+import UploadImage from "../upload-image/UploadImage";
 import "./user-detail.scss";
 
 type Props = {};
 
 const UserDetail = (props: Props) => {
+  const [file, setFile] = useState();
   const fetchUserDetail = () => userApi.getDetail();
+
+  const user = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
 
   let userDetail: any = useQuery(["user-detail"], fetchUserDetail);
   let result = {};
@@ -33,6 +41,10 @@ const UserDetail = (props: Props) => {
       };
     }
   }
+
+  const handleChangeImage = (file: any) => {
+    setFile(file);
+  };
 
   const userDetailForm = [
     {
@@ -81,6 +93,16 @@ const UserDetail = (props: Props) => {
       formChildren: <Input placeholder="Số điện thoại"></Input>,
     },
     {
+      name: "avatar",
+      label: "",
+      formChildren: (
+        <UploadImage
+          image={userDetail?.data?.data.avatar || null}
+          onChange={handleChangeImage}
+        ></UploadImage>
+      ),
+    },
+    {
       name: "address",
       label: "Địa chỉ",
       rules: [
@@ -95,11 +117,21 @@ const UserDetail = (props: Props) => {
   ];
 
   const handleFormSubmit = (values: any) => {
+    values.avatar = file || null;
     values.dob = formatMoment(values.dob);
 
-    mutation_update_user.mutate(values, {
+    const formData: any = new FormData();
+    formData.append("fullname", values.fullname);
+    formData.append("email", values.email);
+    formData.append("dob", values.dob);
+    formData.append("address", values.address);
+    formData.append("avatar", values.avatar);
+
+    mutation_update_user.mutate(formData, {
       onSuccess: (res) => {
         getResponseMessage(res);
+
+        dispatch(storeUser({ ...user, user: { ...user.user, ...res.data } }));
         userDetail.refetch();
       },
       onError: (err) => {

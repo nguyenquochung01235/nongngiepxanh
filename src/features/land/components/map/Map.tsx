@@ -8,8 +8,8 @@ import {
 } from "@react-google-maps/api";
 import { Autocomplete } from "@react-google-maps/api";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
-import { Button } from "antd";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Button, Space } from "antd";
 import { useMutation } from "@tanstack/react-query";
 import landApi from "../../../../api/land";
 import { getResponseMessage } from "../../../../utils/getResponseMessage";
@@ -56,11 +56,17 @@ function Map() {
   const [drawShape, setDrawShape] = useState("");
   const location: any = useLocation();
   const [detailland, setDetailLand] = useState<any>();
+
+  const navigate = useNavigate();
   const postion: any = location.state?.position?.address || "";
+  const editPosition = location.state?.preview;
+
+  const isEdit = !!editPosition;
 
   useEffect(() => {
     (async () => {
       setDetailLand(location.state?.position);
+
       try {
         const res: any = await axios.get(
           "https://geocoder.ls.hereapi.com/6.2/geocode.json?searchtext=" +
@@ -69,7 +75,7 @@ function Map() {
         );
         const position =
           res.data?.Response?.View[0].Result[0].Location.DisplayPosition;
-        console.log(postion);
+
         if (position) {
           setCenter({
             lat: position.Latitude,
@@ -80,8 +86,6 @@ function Map() {
       } catch (error) {}
     })();
   }, [postion]);
-
-  console.log(location.state);
 
   const onPolygonComplete = (polygon: any) => {
     const coords = polygon
@@ -94,28 +98,16 @@ function Map() {
         };
       });
     setDrawShape(JSON.stringify(coords, null, 1));
-    console.log(JSON.stringify(coords, null, 1));
-    console.log(coords);
   };
 
-  const [path, setPath] = useState([
-    {
-      lat: 10.099247039652582,
-      lng: 105.68368561328126,
-    },
-    {
-      lat: 10.001887453457732,
-      lng: 105.9830630546875,
-    },
-    {
-      lat: 9.965370069606989,
-      lng: 105.68093903125,
-    },
-  ]);
+  const [path, setPath] = useState(
+    isEdit ? JSON.parse(location.state?.position?.location) : []
+  );
 
   // Define refs for Polygon instance and listeners
   const polygonRef = useRef<any>(null);
   const listenersRef = useRef<any>([]);
+
   const onEdit = useCallback(() => {
     if (polygonRef.current) {
       const nextPath = polygonRef.current
@@ -155,20 +147,37 @@ function Map() {
     if (Object.keys(detailland || {}).length > 0) {
       delete detailland.thumbnail;
 
-      mutation_update_land.mutate(
-        {
-          ...detailland,
-          location: drawShape,
-        },
-        {
-          onSuccess: (res) => {
-            getResponseMessage(res);
+      if (!isEdit) {
+        mutation_update_land.mutate(
+          {
+            ...detailland,
+            location: drawShape,
           },
-          onError: (err) => {
-            getErrorMessage(err);
+          {
+            onSuccess: (res) => {
+              getResponseMessage(res);
+            },
+            onError: (err) => {
+              getErrorMessage(err);
+            },
+          }
+        );
+      } else {
+        mutation_update_land.mutate(
+          {
+            ...detailland,
+            location: path,
           },
-        }
-      );
+          {
+            onSuccess: (res) => {
+              getResponseMessage(res);
+            },
+            onError: (err) => {
+              getErrorMessage(err);
+            },
+          }
+        );
+      }
     }
   };
 
@@ -180,13 +189,23 @@ function Map() {
     <>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h2>Cập nhật vị trí thửa đất</h2>
-        <Button
-          loading={mutation_update_land.isLoading}
-          onClick={handleUpdateLand}
-          type="primary"
-        >
-          Cập nhật
-        </Button>
+        <div>
+          <Space>
+            <Button
+              loading={mutation_update_land.isLoading}
+              onClick={() => navigate("/htx/manage-land")}
+            >
+              Trở về
+            </Button>
+            <Button
+              loading={mutation_update_land.isLoading}
+              onClick={handleUpdateLand}
+              type="primary"
+            >
+              Cập nhật
+            </Button>
+          </Space>
+        </div>
       </div>
       <LoadScript
         libraries={["drawing"]}
@@ -195,28 +214,30 @@ function Map() {
         <GoogleMap
           mapTypeId="hybrid"
           mapContainerStyle={mapContainerStyle}
-          zoom={16}
+          zoom={isEdit ? 18 : 16}
           center={center}
         >
-          <Marker onLoad={onLoadMaker} position={center} />
-          {/* <Polygon
-          editable
-          draggable
-          path={path}
-          onMouseUp={onEdit}
-          // Event used when dragging the whole Polygon
-          onDragEnd={onEdit}
-          onLoad={onLoad2}
-          onUnmount={onUnmount}
-          key={1}
-          options={{
-            strokeColor: "#c69",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: "#c69",
-            fillOpacity: 0.35,
-          }}
-        /> */}
+          {!isEdit && <Marker onLoad={onLoadMaker} position={center} />}
+          {isEdit && (
+            <Polygon
+              editable
+              draggable
+              path={path}
+              onMouseUp={onEdit}
+              // Event used when dragging the whole Polygon
+              onDragEnd={onEdit}
+              onLoad={onLoad2}
+              onUnmount={onUnmount}
+              key={1}
+              options={{
+                strokeColor: "#c69",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#c69",
+                fillOpacity: 0.35,
+              }}
+            />
+          )}
           <DrawingManager
             options={{
               drawingControl: true,

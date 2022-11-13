@@ -9,7 +9,8 @@ import { handleLogout } from "../../../../utils/logout";
 type Props = {};
 
 const HomePageHeader = (props: Props) => {
-  const user = useSelector((state: any) => state.user.user);
+  const user = useSelector((state: any) => state.user?.user);
+
   const navigate = useNavigate();
 
   let data = user?.account.map((item: any) => {
@@ -95,6 +96,8 @@ const HomePageHeader = (props: Props) => {
                       objectFit: "cover",
                       borderRadius: "50%",
                       marginRight: "8px",
+                      padding: "4px",
+                      border: "1px solid #fff",
                     }}
                     src={
                       user?.avatar ||
