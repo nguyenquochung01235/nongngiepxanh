@@ -102,8 +102,10 @@ const HomeAdmin = () => {
 
           if (changeRole === "chunhiem") {
             dispatch(isChairman(true));
+            localStorage.setItem("account", "chunhiem");
           } else {
             dispatch(isChairman(false));
+            localStorage.setItem("account", "xavien");
           }
         } else {
           setIsNewUser(true);
