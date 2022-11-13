@@ -9,6 +9,7 @@ import {
   Modal,
   Pagination,
   Popconfirm,
+  Select,
   Space,
   Table,
   TableColumnsType,
@@ -22,6 +23,7 @@ import FormComponent from "../../../components/form-component/FormComponent";
 import { formatMoment } from "../../../utils/formatMoment";
 import { getResponseMessage } from "../../../utils/getResponseMessage";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
+import landApi from "../../../api/land";
 
 type Props = {};
 
@@ -114,6 +116,12 @@ const StoryOfSeason = (props: Props) => {
     },
   ];
 
+  const fetchListLand = () => {
+    return landApi.getAll({});
+  };
+
+  const land = useQuery(["activity/land"], fetchListLand);
+
   const handleCheckAllActivity = (e: any) => {
     console.log(e);
   };
@@ -128,7 +136,7 @@ const StoryOfSeason = (props: Props) => {
     }
   };
 
-  const seasonForm = [
+  const actdivityForm = [
     {
       name: "name_hoatdong",
       label: "Tên hoạt động",
@@ -152,14 +160,25 @@ const StoryOfSeason = (props: Props) => {
       ),
     },
     {
-      name: "description",
-      label: "Mô tả",
+      name: "id_thuadat",
+      label: "Thửa đất",
       rules: [
         {
           required: true,
         },
       ],
-      formChildren: <Input.TextArea placeholder="Mô tả"></Input.TextArea>,
+      formChildren: (
+        <Select placeholder="Thửa đất">
+          {land &&
+            land?.data?.data.map((item: any) => {
+              return (
+                <Select.Option key={item.id_thuadat} value={item.id_thuadat}>
+                  {item.address}
+                </Select.Option>
+              );
+            })}
+        </Select>
+      ),
     },
     {
       name: "date_end",
@@ -182,6 +201,16 @@ const StoryOfSeason = (props: Props) => {
       formChildren: (
         <DatePicker placeholder="Ngày kết thúc" style={{ width: "100%" }} />
       ),
+    },
+    {
+      name: "description",
+      label: "Mô tả",
+      rules: [
+        {
+          required: true,
+        },
+      ],
+      formChildren: <Input.TextArea placeholder="Mô tả"></Input.TextArea>,
     },
   ];
 
@@ -228,7 +257,6 @@ const StoryOfSeason = (props: Props) => {
   const handleFormSubmit = (values: any) => {
     values.id_lichmuavu = id || "";
     values.date_start = formatMoment(values.date_start);
-    values.id_thuadat = 7;
     values.date_end = formatMoment(values.date_end);
 
     mutation_add_activity.mutate(values, {
@@ -258,8 +286,6 @@ const StoryOfSeason = (props: Props) => {
       };
     });
   };
-
-  console.log(data?.data);
 
   return (
     <div className="season-of-story">
@@ -314,7 +340,6 @@ const StoryOfSeason = (props: Props) => {
         onCancel={handleCancel}
         title="Tạo hoạt động"
         open={isModalOpen}
-        bodyStyle={{ height: "300px" }}
         width="70%"
       >
         <FormComponent
@@ -322,7 +347,7 @@ const StoryOfSeason = (props: Props) => {
           onSubmit={handleFormSubmit}
           name="activityOfSeason"
           buttonSubmit="Thêm hoạt động"
-          data={seasonForm}
+          data={actdivityForm}
         ></FormComponent>
       </Modal>
     </div>
