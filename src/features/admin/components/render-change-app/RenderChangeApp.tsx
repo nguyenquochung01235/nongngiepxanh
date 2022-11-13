@@ -49,7 +49,7 @@ const RenderChangeApp = ({ account = [] }: Props) => {
 
   const onMenuClick = (e: any) => {
     if (e.key !== "home") {
-      localStorage.setItem("account", e.key);
+      // localStorage.setItem("account", e.key);
       handleNavigate(e.key || "");
     }
   };
