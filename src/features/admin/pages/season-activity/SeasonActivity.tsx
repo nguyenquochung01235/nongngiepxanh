@@ -94,7 +94,7 @@ const SeaSonActivity = () => {
   };
 
   const fetchCalendarList = () => {
-    // return calendarApi.getAll();
+    return calendarApi.getAll({});
   };
   const { isLoading, isError, data, error, isFetching } = useQuery(
     ["user/list"],
@@ -166,14 +166,15 @@ const SeaSonActivity = () => {
                 </Form.Item>
               </Col>
               <Col lg={12} md={12} sm={24} xs={24}>
-                <Form.Item name="id_gionglua" label="Lịch mùa vụ">
-                  {/* <AutoComplete
+                {/* <Form.Item name="id_gionglua" label="Lịch mùa vụ">
+                  <AutoComplete
                     placeholder="lịch mùa vụ"
                     onSelect={handleSelect}
                     Key="id_gionglua"
                     Value="name_gionglua"
-                  ></AutoComplete> */}
-                </Form.Item>
+                    type="gionglua"
+                  ></AutoComplete>
+                </Form.Item> */}
                 <Form.Item
                   name="date_end"
                   label="Ngày kết thúc"

@@ -150,6 +150,7 @@ const UserDetail = (props: Props) => {
     data: userDetailForm,
     hideBtnSubmit: false,
     goBackUrl: "/",
+    showBack: true,
   };
 
   if (result && Object.keys(result).length > 0) {

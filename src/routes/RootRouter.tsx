@@ -18,6 +18,7 @@ import { addNotification } from "../redux/notificationSlice";
 import UserDetail from "../components/user-detail/UserDetail";
 import { notification } from "antd";
 import { NotificationPlacement } from "antd/lib/notification";
+import HomeShop from "../features/shop/components/home/HomeShop";
 
 type Props = {};
 
@@ -66,6 +67,7 @@ const RootRouter = (props: Props) => {
           path={`${PATH.TRADER}/*`}
           element={<HomeTraders></HomeTraders>}
         ></Route>
+        <Route path={`shop/*`} element={<HomeShop></HomeShop>}></Route>
       </Routes>
     </AllPageLoading>
   );
