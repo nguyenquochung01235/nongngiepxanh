@@ -20,7 +20,7 @@ import {
   Space,
   Spin,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Link,
@@ -75,6 +75,7 @@ const HomeAdmin = () => {
   const isChairmanSlt = useSelector((state: any) => state.htx.isChairman);
   const roleHtx = useSelector((state: any) => state.htx);
   const navigate = useNavigate();
+  const isFirst = useRef(false);
   const dispatch = useDispatch();
 
   const showDrawer = () => {
@@ -85,15 +86,25 @@ const HomeAdmin = () => {
     setOpen(false);
   };
   const location: any = useLocation();
-  const changeRole =
-    location.state?.role || localStorage.getItem("account") || roles?.role;
-  console.log(changeRole);
+  const changeRole = location.state?.role;
+  const currentAccount = localStorage.getItem("current_account");
 
   useEffect(() => {
     (async () => {
+      if (isFirst.current) {
+        if (!changeRole) {
+          return;
+        }
+      }
       setLoading(true);
+      isFirst.current = true;
+      let res: any = null;
       try {
-        const res: any = await userApi.roleOfUser(changeRole);
+        if (!isFirst.current) {
+          res = await userApi.roleOfUser(changeRole);
+        } else {
+          res = await userApi.roleOfUser(changeRole || currentAccount);
+        }
 
         if (res.data?.id_hoptacxa) {
           localStorage.setItem("htx", res.data);
@@ -103,10 +114,12 @@ const HomeAdmin = () => {
 
           if (res.data.role === "xavien" && !isChairmanSlt) {
             dispatch(isChairman(false));
+            localStorage.setItem("chairman", "");
           }
 
-          if (changeRole === "chunhiem") {
+          if (changeRole === "chunhiem" || res.data.role === "chunhiem") {
             dispatch(isChairman(true));
+            localStorage.setItem("chairman", "true");
             localStorage.setItem("account", "chunhiem");
           }
         } else {
@@ -119,7 +132,7 @@ const HomeAdmin = () => {
         setLoading(false);
       }
     })();
-  }, [changeRole, localStorage.getItem("account")]);
+  }, [changeRole, currentAccount]);
 
   useEffect(() => {
     setCurrentPath("/htx/" + location.pathname.split("/")[2]);

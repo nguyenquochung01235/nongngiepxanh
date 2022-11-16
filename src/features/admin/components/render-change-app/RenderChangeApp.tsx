@@ -22,7 +22,8 @@ const RenderChangeApp = ({ account = [] }: Props) => {
   if (
     (htx && htx?.role === "chunhiem") ||
     isChairmanSlt ||
-    localStorage.getItem("account") === "chunhiem"
+    localStorage.getItem("account") === "chunhiem" ||
+    localStorage.getItem("chairman")
   ) {
     items = [
       {
@@ -53,7 +54,7 @@ const RenderChangeApp = ({ account = [] }: Props) => {
 
   const onMenuClick = (e: any) => {
     if (e.key !== "home") {
-      // localStorage.setItem("account", e.key);
+      localStorage.setItem("current_account", e.key);
       handleNavigate(e.key || "");
     }
   };

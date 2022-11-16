@@ -14,7 +14,7 @@ export interface HasHTX {
 const initialState: HasHTX = {
   hasHTX: false,
   role: localStorage.getItem("htx") || {},
-  isChairman: false,
+  isChairman: !!localStorage.getItem("chairman") || false,
 };
 
 const htxSlice = createSlice({
