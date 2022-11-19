@@ -4,6 +4,7 @@ import {
   BellOutlined,
   CalendarOutlined,
   ContainerOutlined,
+  FormOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   PieChartOutlined,
@@ -53,7 +54,9 @@ import RenderChangeApp from "../../components/render-change-app/RenderChangeApp"
 import AddUserToHTX from "../add-user-htx/AddUserToHTX";
 import CreateHTX from "../create-htx/CreateHTX";
 import Dashboard from "../dashboard/Dashboard";
+import DetailHTX from "../detail-htx/DetailHTX";
 import HTXManagement from "../htx-management/HTXManagement";
+import HTXStorymanagement from "../htx-story-management/HTXStorymanagement";
 import SeasonActivity from "../season-activity/SeasonActivity";
 import DetailSeaSon from "../season-management/pages/detail/DetailSeaSon";
 import SeasonManagement from "../season-management/pages/list/SeasonManagement";
@@ -207,6 +210,13 @@ const HomeAdmin = () => {
         </Link>
       ),
     },
+    {
+      key: `${PATH.HTX}${"/story-of-user"}`,
+      icon: <FormOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/story-of-user"}`}>Quản lý sổ nhật ký</Link>
+      ),
+    },
   ];
 
   const menu = (
@@ -259,7 +269,7 @@ const HomeAdmin = () => {
             className="side-bar"
           >
             <div className="logo">
-              <Link to={`${PATH.HTX}${PATH.DASHBOARD}`}>
+              <Link to={`${PATH.HTX}${"/manage-htx/detail"}`}>
                 <img
                   src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
                   alt=""
@@ -267,27 +277,29 @@ const HomeAdmin = () => {
               </Link>
               {
                 <div>
-                  <span
-                    style={{
-                      marginLeft: "12px",
-                      fontSize: "11px",
-                      color: "#333",
-                    }}
-                  >
-                    Hợp tác xã
-                  </span>
-                  <div
-                    style={
-                      !collapsed
-                        ? {
-                            display: "block",
-                          }
-                        : { display: "none" }
-                    }
-                    className="logo-title opacity"
-                  >
-                    {roleHtx?.role?.name_hoptacxa || ""}
-                  </div>
+                  <Link to={`${PATH.HTX}${"/manage-htx/detail"}`}>
+                    <span
+                      style={{
+                        marginLeft: "12px",
+                        fontSize: "11px",
+                        color: "#333",
+                      }}
+                    >
+                      Hợp tác xã
+                    </span>
+                    <div
+                      style={
+                        !collapsed
+                          ? {
+                              display: "block",
+                            }
+                          : { display: "none" }
+                      }
+                      className="logo-title opacity"
+                    >
+                      {roleHtx?.role?.name_hoptacxa || ""}
+                    </div>
+                  </Link>
                 </div>
               }
             </div>
@@ -412,6 +424,10 @@ const HomeAdmin = () => {
                           element={<DetailLand></DetailLand>}
                         ></Route>
                         <Route
+                          path="/manage-htx/detail"
+                          element={<DetailHTX></DetailHTX>}
+                        ></Route>
+                        <Route
                           path="/manage-story/detail/:id"
                           element={<StoryOfSeason></StoryOfSeason>}
                         ></Route>
@@ -439,30 +455,39 @@ const HomeAdmin = () => {
                       </>
                     )}
 
-                    <Route
-                      path={PATH.ADD_USER_TO_HTX}
-                      element={<AddUserToHTX></AddUserToHTX>}
-                    ></Route>
-                    <Route
-                      path={PATH.MANAGE_HTX}
-                      element={<HTXManagement></HTXManagement>}
-                    ></Route>
-                    <Route
-                      path={PATH.MANAGE_SEASON}
-                      element={<SeasonManagement></SeasonManagement>}
-                    ></Route>
-                    <Route
-                      path={PATH.MANAGE_SEASON_DETAIL}
-                      element={<DetailSeaSon></DetailSeaSon>}
-                    ></Route>
-                    <Route
-                      path={PATH.MANAGE_ACTIVITY}
-                      element={<SeasonActivity></SeasonActivity>}
-                    ></Route>
-                    <Route
-                      path={PATH.CALENDAR}
-                      element={<Calendar></Calendar>}
-                    ></Route>
+                    {roles?.role === "chunhiem" && (
+                      <>
+                        <Route
+                          path={PATH.ADD_USER_TO_HTX}
+                          element={<AddUserToHTX></AddUserToHTX>}
+                        ></Route>
+                        <Route
+                          path={"/story-of-user"}
+                          element={<HTXStorymanagement></HTXStorymanagement>}
+                        ></Route>
+                        <Route
+                          path={PATH.MANAGE_HTX}
+                          element={<HTXManagement></HTXManagement>}
+                        ></Route>
+                        <Route
+                          path={PATH.MANAGE_SEASON}
+                          element={<SeasonManagement></SeasonManagement>}
+                        ></Route>
+                        <Route
+                          path={PATH.MANAGE_SEASON_DETAIL}
+                          element={<DetailSeaSon></DetailSeaSon>}
+                        ></Route>
+                        <Route
+                          path={PATH.MANAGE_ACTIVITY}
+                          element={<SeasonActivity></SeasonActivity>}
+                        ></Route>
+                        <Route
+                          path={PATH.CALENDAR}
+                          element={<Calendar></Calendar>}
+                        ></Route>
+                      </>
+                    )}
+
                     <Route
                       path={PATH.PROFILE}
                       element={<Profile name="xavien"></Profile>}

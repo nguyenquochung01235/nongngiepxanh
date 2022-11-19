@@ -1,4 +1,4 @@
-import { CloudUploadOutlined } from "@ant-design/icons";
+import { CloseCircleOutlined, CloudUploadOutlined } from "@ant-design/icons";
 import { Button, Input } from "antd";
 import React, { useRef, useState } from "react";
 import "./upload-image.scss";
@@ -26,7 +26,9 @@ const UploadImag: any = ({ onChange, image }: Props) => {
     reader.readAsDataURL(file);
   };
 
-  console.log(image);
+  const handleRemoveImage = () => {
+    setImagePreview(null);
+  };
 
   return (
     <div className="upload-image">
@@ -45,6 +47,12 @@ const UploadImag: any = ({ onChange, image }: Props) => {
         Tải ảnh lên
       </Button>
       <div className="image-preview">
+        {imagePreview && (
+          <CloseCircleOutlined
+            className="image-preview-close"
+            onClick={handleRemoveImage}
+          />
+        )}
         <img
           src={
             imagePreview

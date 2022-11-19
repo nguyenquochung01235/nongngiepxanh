@@ -23,7 +23,9 @@ const UserDetail = (props: Props) => {
   const user = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
-  let userDetail: any = useQuery(["user-detail"], fetchUserDetail);
+  let userDetail: any = useQuery(["user-detail-dashboard"], fetchUserDetail, {
+    cacheTime: 0,
+  });
   let result = {};
 
   if (userDetail?.data?.data) {
@@ -160,7 +162,7 @@ const UserDetail = (props: Props) => {
     };
   }
 
-  return false ? (
+  return userDetail.isLoading ? (
     <div
       style={{
         margin: "50px",
@@ -179,46 +181,22 @@ const UserDetail = (props: Props) => {
         </Col>
         <br />
         <Col sm={24} xs={24} lg={12} md={12}>
-          <Skeleton
-            paragraph
-            active
-            style={{ width: 550, borderRadius: "6px" }}
-          />
+          <Skeleton.Input active style={{ width: 550, borderRadius: "6px" }} />
         </Col>
         <Col sm={24} xs={24} lg={12} md={12}>
-          <Skeleton
-            paragraph
-            active
-            style={{ width: 550, borderRadius: "6px" }}
-          />
+          <Skeleton.Input active style={{ width: 550, borderRadius: "6px" }} />
         </Col>
         <Col sm={24} xs={24} lg={12} md={12}>
-          <Skeleton
-            paragraph
-            active
-            style={{ width: 550, borderRadius: "6px" }}
-          />
+          <Skeleton.Input active style={{ width: 550, borderRadius: "6px" }} />
         </Col>
         <Col sm={24} xs={24} lg={12} md={12}>
-          <Skeleton
-            paragraph
-            active
-            style={{ width: 550, borderRadius: "6px" }}
-          />
+          <Skeleton.Input active style={{ width: 550, borderRadius: "6px" }} />
         </Col>
         <Col sm={24} xs={24} lg={12} md={12}>
-          <Skeleton
-            paragraph
-            active
-            style={{ width: 550, borderRadius: "6px" }}
-          />
+          <Skeleton.Input active style={{ width: 550, borderRadius: "6px" }} />
         </Col>
         <Col sm={24} xs={24} lg={12} md={12}>
-          <Skeleton
-            paragraph
-            active
-            style={{ width: 550, borderRadius: "6px" }}
-          />
+          <Skeleton.Input active style={{ width: 550, borderRadius: "6px" }} />
         </Col>
         <Col sm={24} xs={24} lg={12} md={12}>
           <Space>
@@ -237,7 +215,7 @@ const UserDetail = (props: Props) => {
       </Row>
     </div>
   ) : (
-    <Spin spinning={userDetail.isLoading}>
+    <Spin spinning={false}>
       <div className="detail-user-wrapper">
         <div className="detail-user">
           <h3>Chỉnh sửa thông tin cá nhân</h3>
