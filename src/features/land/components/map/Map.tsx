@@ -49,10 +49,11 @@ const handleMouseOut = (e: any) => {
 };
 
 function Map() {
-  const [center, setCenter] = useState({
+  const [center, setCenter] = useState<any>({
     lat: 10.045162,
     lng: 105.746857,
   });
+
   const [drawShape, setDrawShape] = useState("");
   const location: any = useLocation();
   const [detailland, setDetailLand] = useState<any>();
@@ -66,7 +67,6 @@ function Map() {
   useEffect(() => {
     (async () => {
       setDetailLand(location.state?.position);
-
       try {
         const res: any = await axios.get(
           "https://geocoder.ls.hereapi.com/6.2/geocode.json?searchtext=" +
@@ -74,14 +74,15 @@ function Map() {
             "&gen=9&apiKey=PTfk9cxS5nhkaA1zl0_UyvbgplyvsQlu6dv5kVIloMw"
         );
         const position =
-          res.data?.Response?.View[0].Result[0].Location.DisplayPosition;
+          res.data?.Response?.View[0]?.Result[0]?.Location?.DisplayPosition;
+        console.log(position);
 
-        if (position) {
-          setCenter({
-            lat: position.Latitude,
-            lng: position.Longitude,
-          });
-        }
+        // if (position) {
+        //   setCenter({
+        //     lat: position.Latitude || "",
+        //     lng: position.Longitude || "",
+        //   });
+        // }
         console.log(position);
       } catch (error) {}
     })();
@@ -99,6 +100,8 @@ function Map() {
       });
     setDrawShape(JSON.stringify(coords, null, 1));
   };
+
+  console.log(location.state?.position?.location);
 
   const [path, setPath] = useState(
     isEdit ? JSON.parse(location.state?.position?.location) : []

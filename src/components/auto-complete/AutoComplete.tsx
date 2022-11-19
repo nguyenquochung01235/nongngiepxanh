@@ -56,7 +56,7 @@ const AutoComplete = ({
         } finally {
           setLoading(false);
         }
-      }, 800);
+      }, 500);
     })();
 
     return () => clearTimeout(timer.current);

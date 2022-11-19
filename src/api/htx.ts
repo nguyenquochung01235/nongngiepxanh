@@ -1,3 +1,4 @@
+import { ListParams } from "./../model/common";
 import { ADDNEWUSER } from "./../model/user";
 import { ADDHTX } from "../model";
 import axiosClient from "./axiosClient";
@@ -26,6 +27,21 @@ const htxApi = {
   toggleActive(id: string | number) {
     const url = `htx/update-active/${id}`;
     return axiosClient.put(url);
+  },
+
+  getDetail() {
+    const url = "htx/get-detail";
+    return axiosClient.get(url);
+  },
+
+  storyOfUser(params: ListParams) {
+    const url = "nhatkydongruong/get-list-all";
+    return axiosClient.get(url, { params });
+  },
+
+  htxConfirm(id: string | number, data: any) {
+    const url = `nhatkydongruong/htx-accept/${id}`;
+    return axiosClient.put(url, data);
   },
 };
 

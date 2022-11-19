@@ -24,6 +24,7 @@ import { formatMoment } from "../../../utils/formatMoment";
 import { getResponseMessage } from "../../../utils/getResponseMessage";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import landApi from "../../../api/land";
+import { ColumnsType } from "antd/lib/table";
 
 type Props = {};
 
@@ -49,7 +50,7 @@ const StoryOfSeason = (props: Props) => {
     })();
   }, [filter, id]);
 
-  const columns = [
+  const columns: ColumnsType<any> = [
     {
       title: "ID",
       dataIndex: "id_nhatkydongruong",
@@ -72,6 +73,19 @@ const StoryOfSeason = (props: Props) => {
       dataIndex: "date_end",
     },
     {
+      title: "Htx xác nhận",
+      dataIndex: "hoptacxa_xacnhan",
+      render: (_, record) => (
+        <span>
+          {record?.hoptacxa_xacnhan == 0
+            ? "Chưa xác nhận"
+            : record?.hoptacxa_xacnhan == 1 || record?.hoptacxa_xacnhan === null
+            ? "Đã xác nhận"
+            : "Đã bị hủy"}
+        </span>
+      ),
+    },
+    {
       title: (
         <div>
           <span>Hoàn thành</span>
@@ -87,7 +101,9 @@ const StoryOfSeason = (props: Props) => {
           <div>
             <Checkbox
               style={{ marginLeft: "16px" }}
-              disabled={record?.type !== "inside"}
+              disabled={
+                record?.type !== "inside" && !Boolean(record?.hoptacxa_xacnhan)
+              }
               defaultChecked={record?.status || false}
               checked={record?.status || false}
               onChange={(e) =>
@@ -326,7 +342,11 @@ const StoryOfSeason = (props: Props) => {
           columns={columns}
           dataSource={data?.data}
           rowClassName={(record) =>
-            record.type !== "inside" ? "disabled-row" : ""
+            record.type !== "inside" && !Boolean(record?.hoptacxa_xacnhan)
+              ? "disabled-row"
+              : record?.hoptacxa_xacnhan == "2"
+              ? "error-col"
+              : ""
           }
         />
       </div>
