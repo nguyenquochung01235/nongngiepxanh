@@ -44,7 +44,7 @@ body {
 }
 
 .ant-collapse {
-  border-radius: $radius-0 !important;
+  border-radius: $radius-6 !important;
 }
 
 html::-webkit-scrollbar {
@@ -57,6 +57,20 @@ html::-webkit-scrollbar-track {
 }
 
 html::-webkit-scrollbar-thumb {
+  background-color: rgb(204, 197, 197);
+  border-radius: 20px;
+}
+
+ul::-webkit-scrollbar {
+  width: 8px;
+  max-width: 8px;
+}
+
+ul::-webkit-scrollbar-track {
+  background-color: #fff;
+}
+
+ul::-webkit-scrollbar-thumb {
   background-color: rgb(204, 197, 197);
   border-radius: 20px;
 }

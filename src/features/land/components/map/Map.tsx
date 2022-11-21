@@ -9,11 +9,12 @@ import {
 import { Autocomplete } from "@react-google-maps/api";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button, Space } from "antd";
+import { Button, Drawer, Popover, Space } from "antd";
 import { useMutation } from "@tanstack/react-query";
 import landApi from "../../../../api/land";
 import { getResponseMessage } from "../../../../utils/getResponseMessage";
 import { getErrorMessage } from "../../../../utils/getErrorMessage";
+import * as turf from "@turf/turf";
 
 const mapContainerStyle = {
   height: "500px",
@@ -54,11 +55,14 @@ function Map() {
     lng: 105.746857,
   });
 
+  const [area, setArea] = useState<number | null>();
+
   const [drawShape, setDrawShape] = useState("");
   const location: any = useLocation();
   const [detailland, setDetailLand] = useState<any>();
 
   const navigate = useNavigate();
+  const ref: any = useRef();
   const postion: any = location.state?.position?.address || "";
   const editPosition = location.state?.preview;
 
@@ -75,15 +79,13 @@ function Map() {
         );
         const position =
           res.data?.Response?.View[0]?.Result[0]?.Location?.DisplayPosition;
-        console.log(position);
 
-        // if (position) {
-        //   setCenter({
-        //     lat: position.Latitude || "",
-        //     lng: position.Longitude || "",
-        //   });
-        // }
-        console.log(position);
+        if (position) {
+          setCenter({
+            lat: position.Latitude || "",
+            lng: position.Longitude || "",
+          });
+        }
       } catch (error) {}
     })();
   }, [postion]);
@@ -98,6 +100,26 @@ function Map() {
           lng: coord.lng(),
         };
       });
+
+    const transformData = coords.map((item: any) => {
+      return [item?.lat, item?.lng];
+    });
+
+    const area = turf.area({
+      type: "Feature",
+      geometry: {
+        type: "Polygon",
+        coordinates: [transformData],
+      },
+    } as any);
+
+    const rounded_area = Math.round((area * 100) / 100);
+
+    if (rounded_area) {
+      setArea(rounded_area);
+      setOpen(true);
+    }
+
     setDrawShape(JSON.stringify(coords, null, 1));
   };
 
@@ -188,8 +210,44 @@ function Map() {
     landApi.update(data, location.state.position?.id_thuadat || "")
   );
 
+  const handleMoseOver = () => {
+    console.log(ref.current);
+
+    setTimeout(() => {
+      console.log(area);
+    }, 200);
+  };
+
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
+      <Drawer
+        title="Thông tin thửa đất"
+        placement="right"
+        onClose={onClose}
+        open={open}
+      >
+        <p>
+          Thửa đất có diện tích:{" "}
+          <span style={{ fontSize: "16px", marginLeft: "4px" }}>{area}</span>{" "}
+          mét vuông
+        </p>
+        <p>
+          Địa chỉ:{" "}
+          <span style={{ fontSize: "16px", marginLeft: "4px" }}>
+            {location.state?.position.address || ""}
+          </span>
+        </p>
+      </Drawer>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h2>Cập nhật vị trí thửa đất</h2>
         <div>
@@ -223,6 +281,7 @@ function Map() {
           {!isEdit && <Marker onLoad={onLoadMaker} position={center} />}
           {isEdit && (
             <Polygon
+              ref={ref}
               editable
               draggable
               path={path}

@@ -1,8 +1,8 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
-import { Pagination, Popconfirm, Table } from "antd";
+import { Button, Pagination, Popconfirm, Table } from "antd";
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import materialsApi from "../../../../api/materials";
 import queryString from "query-string";
 
@@ -62,14 +62,35 @@ const ShopManagement = (props: Props) => {
     {
       title: "Htx xác nhận",
       dataIndex: "hoptacxa_xacnhan",
+      render: (text: any, record: any) => {
+        return (
+          <span>
+            {record?.hoptacxa_xacnhan == 0 ? "chưa xác nhận" : "xác nhận"}
+          </span>
+        );
+      },
     },
     {
       title: "Ncc xác nhận",
       dataIndex: "nhacungcap_xacnhan",
+      render: (text: any, record: any) => {
+        return (
+          <span>
+            {record?.nhacungcap_xacnhan == 0 ? "chưa xác nhận" : "xác nhận"}
+          </span>
+        );
+      },
     },
     {
       title: "Xã viên xác nhận",
       dataIndex: "xavien_xacnhan",
+      render: (text: any, record: any) => {
+        return (
+          <span>
+            {record?.xavien_xacnhan == 0 ? "chưa xác nhận" : "xác nhận"}
+          </span>
+        );
+      },
     },
     {
       fixed: "right",
@@ -80,14 +101,12 @@ const ShopManagement = (props: Props) => {
         <>
           <span
             className=""
-            // onClick={() => handleEditCategory(record?.id_danhmucquydinh || "")}
-            onClick={
-              () => {}
-              // navigate(
-              //   `/trader/category-management/detail/${
-              //     record?.id_danhmucquydinh || ""
-              //   }`
-              // )
+            onClick={() =>
+              navigate(
+                `/shop/shop-management/detail-contract/${
+                  record?.id_giaodich_luagiong || ""
+                }`
+              )
             }
             style={{
               display: "inline-block",
@@ -125,6 +144,10 @@ const ShopManagement = (props: Props) => {
 
   return (
     <div className="shop-management">
+      <Button>
+        <Link to="/shop/shop-management/create-shop">Tạo hợp đồng</Link>
+      </Button>
+      <h3 style={{ margin: "16px 0" }}>Danh sách hợp đồng mua bán lúa giống</h3>
       <Table
         scroll={{ x: 1300 }}
         loading={materials.isLoading}

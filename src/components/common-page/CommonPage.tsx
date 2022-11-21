@@ -50,6 +50,7 @@ type Props = {
   fullCol?: boolean;
   refetchPage?: string;
   tableLoading?: boolean;
+  cacheTime?: number;
 };
 
 const CommonPage = (props: Props) => {
@@ -93,6 +94,7 @@ const CommonPage = (props: Props) => {
     fullCol = false,
     refetchPage,
     tableLoading = false,
+    cacheTime,
   } = props;
 
   useEffect(() => {
@@ -162,7 +164,9 @@ const CommonPage = (props: Props) => {
   };
 
   const { isLoading, isError, data, error, isFetching, refetch } =
-    useQuery<any>([name || "", filter], () => fetchCommonList(filter));
+    useQuery<any>([name || "", filter], () => fetchCommonList(filter), {
+      cacheTime: cacheTime,
+    });
 
   const showModalAdd = () => {
     commonForm.resetFields();

@@ -11,6 +11,7 @@ import {
   Popconfirm,
   Select,
   Space,
+  Spin,
   Table,
   TableColumnsType,
 } from "antd";
@@ -25,6 +26,7 @@ import { getResponseMessage } from "../../../utils/getResponseMessage";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import landApi from "../../../api/land";
 import { ColumnsType } from "antd/lib/table";
+import { convertToMoment } from "../../../utils/convertToMoment";
 
 type Props = {};
 
@@ -34,8 +36,15 @@ const StoryOfSeason = (props: Props) => {
   const [changeStatusLoading, setChangeStatusLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchForm] = Form.useForm();
+  const [showModalReason, setShowModalReason] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const [detailStory, setDetailStory] = useState<any>();
+  const [type, setType] = useState<any>("create");
+  const [detailStoryId, setDetailStoryId] = useState<
+    number | string | undefined
+  >();
+  const [loadingDetailStory, setLoadingDetailStory] = useState<boolean>(false);
+  const [isCreate, setIsCreate] = useState<any>();
   const [filter, setFilter] = useState({
     page: searchParams.get("page") || 1,
     limit: searchParams.get("limit") || 5,
@@ -49,6 +58,43 @@ const StoryOfSeason = (props: Props) => {
       );
     })();
   }, [filter, id]);
+
+  const handleUpdateStory = async (id: string | number | undefined) => {
+    setLoadingDetailStory(true);
+    setType("edit");
+
+    try {
+      setDetailStoryId(id);
+      setIsModalOpen(true);
+      const res = await storyApi.getDetail(id);
+
+      let data = res?.data;
+      if (res && res.data) {
+        const date = [
+          {
+            key: "date_start",
+            value: data.date_start,
+          },
+          {
+            key: "date_end",
+            value: data.date_end,
+          },
+        ];
+
+        if (convertToMoment(date)) {
+          data = {
+            ...data,
+            ...convertToMoment(date),
+          };
+        }
+      }
+      setDetailStory(data || {});
+    } catch (error) {
+      getErrorMessage(error);
+    } finally {
+      setLoadingDetailStory(false);
+    }
+  };
 
   const columns: ColumnsType<any> = [
     {
@@ -88,11 +134,11 @@ const StoryOfSeason = (props: Props) => {
     {
       title: (
         <div>
-          <span>Hoàn thành</span>
-          <Checkbox
+          <span>Thao tác</span>
+          {/* <Checkbox
             style={{ marginLeft: "16px" }}
             onChange={(e) => handleCheckAllActivity(e)}
-          ></Checkbox>
+          ></Checkbox> */}
         </div>
       ),
       dataIndex: "status",
@@ -110,6 +156,19 @@ const StoryOfSeason = (props: Props) => {
                 handleChangeStatus(record?.id_nhatkydongruong || "", e)
               }
             ></Checkbox>
+            <span
+              className=""
+              onClick={() => {
+                handleUpdateStory(record?.id_nhatkydongruong);
+              }}
+              style={{
+                display: "inline-block",
+                marginLeft: "16px",
+                cursor: "pointer",
+              }}
+            >
+              <EditOutlined />
+            </span>
             <span>
               {record.type !== "inside" && (
                 <span
@@ -236,6 +295,11 @@ const StoryOfSeason = (props: Props) => {
 
   const showModal = () => {
     setIsModalOpen(true);
+    setType("create");
+
+    setIsCreate(true);
+    setDetailStoryId(undefined);
+    setDetailStory({});
   };
 
   const handleCancel = () => {
@@ -260,6 +324,10 @@ const StoryOfSeason = (props: Props) => {
     storyApi.createActivity(data)
   );
 
+  const mutation_update_activity = useMutation((data: any) =>
+    storyApi.update(data, detailStoryId || "")
+  );
+
   const handleChangeStatus = async (id: any, e: any) => {
     setChangeStatusLoading(true);
 
@@ -279,14 +347,25 @@ const StoryOfSeason = (props: Props) => {
     values.date_start = formatMoment(values.date_start);
     values.date_end = formatMoment(values.date_end);
 
-    mutation_add_activity.mutate(values, {
-      onSuccess: (res) => {
-        getResponseMessage(res);
-        setIsModalOpen(false);
-        refetch();
-      },
-      onError: (err) => getErrorMessage(err),
-    });
+    if (detailStoryId) {
+      mutation_update_activity.mutate(values, {
+        onSuccess: (res) => {
+          getResponseMessage(res);
+          setIsModalOpen(false);
+          refetch();
+        },
+        onError: (err) => getErrorMessage(err),
+      });
+    } else {
+      mutation_add_activity.mutate(values, {
+        onSuccess: (res) => {
+          getResponseMessage(res);
+          setIsModalOpen(false);
+          refetch();
+        },
+        onError: (err) => getErrorMessage(err),
+      });
+    }
   };
 
   const handleSearchActivity = (value: { search: string }) => {
@@ -360,19 +439,34 @@ const StoryOfSeason = (props: Props) => {
           />
         )}
       </div>
+
       <Modal
         onCancel={handleCancel}
-        title="Tạo hoạt động"
+        title={
+          detailStory && Object.keys(detailStory).length > 0
+            ? "Chỉnh sửa hoạt động"
+            : "Tạo hoạt động"
+        }
         open={isModalOpen}
         width="70%"
       >
-        <FormComponent
-          loading={mutation_add_activity.isLoading || false}
-          onSubmit={handleFormSubmit}
-          name="activityOfSeason"
-          buttonSubmit="Thêm hoạt động"
-          data={actdivityForm}
-        ></FormComponent>
+        <Spin spinning={loadingDetailStory && !isCreate}>
+          <FormComponent
+            type={type}
+            isCreate={isCreate}
+            initialValues={detailStory}
+            updateId={detailStoryId}
+            loading={
+              mutation_add_activity.isLoading ||
+              mutation_update_activity.isLoading ||
+              false
+            }
+            onSubmit={handleFormSubmit}
+            name="activityOfSeason"
+            buttonSubmit="Thêm hoạt động"
+            data={actdivityForm}
+          ></FormComponent>
+        </Spin>
       </Modal>
     </div>
   );
