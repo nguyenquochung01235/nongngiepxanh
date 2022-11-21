@@ -14,6 +14,10 @@ type Props = {
   onDisable?: any;
   goBackUrl?: string;
   showBack?: boolean;
+  isCreate?: boolean;
+  updateId?: any;
+  onReset?: any;
+  type?: string;
 };
 
 const FormComponent = ({
@@ -27,8 +31,29 @@ const FormComponent = ({
   onDisable,
   goBackUrl,
   showBack,
+  isCreate,
+  updateId,
+  type,
 }: Props) => {
   const [formCommon] = Form.useForm();
+
+  useEffect(() => {
+    if (type === "create") {
+      formCommon.setFieldsValue({});
+    }
+  }, [type]);
+
+  useEffect(() => {
+    if (initialValues) {
+      formCommon.setFieldsValue(initialValues);
+    }
+  }, [initialValues]);
+
+  useEffect(() => {
+    if (isCreate) {
+      formCommon.resetFields();
+    }
+  }, [isCreate, updateId]);
 
   let dataChildren = [];
 
@@ -115,7 +140,9 @@ const FormComponent = ({
               type="primary"
               htmlType="submit"
             >
-              {buttonSubmit || "Thực hiện"}
+              {initialValues && Object.keys(initialValues).length > 0
+                ? "Cập nhật"
+                : buttonSubmit || "Thực hiện"}
             </Button>
             {goBackUrl && showBack && (
               <Button style={{ marginLeft: "4px" }}>

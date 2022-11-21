@@ -49,13 +49,13 @@ const DetailContract = (props: Props) => {
   const [refesh, setRefresh] = useState(false);
   const [ckData, setCkData] = useState();
 
-  const fetchActivitySeason = (id: any) => {
+  const fetchDetailContract = (id: any) => {
     return contractApi.getDetail(id);
   };
 
   const deatailContract: any = useQuery(
     ["contract/detail", id],
-    () => fetchActivitySeason(id),
+    () => fetchDetailContract(id),
     { cacheTime: 0 }
   );
 

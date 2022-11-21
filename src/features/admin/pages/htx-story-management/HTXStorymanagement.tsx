@@ -1,6 +1,6 @@
 import { DeleteOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Popconfirm, Select } from "antd";
+import { Button, Input, Modal, Popconfirm, Select } from "antd";
 import Table, { ColumnsType } from "antd/lib/table";
 import React, { useState } from "react";
 import htxApi from "../../../../api/htx";
@@ -12,6 +12,10 @@ import "./htx-story-management.scss";
 type Props = {};
 
 const HTXStorymanagement = (props: Props) => {
+  const [showReason, setShowReason] = useState(false);
+  const [reasonValue, setReasonValue] = useState("");
+  const [deleteId, setDeleteId] = useState("");
+
   const columns: ColumnsType<any> = [
     {
       title: "ID",
@@ -92,19 +96,26 @@ const HTXStorymanagement = (props: Props) => {
   ];
 
   const handleConfirm = (value: any, id: string) => {
-    mutation_update_confirm.mutate(
-      { id: id, hoptacxa_xacnhan: value },
-      {
-        onSuccess: (res) => {
-          getResponseMessage(res);
-          storyOfUser.refetch();
-        },
-        onError: (err) => {
-          getErrorMessage(err);
-        },
-      }
-    );
+    if (value != 2) {
+      mutation_update_confirm.mutate(
+        { id: id, hoptacxa_xacnhan: value },
+        {
+          onSuccess: (res) => {
+            getResponseMessage(res);
+            storyOfUser.refetch();
+          },
+          onError: (err) => {
+            getErrorMessage(err);
+          },
+        }
+      );
+    } else {
+      setShowReason(true);
+      setDeleteId(id);
+    }
   };
+
+  const handleSubmitReason = () => {};
 
   const mutation_update_confirm = useMutation((data: any) =>
     htxApi.htxConfirm(data?.id || "", data)
@@ -168,8 +179,47 @@ const HTXStorymanagement = (props: Props) => {
     }
   };
 
+  const handleSave = () => {
+    mutation_update_confirm.mutate(
+      { id: deleteId, hoptacxa_xacnhan: 2, reason: reasonValue },
+      {
+        onSuccess: (res) => {
+          getResponseMessage(res);
+          storyOfUser.refetch();
+          setShowReason(false);
+        },
+        onError: (err) => {
+          getErrorMessage(err);
+        },
+      }
+    );
+  };
+
   return (
     <div className="story-of-user">
+      <Modal
+        title="Lý do từ chối"
+        open={showReason}
+        onCancel={() => setShowReason(false)}
+      >
+        <Input
+          placeholder="Lý do từ chỗi"
+          onChange={(e) => setReasonValue(e.target.value)}
+          onKeyPress={(event) => {
+            if (event.key === "Enter") {
+              handleSave();
+            }
+          }}
+        />
+        <br />
+        <Button
+          loading={mutation_update_confirm.isLoading}
+          type="primary"
+          onClick={handleSave}
+        >
+          Lưu
+        </Button>
+      </Modal>
       <h3>Nhập ký đồng ruộng</h3>
       <ul className="tab-activity-user">
         {tabList &&

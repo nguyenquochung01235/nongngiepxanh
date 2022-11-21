@@ -24,6 +24,8 @@ import { PATH } from "../../../../enum";
 import { resetCount } from "../../../../redux/notificationSlice";
 import { handleLogout } from "../../../../utils/logout";
 import Dashboard from "../../../admin/pages/dashboard/Dashboard";
+import CreateShop from "../../pages/create-shop-rice/CreateShop";
+import DetailShopContract from "../../pages/detail-shop-contract/DetailShopContract";
 import ShopManagement from "../../pages/shop-management/ShopManagement";
 
 const { Header, Sider, Content } = Layout;
@@ -176,6 +178,14 @@ const HomeShop = () => {
             <Route
               path={"/shop-management"}
               element={<ShopManagement></ShopManagement>}
+            ></Route>
+            <Route
+              path={"/shop-management/create-shop"}
+              element={<CreateShop></CreateShop>}
+            ></Route>
+            <Route
+              path={"/shop-management/detail-contract/:id"}
+              element={<DetailShopContract></DetailShopContract>}
             ></Route>
           </Routes>
         </Content>

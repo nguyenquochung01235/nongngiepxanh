@@ -52,20 +52,22 @@ const LandManagement = (props: Props) => {
       width: "25%",
       render: (text: any, record: any) => (
         <>
-          <div
-            onClick={() =>
-              navigate("/htx/manage-land/map", {
-                state: {
-                  position: record,
-                  preview: true,
-                },
-              })
-            }
-            style={{ cursor: "pointer" }}
-          >
-            <span style={{ marginRight: "12px" }}> Xem vị trí</span>
-            <EyeOutlined />
-          </div>
+          {record?.location ? (
+            <div
+              onClick={() =>
+                navigate("/htx/manage-land/map", {
+                  state: {
+                    position: record,
+                    preview: true,
+                  },
+                })
+              }
+              style={{ cursor: "pointer" }}
+            >
+              <span style={{ marginRight: "12px" }}> Xem vị trí</span>
+              <EyeOutlined />
+            </div>
+          ) : null}
         </>
       ),
     },
@@ -143,6 +145,7 @@ const LandManagement = (props: Props) => {
 
   return (
     <CommonPage
+      cacheTime={0}
       tableLoading={activeLoading}
       refetchPage={refetch}
       deleteId={deleteId}
