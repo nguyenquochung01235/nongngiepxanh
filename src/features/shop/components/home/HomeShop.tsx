@@ -1,4 +1,5 @@
 import {
+  ApiOutlined,
   AppstoreAddOutlined,
   AppstoreOutlined,
   BellOutlined,
@@ -24,9 +25,11 @@ import { PATH } from "../../../../enum";
 import { resetCount } from "../../../../redux/notificationSlice";
 import { handleLogout } from "../../../../utils/logout";
 import Dashboard from "../../../admin/pages/dashboard/Dashboard";
+import CreateContractSupplier from "../../pages/create-contract-supplier/CreateContractSupplier";
 import CreateShop from "../../pages/create-shop-rice/CreateShop";
 import DetailShopContract from "../../pages/detail-shop-contract/DetailShopContract";
 import ShopManagement from "../../pages/shop-management/ShopManagement";
+import SupplierManagement from "../../pages/supplier-management/SupplierManagement";
 
 const { Header, Sider, Content } = Layout;
 
@@ -57,6 +60,13 @@ const HomeShop = () => {
       icon: <TransactionOutlined />,
       label: (
         <Link to={`${"/shop"}${"/shop-management"}`}>Giao dịch lúa giống</Link>
+      ),
+    },
+    {
+      key: `${"/shop"}${"/supplier-management"}`,
+      icon: <ApiOutlined />,
+      label: (
+        <Link to={`${"/shop"}${"/supplier-management"}`}>Giao dịch vật tư</Link>
       ),
     },
   ];
@@ -173,7 +183,7 @@ const HomeShop = () => {
           <Routes>
             <Route
               path={PATH.DASHBOARD}
-              element={<Dashboard url="thuonglai/dash-board"></Dashboard>}
+              element={<Dashboard url="nhacungcapvattu/dash-board"></Dashboard>}
             ></Route>
             <Route
               path={"/shop-management"}
@@ -186,6 +196,14 @@ const HomeShop = () => {
             <Route
               path={"/shop-management/detail-contract/:id"}
               element={<DetailShopContract></DetailShopContract>}
+            ></Route>
+            <Route
+              path={"/supplier-management"}
+              element={<SupplierManagement></SupplierManagement>}
+            ></Route>
+            <Route
+              path={"/supplier-management/create-contract-supplier"}
+              element={<CreateContractSupplier></CreateContractSupplier>}
             ></Route>
           </Routes>
         </Content>

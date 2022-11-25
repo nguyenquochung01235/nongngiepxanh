@@ -1,17 +1,23 @@
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import { Input, Spin } from "antd";
+import { Button, Input, Modal, Spin } from "antd";
 import React, { useState } from "react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import FormComponent from "../../../../components/form-component/FormComponent";
 import shopContractApi from "../../../../api/shopContract";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import PageHeader from "../../../../components/page-header/PageHeader";
+import { getResponseMessage } from "../../../../utils/getResponseMessage";
+import { getErrorMessage } from "../../../../utils/getErrorMessage";
 
-type Props = {};
+type Props = {
+  baseUrl?: string;
+};
 
-const DetailShopContract = (props: Props) => {
+const DetailShopContract = ({ baseUrl }: Props) => {
   const [ckData, setCkData] = useState();
+  const [showReason, setShowReason] = useState(false);
+  const [reasonValue, setReasonValue] = useState("");
 
   const { id } = useParams();
 
@@ -65,6 +71,16 @@ const DetailShopContract = (props: Props) => {
         },
       ],
       formChildren: <Input placeholder="Số lượng"></Input>,
+    },
+    {
+      name: "price",
+      label: "Giá",
+      rules: [
+        {
+          required: true,
+        },
+      ],
+      formChildren: <Input placeholder="Giá"></Input>,
     },
     {
       name: "status",
@@ -281,13 +297,17 @@ const DetailShopContract = (props: Props) => {
 
   if (deatailContract?.data?.data) {
     result.hoptacxa_xacnhan =
-      deatailContract?.data?.data.hoptacxa_xacnhan == 0
+      deatailContract?.data?.data.xavien_xacnhan == 0
         ? "chưa xác nhận"
         : "xác nhận";
     result.nhacungcap_xacnhan =
       deatailContract?.data?.data.nhacungcap_xacnhan == 0
         ? "chưa xác nhận"
         : "xác nhận";
+    result.status =
+      deatailContract?.data?.data.status == 0
+        ? "chưa hoàn thành"
+        : "hoàn thành";
     result.xavien_xacnhan =
       deatailContract?.data?.data.xavien_xacnhan == 0
         ? "chưa xác nhận"
@@ -310,16 +330,111 @@ const DetailShopContract = (props: Props) => {
     },
   ];
 
-  console.log(result);
+  const handleConfirm = () => {
+    confirm_contract.mutate(id, {
+      onSuccess: (res) => {
+        getResponseMessage(res);
+        deatailContract.refetch();
+      },
+      onError: (err) => {
+        getErrorMessage(err);
+      },
+    });
+  };
+
+  const confirm_contract = useMutation((id: any) =>
+    shopContractApi.confirm(id)
+  );
+
+  const approve_contract = useMutation((data: any) =>
+    shopContractApi.approve(data, data?.id || "")
+  );
+
+  const handleApprove = (val: any) => {
+    if (val != 2) {
+      approve_contract.mutate(
+        {
+          id: id,
+          hoptacxa_xacnhan: val || "",
+        },
+        {
+          onSuccess: (res) => {
+            getResponseMessage(res);
+            deatailContract.refetch();
+          },
+          onError: (err) => {
+            getErrorMessage(err);
+          },
+        }
+      );
+    } else {
+      setShowReason(true);
+    }
+  };
+
+  const handleSubmitApprove = () => {
+    approve_contract.mutate(
+      {
+        id: id,
+        hoptacxa_xacnhan: 2,
+        reason: reasonValue,
+      },
+      {
+        onSuccess: (res) => {
+          getResponseMessage(res);
+          setShowReason(false);
+          deatailContract.refetch();
+        },
+        onError: (err) => {
+          getErrorMessage(err);
+        },
+      }
+    );
+  };
 
   return (
-    <Spin spinning={deatailContract.isLoading}>
+    <Spin spinning={deatailContract.isLoading || approve_contract.isLoading}>
+      <Modal
+        title="Lý do từ chối"
+        open={showReason}
+        onCancel={() => setShowReason(false)}
+      >
+        <Input
+          placeholder="Lý do từ chối"
+          onChange={(e) => setReasonValue(e.target.value)}
+          onKeyPress={(event) => {
+            if (event.key === "Enter") {
+              handleSubmitApprove();
+            }
+          }}
+        />
+        <br />
+        <Button
+          loading={approve_contract.isLoading}
+          type="primary"
+          onClick={handleSubmitApprove}
+        >
+          Lưu
+        </Button>
+      </Modal>
       <div className="detail-contract" style={{ minHeight: "100vh" }}>
         <PageHeader
+          onApprove={handleApprove}
           edit={true}
           headerBreadcrumb={headerBreadcrumb}
           form="shop=detail-contract"
           loading={false}
+          isConfirm={true}
+          onConfirm={handleConfirm}
+          confirmLoading={confirm_contract.isLoading}
+          isAllowApprove={baseUrl?.includes("chunhiem")}
+          disableApprove={deatailContract?.data?.data?.hoptacxa_xacnhan != 0}
+          allowApprove={deatailContract?.data?.data?.hoptacxa_xacnhan}
+          toggleConfirm={
+            baseUrl?.includes("htx")
+              ? deatailContract?.data?.data?.xavien_xacnhan
+              : deatailContract?.data?.data?.nhacungcap_xacnhan
+          }
         ></PageHeader>
         {result && (
           <FormComponent

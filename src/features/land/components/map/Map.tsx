@@ -121,6 +121,7 @@ function Map() {
     }
 
     setDrawShape(JSON.stringify(coords, null, 1));
+    setPath(JSON.stringify(coords, null, 1));
   };
 
   console.log(location.state?.position?.location);
@@ -227,6 +228,8 @@ function Map() {
   const onClose = () => {
     setOpen(false);
   };
+
+  console.log(path, isEdit);
 
   return (
     <>

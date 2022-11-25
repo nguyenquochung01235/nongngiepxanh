@@ -1,4 +1,4 @@
-import { Breadcrumb, Button } from "antd";
+import { Breadcrumb, Button, Select } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./page-header.scss";
@@ -8,6 +8,14 @@ type Props = {
   disabled?: boolean;
   headerBreadcrumb?: any;
   edit?: boolean;
+  isConfirm?: boolean;
+  confirmLoading?: boolean;
+  onConfirm?: () => void;
+  toggleConfirm?: boolean;
+  allowApprove?: boolean;
+  onApprove: (val: any) => void;
+  isAllowApprove?: boolean;
+  disableApprove?: boolean;
 };
 
 const PageHeader = ({
@@ -16,6 +24,14 @@ const PageHeader = ({
   disabled = false,
   headerBreadcrumb,
   edit,
+  isConfirm = false,
+  confirmLoading = false,
+  onConfirm,
+  toggleConfirm,
+  allowApprove,
+  onApprove,
+  isAllowApprove,
+  disableApprove,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -38,7 +54,7 @@ const PageHeader = ({
         </Button>
         {edit !== false && (
           <Button
-            disabled={disabled}
+            disabled={disabled || disableApprove}
             loading={loading}
             form={form}
             htmlType="submit"
@@ -46,6 +62,37 @@ const PageHeader = ({
           >
             Lưu
           </Button>
+        )}
+        {isConfirm && !allowApprove && (
+          <Button
+            disabled={disableApprove}
+            onClick={() => onConfirm && onConfirm()}
+            loading={confirmLoading}
+            type="primary"
+          >
+            {!toggleConfirm ? "Xác nhận giao dịch" : "Hủy xác nhận giao dịch"}
+          </Button>
+        )}
+
+        {isAllowApprove && (
+          // <Button
+          //   onClick={() => onApprove && onApprove()}
+          //   loading={false}
+          //   type="primary"
+          // >
+          //   {toggleConfirm ? "Duyệt" : "Từ chối"}
+          // </Button>
+
+          <Select
+            disabled={disableApprove}
+            onChange={(val: any) => onApprove && onApprove(val)}
+            value={allowApprove}
+            style={{ width: "150px", marginLeft: "4px" }}
+          >
+            <Select.Option value={0}>Chờ duyệt</Select.Option>
+            <Select.Option value={1}>Duyệt</Select.Option>
+            <Select.Option value={2}>Hủy</Select.Option>
+          </Select>
         )}
       </div>
     </div>

@@ -162,69 +162,94 @@ const UserDetail = (props: Props) => {
     };
   }
 
-  return userDetail.isLoading ? (
-    <div
-      style={{
-        margin: "50px",
-        padding: "20px",
-        boxShadow: "0 7px 25px rgba(0 0 0 /8%)",
-        borderRadius: "8px",
-      }}
-    >
-      <Row gutter={[30, 30]}>
-        <Col sm={24} xs={24} lg={24} md={24}>
-          <Skeleton.Input
-            size="small"
-            active
-            style={{ width: 850, borderRadius: "6px", marginBottom: "16px" }}
-          />
-        </Col>
-        <br />
-        <Col sm={24} xs={24} lg={12} md={12}>
-          <Skeleton.Input active style={{ width: 550, borderRadius: "6px" }} />
-        </Col>
-        <Col sm={24} xs={24} lg={12} md={12}>
-          <Skeleton.Input active style={{ width: 550, borderRadius: "6px" }} />
-        </Col>
-        <Col sm={24} xs={24} lg={12} md={12}>
-          <Skeleton.Input active style={{ width: 550, borderRadius: "6px" }} />
-        </Col>
-        <Col sm={24} xs={24} lg={12} md={12}>
-          <Skeleton.Input active style={{ width: 550, borderRadius: "6px" }} />
-        </Col>
-        <Col sm={24} xs={24} lg={12} md={12}>
-          <Skeleton.Input active style={{ width: 550, borderRadius: "6px" }} />
-        </Col>
-        <Col sm={24} xs={24} lg={12} md={12}>
-          <Skeleton.Input active style={{ width: 550, borderRadius: "6px" }} />
-        </Col>
-        <Col sm={24} xs={24} lg={12} md={12}>
-          <Space>
-            <Skeleton.Button
-              active={true}
-              shape="default"
-              style={{ width: "150px" }}
-            />
-            <Skeleton.Button
-              active={true}
-              shape="default"
-              style={{ width: "150px" }}
-            />
-          </Space>
-        </Col>
-      </Row>
-    </div>
-  ) : (
-    <Spin spinning={false}>
-      <div className="detail-user-wrapper">
-        <div className="detail-user">
-          <h3>Chỉnh sửa thông tin cá nhân</h3>
-          {Object.keys(result).length > 0 && (
-            <FormComponent {...formComponentProps}></FormComponent>
-          )}
+  return (
+    <div className="detail-user-wrapper">
+      {" "}
+      {userDetail.isLoading ? (
+        <div
+          style={{
+            margin: "50px",
+            padding: "20px",
+            boxShadow: "0 7px 25px rgba(0 0 0 /8%)",
+            borderRadius: "8px",
+          }}
+        >
+          <Row gutter={[30, 30]}>
+            <Col sm={24} xs={24} lg={24} md={24}>
+              <Skeleton.Input
+                size="small"
+                active
+                style={{
+                  width: 850,
+                  borderRadius: "6px",
+                  marginBottom: "16px",
+                }}
+              />
+            </Col>
+            <br />
+            <Col sm={24} xs={24} lg={12} md={12}>
+              <Skeleton.Input
+                active
+                style={{ width: 550, borderRadius: "6px" }}
+              />
+            </Col>
+            <Col sm={24} xs={24} lg={12} md={12}>
+              <Skeleton.Input
+                active
+                style={{ width: 550, borderRadius: "6px" }}
+              />
+            </Col>
+            <Col sm={24} xs={24} lg={12} md={12}>
+              <Skeleton.Input
+                active
+                style={{ width: 550, borderRadius: "6px" }}
+              />
+            </Col>
+            <Col sm={24} xs={24} lg={12} md={12}>
+              <Skeleton.Input
+                active
+                style={{ width: 550, borderRadius: "6px" }}
+              />
+            </Col>
+            <Col sm={24} xs={24} lg={12} md={12}>
+              <Skeleton.Input
+                active
+                style={{ width: 550, borderRadius: "6px" }}
+              />
+            </Col>
+            <Col sm={24} xs={24} lg={12} md={12}>
+              <Skeleton.Input
+                active
+                style={{ width: 550, borderRadius: "6px" }}
+              />
+            </Col>
+            <Col sm={24} xs={24} lg={12} md={12}>
+              <Space>
+                <Skeleton.Button
+                  active={true}
+                  shape="default"
+                  style={{ width: "150px" }}
+                />
+                <Skeleton.Button
+                  active={true}
+                  shape="default"
+                  style={{ width: "150px" }}
+                />
+              </Space>
+            </Col>
+          </Row>
         </div>
-      </div>
-    </Spin>
+      ) : (
+        <Spin spinning={false}>
+          <div className="detail-user">
+            <h3>Chỉnh sửa thông tin cá nhân</h3>
+            {Object.keys(result).length > 0 && (
+              <FormComponent {...formComponentProps}></FormComponent>
+            )}
+          </div>
+        </Spin>
+      )}
+    </div>
   );
 };
 

@@ -24,6 +24,28 @@ body {
   object-fit: cover;
 }
 
+.confirm,
+.success {
+  padding: 4px 6px;
+  color: $white-color;
+  background-color: #00e396;
+  border-radius: $radius-6;
+}
+
+.not-success {
+  padding: 4px 6px;
+  color: $white-color;
+  background-color: #0ad9e5;
+  border-radius: $radius-6;
+}
+
+.not-confirm {
+  padding: 4px 6px;
+  color: #333;
+  background-color: #fed100;
+  border-radius: $radius-6;
+}
+
 .bold {
   font-weight: 600;
 }
@@ -340,4 +362,9 @@ ul::-webkit-scrollbar-thumb {
 .ant-table {
   max-width: 100%;
   overflow-x: auto;
+}
+
+.ant-input-number:focus,
+.ant-input-number-focused {
+  box-shadow: none;
 }
