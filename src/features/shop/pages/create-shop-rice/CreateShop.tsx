@@ -315,6 +315,23 @@ const CreateShop = (props: Props) => {
                       ></InputNumber>
                     </Form.Item>
                   </Col>
+                  <Col lg={12} md={12} sm={24} xs={24}>
+                    <Form.Item
+                      name="price"
+                      label="Giá"
+                      rules={[
+                        {
+                          required: true,
+                        },
+                      ]}
+                    >
+                      <InputNumber
+                        min={0}
+                        style={{ width: "100%", borderRadius: "6px" }}
+                        placeholder="Số lượng"
+                      ></InputNumber>
+                    </Form.Item>
+                  </Col>
                 </Row>
 
                 <Row gutter={24}>

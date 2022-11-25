@@ -5,13 +5,14 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import materialsApi from "../../../../api/materials";
 import queryString from "query-string";
+import supplierContractApi from "../../../../api/supplierContract";
 
 type Props = {
   baseUrl?: string;
   role?: string;
 };
 
-const ShopManagement = ({ baseUrl, role }: Props) => {
+const SupplierManagement = ({ baseUrl, role }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
@@ -24,42 +25,45 @@ const ShopManagement = ({ baseUrl, role }: Props) => {
   useEffect(() => {
     (() => {
       navigate(
-        `/${baseUrl || "shop"}/shop-management?${queryString.stringify(filter)}`
+        `/${baseUrl || "shop"}/supplier-management?${queryString.stringify(
+          filter
+        )}`
       );
     })();
   }, [filter]);
-  console.log(role);
 
-  const fetchMaterials = (filter: any) =>
-    role == "chunhiem"
-      ? materialsApi.getAllChairman(filter)
-      : materialsApi.getAll(filter);
+  const fetchSupplierContract = (filter: any) =>
+    supplierContractApi.getAll(filter);
 
-  const materials: any = useQuery(["materials", filter], () =>
-    fetchMaterials(filter)
+  const suplierContract: any = useQuery(
+    ["supplier/contract/list", filter],
+    () => fetchSupplierContract(filter)
   );
 
   const tableColumns: any = [
     {
       title: "ID",
       width: "5%",
-      dataIndex: "id_giaodich_luagiong",
+      dataIndex: "id_giaodichmuaban_vattu",
     },
     {
       title: "Mùa vụ",
-      width: "15%",
+      width: "12%",
       dataIndex: "name_lichmuavu",
     },
     {
-      title: "Giống lúa",
-      dataIndex: "name_gionglua",
+      title: "Tên vật tư",
+      width: "10%",
+      dataIndex: "name_category_vattu",
     },
     {
       title: "Xã viên",
+      width: "10%",
       dataIndex: "name_xavien",
     },
     {
       title: "Tên người bán",
+      width: "10%",
       dataIndex: "name_daily",
     },
     {
@@ -68,8 +72,8 @@ const ShopManagement = ({ baseUrl, role }: Props) => {
     },
     {
       title: "Trạng thái",
-      width: "10%",
       dataIndex: "status",
+      width: "10%",
       render: (text: any, record: any) => {
         return (
           <span>
@@ -116,8 +120,8 @@ const ShopManagement = ({ baseUrl, role }: Props) => {
     },
     {
       title: "Xã viên xác nhận",
-      dataIndex: "xavien_xacnhan",
       width: "8%",
+      dataIndex: "xavien_xacnhan",
       render: (text: any, record: any) => {
         return (
           <span>
@@ -183,21 +187,23 @@ const ShopManagement = ({ baseUrl, role }: Props) => {
   return (
     <div className="shop-management">
       <Button>
-        <Link to="/shop/shop-management/create-shop">Tạo hợp đồng</Link>
+        <Link to="/shop/supplier-management/create-contract-supplier">
+          Tạo hợp đồng
+        </Link>
       </Button>
       <h3 style={{ margin: "16px 0" }}>Danh sách hợp đồng mua bán lúa giống</h3>
       <Table
         scroll={{ x: 2000 }}
-        loading={materials.isLoading}
+        loading={suplierContract.isLoading}
         columns={tableColumns}
-        dataSource={materials?.data?.data || []}
+        dataSource={suplierContract?.data?.data || []}
         pagination={false}
       />
       <div className="pagiantion">
-        {materials?.data?.meta?.total > 0 && (
+        {suplierContract?.data?.meta?.total > 0 && (
           <Pagination
             defaultCurrent={filter?.page as number}
-            total={materials?.data?.meta?.total}
+            total={suplierContract?.data?.meta?.total}
             pageSize={filter?.limit as number}
             onChange={handlePagination}
           />
@@ -207,4 +213,4 @@ const ShopManagement = ({ baseUrl, role }: Props) => {
   );
 };
 
-export default ShopManagement;
+export default SupplierManagement;

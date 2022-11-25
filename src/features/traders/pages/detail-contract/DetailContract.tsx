@@ -433,8 +433,8 @@ const DetailContract = (props: Props) => {
 
   const headerBreadcrumb = [
     {
-      name: "Thương lái",
-      path: "/trader",
+      name: baseUrl?.includes("htx") ? "HTX" : "Thương lái",
+      path: baseUrl?.includes("htx") ? "/htx" : "/trader",
     },
     {
       name: "Quản lý hợp đồng",

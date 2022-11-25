@@ -8,6 +8,7 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   PieChartOutlined,
+  TransactionOutlined,
   UserOutlined,
   YuqueOutlined,
 } from "@ant-design/icons";
@@ -46,6 +47,9 @@ import Map from "../../../land/components/map/Map";
 import DetailLand from "../../../land/pages/detail-land/DetailLand";
 import CreateLand from "../../../land/pages/land-create/CreateLand";
 import Landmanagement from "../../../land/pages/land-management/Landmanagement";
+import CreateShop from "../../../shop/pages/create-shop-rice/CreateShop";
+import DetailShopContract from "../../../shop/pages/detail-shop-contract/DetailShopContract";
+import ShopManagement from "../../../shop/pages/shop-management/ShopManagement";
 import StoryOfSeason from "../../../story/pages/StoryOfSeason";
 import Story from "../../../story/Story";
 import ContractManagement from "../../../traders/components/contract/ContractManagement";
@@ -171,6 +175,13 @@ const HomeAdmin = () => {
       label: <Link to="/htx/manage-story">Nhật ký đồng ruộng</Link>,
     },
     {
+      key: `${PATH.HTX}${"/shop-management"}`,
+      icon: <TransactionOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/shop-management"}`}>Giao dịch lúa giống</Link>
+      ),
+    },
+    {
       key: `${PATH.HTX}${PATH.CONTRACT_MANAGEMENT}`,
       icon: <ContainerOutlined />,
       label: (
@@ -208,6 +219,13 @@ const HomeAdmin = () => {
         <Link to={`${PATH.HTX}${PATH.CONTRACT_MANAGEMENT}`}>
           Quản lý hợp đồng
         </Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/shop-management"}`,
+      icon: <TransactionOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/shop-management"}`}>Giao dịch lúa giống</Link>
       ),
     },
     {
@@ -402,6 +420,54 @@ const HomeAdmin = () => {
                       ></Route>
                     )}
 
+                    {roles?.role === "chunhiem" && (
+                      <>
+                        <Route
+                          path={PATH.ADD_USER_TO_HTX}
+                          element={<AddUserToHTX></AddUserToHTX>}
+                        ></Route>
+                        <Route
+                          path={"/story-of-user"}
+                          element={<HTXStorymanagement></HTXStorymanagement>}
+                        ></Route>
+                        <Route
+                          path={PATH.MANAGE_HTX}
+                          element={<HTXManagement></HTXManagement>}
+                        ></Route>
+                        <Route
+                          path={PATH.MANAGE_SEASON}
+                          element={<SeasonManagement></SeasonManagement>}
+                        ></Route>
+                        <Route
+                          path={PATH.MANAGE_SEASON_DETAIL}
+                          element={<DetailSeaSon></DetailSeaSon>}
+                        ></Route>
+                        <Route
+                          path={PATH.MANAGE_ACTIVITY}
+                          element={<SeasonActivity></SeasonActivity>}
+                        ></Route>
+                        <Route
+                          path={PATH.CALENDAR}
+                          element={<Calendar></Calendar>}
+                        ></Route>
+                        <Route
+                          path={"/shop-management"}
+                          element={
+                            <ShopManagement
+                              baseUrl="htx"
+                              role="chunhiem"
+                            ></ShopManagement>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/shop-management/detail-contract/:id"}
+                          element={
+                            <DetailShopContract baseUrl="chunhiem"></DetailShopContract>
+                          }
+                        ></Route>
+                      </>
+                    )}
+
                     {(roles?.role === "xavien" ||
                       roles?.role === "chunhiem") && (
                       <>
@@ -451,40 +517,19 @@ const HomeAdmin = () => {
                             ></DetailContract>
                           }
                         ></Route>
+                        <Route
+                          path={"/shop-management"}
+                          element={
+                            <ShopManagement baseUrl="htx"></ShopManagement>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/shop-management/detail-contract/:id"}
+                          element={
+                            <DetailShopContract baseUrl="htx"></DetailShopContract>
+                          }
+                        ></Route>
                         <Route path="*" element={<NotFound />} />
-                      </>
-                    )}
-
-                    {roles?.role === "chunhiem" && (
-                      <>
-                        <Route
-                          path={PATH.ADD_USER_TO_HTX}
-                          element={<AddUserToHTX></AddUserToHTX>}
-                        ></Route>
-                        <Route
-                          path={"/story-of-user"}
-                          element={<HTXStorymanagement></HTXStorymanagement>}
-                        ></Route>
-                        <Route
-                          path={PATH.MANAGE_HTX}
-                          element={<HTXManagement></HTXManagement>}
-                        ></Route>
-                        <Route
-                          path={PATH.MANAGE_SEASON}
-                          element={<SeasonManagement></SeasonManagement>}
-                        ></Route>
-                        <Route
-                          path={PATH.MANAGE_SEASON_DETAIL}
-                          element={<DetailSeaSon></DetailSeaSon>}
-                        ></Route>
-                        <Route
-                          path={PATH.MANAGE_ACTIVITY}
-                          element={<SeasonActivity></SeasonActivity>}
-                        ></Route>
-                        <Route
-                          path={PATH.CALENDAR}
-                          element={<Calendar></Calendar>}
-                        ></Route>
                       </>
                     )}
 

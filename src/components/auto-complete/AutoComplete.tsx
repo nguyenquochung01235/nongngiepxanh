@@ -14,6 +14,7 @@ type Props = {
   keyword?: string;
   returnName?: boolean;
   disabled?: boolean;
+  width?: string;
 };
 const { Option } = Select;
 
@@ -28,6 +29,7 @@ const AutoComplete = ({
   keyword = "search",
   returnName = false,
   disabled = false,
+  width,
 }: Props) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchData, setSearchData] = useState<any>();
@@ -97,6 +99,7 @@ const AutoComplete = ({
 
   const selectC = (
     <Select
+      style={width ? { width: width } : {}}
       allowClear
       placeholder={placeholder || "Tìm kiếm"}
       showSearch

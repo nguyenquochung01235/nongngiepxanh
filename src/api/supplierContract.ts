@@ -1,6 +1,12 @@
+import { ListParams } from "../model";
 import axiosClient from "./axiosClient";
 
-const shopContractApi = {
+const supplierContractApi = {
+  getAll(params: ListParams) {
+    const url = "giaodichmuabanvattu/get-list";
+    return axiosClient.get(url, { params });
+  },
+
   searchUser(data: any) {
     const url = "xavien/search-by-phone-number";
     return axiosClient.post(url, data);
@@ -27,4 +33,4 @@ const shopContractApi = {
   },
 };
 
-export default shopContractApi;
+export default supplierContractApi;
