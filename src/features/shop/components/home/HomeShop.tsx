@@ -28,6 +28,7 @@ import Dashboard from "../../../admin/pages/dashboard/Dashboard";
 import CreateContractSupplier from "../../pages/create-contract-supplier/CreateContractSupplier";
 import CreateShop from "../../pages/create-shop-rice/CreateShop";
 import DetailShopContract from "../../pages/detail-shop-contract/DetailShopContract";
+import DetailSupplierContract from "../../pages/detail-supplier-contract/DetailSupplierContract";
 import ShopManagement from "../../pages/shop-management/ShopManagement";
 import SupplierManagement from "../../pages/supplier-management/SupplierManagement";
 
@@ -204,6 +205,10 @@ const HomeShop = () => {
             <Route
               path={"/supplier-management/create-contract-supplier"}
               element={<CreateContractSupplier></CreateContractSupplier>}
+            ></Route>
+            <Route
+              path={"/supplier-management/detail-supplier-contract/:id"}
+              element={<DetailSupplierContract></DetailSupplierContract>}
             ></Route>
           </Routes>
         </Content>

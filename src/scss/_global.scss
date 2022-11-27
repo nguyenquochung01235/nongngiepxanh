@@ -39,6 +39,18 @@ body {
   border-radius: $radius-6;
 }
 
+.m-r-4 {
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.refuse {
+  padding: 4px 6px;
+  color: $white-color;
+  background-color: #ff4560;
+  border-radius: $radius-6;
+}
+
 .not-confirm {
   padding: 4px 6px;
   color: #333;

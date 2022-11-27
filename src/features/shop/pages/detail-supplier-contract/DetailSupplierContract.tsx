@@ -10,12 +10,13 @@ import PageHeader from "../../../../components/page-header/PageHeader";
 import { getResponseMessage } from "../../../../utils/getResponseMessage";
 import { getErrorMessage } from "../../../../utils/getErrorMessage";
 import UploadImag from "../../../../components/upload-image/UploadImage";
+import supplierCategoryContractApi from "../../../../api/supplierCategoryContract";
 
 type Props = {
   baseUrl?: string;
 };
 
-const DetailShopContract = ({ baseUrl }: Props) => {
+const DetailSupplierContract = ({ baseUrl }: Props) => {
   const [ckData, setCkData] = useState();
   const [showReason, setShowReason] = useState(false);
   const [reasonValue, setReasonValue] = useState("");
@@ -24,7 +25,7 @@ const DetailShopContract = ({ baseUrl }: Props) => {
   const { id } = useParams();
 
   const fetchDetailContract = (id: any) => {
-    return shopContractApi.getDetail(id);
+    return supplierCategoryContractApi.getDetail(id);
   };
 
   const handleChangeImage = (file: any) => {
@@ -32,14 +33,14 @@ const DetailShopContract = ({ baseUrl }: Props) => {
   };
 
   const deatailContract: any = useQuery(
-    ["shop/contract/detail", id],
+    ["supplier-category/contract/detail", id],
     () => fetchDetailContract(id),
     { cacheTime: 0 }
   );
 
   const contractDetailForm = [
     {
-      name: "id_giaodich_luagiong",
+      name: "id_giaodichmuaban_vattu",
       label: "ID",
       rules: [
         {
@@ -59,14 +60,14 @@ const DetailShopContract = ({ baseUrl }: Props) => {
       formChildren: <Input disabled placeholder="Lịch mùa vụ"></Input>,
     },
     {
-      name: "name_gionglua",
-      label: "Giống lúa",
+      name: "name_category_vattu",
+      label: "Vật tư",
       rules: [
         {
           required: true,
         },
       ],
-      formChildren: <Input disabled placeholder="giống lúa"></Input>,
+      formChildren: <Input disabled placeholder="Vật tư"></Input>,
     },
     {
       name: "soluong",
@@ -98,6 +99,7 @@ const DetailShopContract = ({ baseUrl }: Props) => {
       ],
       formChildren: <Input disabled placeholder="Trạng thái"></Input>,
     },
+
     {
       name: "xavien_xacnhan",
       label: "Xã viên xác nhận",
@@ -319,12 +321,12 @@ const DetailShopContract = ({ baseUrl }: Props) => {
     values.description_giaodich = ckData || "";
 
     const formData: any = new FormData();
-    formData.append("img_lohang", file || null);
     formData.append("description_giaodich", values.description_giaodich);
+    formData.append("img_lohang", file || null);
     formData.append("soluong", values.soluong);
     formData.append("price", values.price);
 
-    mutation_update_shop_contract.mutate(formData, {
+    mutation_update_supplier_category_contract.mutate(formData, {
       onSuccess: (res) => {
         getResponseMessage(res);
         deatailContract.refetch();
@@ -335,10 +337,10 @@ const DetailShopContract = ({ baseUrl }: Props) => {
     });
   };
 
-  const mutation_update_shop_contract = useMutation((data: any) =>
-    shopContractApi.update(
+  const mutation_update_supplier_category_contract = useMutation((data: any) =>
+    supplierCategoryContractApi.update(
       data,
-      deatailContract?.data?.data?.id_giaodich_luagiong || ""
+      deatailContract?.data?.data?.id_giaodichmuaban_vattu || ""
     )
   );
 
@@ -392,11 +394,11 @@ const DetailShopContract = ({ baseUrl }: Props) => {
   };
 
   const confirm_contract = useMutation((id: any) =>
-    shopContractApi.confirm(id)
+    supplierCategoryContractApi.confirm(id)
   );
 
   const approve_contract = useMutation((data: any) =>
-    shopContractApi.approve(data, data?.id || "")
+    supplierCategoryContractApi.approve(data, data?.id || "")
   );
 
   const handleApprove = (val: any) => {
@@ -472,7 +474,7 @@ const DetailShopContract = ({ baseUrl }: Props) => {
           edit={true}
           headerBreadcrumb={headerBreadcrumb}
           form="shop=detail-contract"
-          loading={mutation_update_shop_contract.isLoading}
+          loading={mutation_update_supplier_category_contract.isLoading}
           isConfirm={!baseUrl?.includes("chunhiem")}
           onConfirm={handleConfirm}
           confirmLoading={confirm_contract.isLoading}
@@ -506,4 +508,4 @@ const DetailShopContract = ({ baseUrl }: Props) => {
   );
 };
 
-export default DetailShopContract;
+export default DetailSupplierContract;

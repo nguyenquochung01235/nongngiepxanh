@@ -1,4 +1,5 @@
 import {
+  ApiOutlined,
   AppstoreAddOutlined,
   AppstoreOutlined,
   BellOutlined,
@@ -7,6 +8,7 @@ import {
   FormOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  PayCircleOutlined,
   PieChartOutlined,
   TransactionOutlined,
   UserOutlined,
@@ -47,9 +49,12 @@ import Map from "../../../land/components/map/Map";
 import DetailLand from "../../../land/pages/detail-land/DetailLand";
 import CreateLand from "../../../land/pages/land-create/CreateLand";
 import Landmanagement from "../../../land/pages/land-management/Landmanagement";
+import RiceTransactionManagement from "../../../rice-transaction/pages/RiceTransactionManagement";
 import CreateShop from "../../../shop/pages/create-shop-rice/CreateShop";
 import DetailShopContract from "../../../shop/pages/detail-shop-contract/DetailShopContract";
+import DetailSupplierContract from "../../../shop/pages/detail-supplier-contract/DetailSupplierContract";
 import ShopManagement from "../../../shop/pages/shop-management/ShopManagement";
+import SupplierManagement from "../../../shop/pages/supplier-management/SupplierManagement";
 import StoryOfSeason from "../../../story/pages/StoryOfSeason";
 import Story from "../../../story/Story";
 import ContractManagement from "../../../traders/components/contract/ContractManagement";
@@ -182,11 +187,29 @@ const HomeAdmin = () => {
       ),
     },
     {
+      key: `${PATH.HTX}${"/supplier-management"}`,
+      icon: <ApiOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/supplier-management"}`}>
+          Giao dịch vật tư
+        </Link>
+      ),
+    },
+    {
       key: `${PATH.HTX}${PATH.CONTRACT_MANAGEMENT}`,
       icon: <ContainerOutlined />,
       label: (
         <Link to={`${PATH.HTX}${PATH.CONTRACT_MANAGEMENT}`}>
           Quản lý hợp đồng
+        </Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/rice-transaction-management"}`,
+      icon: <PayCircleOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/rice-transaction-management"}`}>
+          Giao dịch lúa giống
         </Link>
       ),
     },
@@ -226,6 +249,15 @@ const HomeAdmin = () => {
       icon: <TransactionOutlined />,
       label: (
         <Link to={`${PATH.HTX}${"/shop-management"}`}>Giao dịch lúa giống</Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/supplier-management"}`,
+      icon: <ApiOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/supplier-management"}`}>
+          Giao dịch vật tư
+        </Link>
       ),
     },
     {
@@ -465,6 +497,24 @@ const HomeAdmin = () => {
                             <DetailShopContract baseUrl="chunhiem"></DetailShopContract>
                           }
                         ></Route>
+                        <Route
+                          path={"/supplier-management"}
+                          element={
+                            <SupplierManagement
+                              role="chunhiem"
+                              baseUrl="htx"
+                            ></SupplierManagement>
+                          }
+                        ></Route>
+
+                        <Route
+                          path={
+                            "/supplier-management/detail-supplier-contract/:id"
+                          }
+                          element={
+                            <DetailSupplierContract baseUrl="chunhiem"></DetailSupplierContract>
+                          }
+                        ></Route>
                       </>
                     )}
 
@@ -527,6 +577,27 @@ const HomeAdmin = () => {
                           path={"/shop-management/detail-contract/:id"}
                           element={
                             <DetailShopContract baseUrl="htx"></DetailShopContract>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/supplier-management"}
+                          element={
+                            <SupplierManagement baseUrl="htx"></SupplierManagement>
+                          }
+                        ></Route>
+
+                        <Route
+                          path={
+                            "/supplier-management/detail-supplier-contract/:id"
+                          }
+                          element={
+                            <DetailSupplierContract baseUrl="htx"></DetailSupplierContract>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/rice-transaction-management"}
+                          element={
+                            <RiceTransactionManagement></RiceTransactionManagement>
                           }
                         ></Route>
                         <Route path="*" element={<NotFound />} />

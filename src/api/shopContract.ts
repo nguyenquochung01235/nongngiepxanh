@@ -16,6 +16,11 @@ const shopContractApi = {
     return axiosClient.post(url, data);
   },
 
+  update(data: any, id: string | number) {
+    const url = `giaodichmuabanluagiong/update/${id}`;
+    return axiosClient.post(url, data);
+  },
+
   confirm(id: string | number) {
     const url = `giaodichmuabanluagiong/confirm/${id}`;
     return axiosClient.put(url);
