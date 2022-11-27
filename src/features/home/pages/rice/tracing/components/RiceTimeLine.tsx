@@ -1,30 +1,17 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Divider, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
 import CustomTimeline, {
   CustomLastTimeLineItem,
   CustomTimeLineItem,
 } from "../../../../../../components/time-line";
-import { ITrackingAndTracing } from "../../../../../../model/tracking-tracing";
+import { ITruyXuatNguonGoc } from "../../../../../../model/tracking-tracing";
 import RiceDetail from "./RiceDetail";
 
-const tracing: ITrackingAndTracing = {
-  riceTransaction: {
-    name: "Giao Dich Mua Ban Lua",
-    buyer: "Nguyen Van A",
-    saler: "Nguyen Van B",
-    quantity: 2000,
-    time: '22/10/2022',
-  },
-  productTransaction: {
-    name: "Giao Dich Mua Ban San Pham",
-    buyer: "Nguyen Van A",
-    saler: "Nguyen Van B",
-    quantity: 2000,
-    time: '22/11/2022',
-  },
-};
+interface Props {
+  lohang?: ITruyXuatNguonGoc;
+}
 
-const RiceTimeLine = () => {
+const RiceTimeLine = ({ lohang }: Props) => {
   const [isShowRiceDetail, setIsShowRiceDetail] = useState(false);
 
   const handleShowRiceDetail = (
@@ -37,16 +24,15 @@ const RiceTimeLine = () => {
   };
 
   const render = (
-    tenGiaoDich: string,
-    nguoiMua: string,
-    nguoiBan: string,
-    soLuong: number,
-    id: number
+    tenGiaoDich?: string,
+    nguoiMua?: string,
+    nguoiBan?: string,
+    soLuong?: number,
+    id?: number
   ) => {
     return (
       <Box
-        onClick={(e) => handleShowRiceDetail(e, id)}
-        width={600}
+        onClick={(e) => handleShowRiceDetail(e, id || 0)}
         bgcolor="#40AA41"
         color="#ffffff"
         p={2}
@@ -99,31 +85,44 @@ const RiceTimeLine = () => {
   };
 
   return (
-    <Box mt={4}>
-      <CustomTimeline>
-        <RiceDetail isShow={isShowRiceDetail}></RiceDetail>
-        <CustomTimeLineItem time={tracing.riceTransaction.time}>
-          {render(
-            tracing.riceTransaction.name,
-            tracing.riceTransaction.buyer,
-            tracing.riceTransaction.saler,
-            tracing.riceTransaction.quantity,
-            2
-          )}
-        </CustomTimeLineItem>
-
-        <CustomTimeLineItem time={tracing.productTransaction.time}>
-          {render(
-            tracing.productTransaction.name,
-            tracing.productTransaction.buyer,
-            tracing.productTransaction.saler,
-            tracing.productTransaction.quantity,
-            3
-          )}
-        </CustomTimeLineItem>
-        <CustomLastTimeLineItem></CustomLastTimeLineItem>
-      </CustomTimeline>
-    </Box>
+    <Grid container mt={4} display="flex" justifyContent="space-between">
+      <Grid item xs={12}>
+        <CustomTimeline>
+          <CustomTimeLineItem
+            time={
+              lohang?.giaodichmubanlua.updated_at &&
+              new Date(lohang?.giaodichmubanlua.updated_at).toLocaleDateString()
+            }
+          >
+            {render(
+              lohang?.giaodichmubanlua.name_lohang,
+              lohang?.giaodichmubanlua.name_thuonglai,
+              lohang?.giaodichmubanlua.name_xavien,
+              lohang?.giaodichmubanlua.soluong,
+              2
+            )}
+          </CustomTimeLineItem>
+          <RiceDetail isShow={isShowRiceDetail}></RiceDetail>
+          <CustomTimeLineItem
+            time={
+              lohang?.giaodichmubanluagiong.updated_at &&
+              new Date(
+                lohang?.giaodichmubanluagiong.updated_at
+              ).toLocaleDateString()
+            }
+          >
+            {render(
+              lohang?.giaodichmubanluagiong.name_gionglua,
+              lohang?.giaodichmubanluagiong.name_xavien,
+              lohang?.giaodichmubanluagiong.nhacungcapvattu_name,
+              lohang?.giaodichmubanluagiong.soluong,
+              3
+            )}
+          </CustomTimeLineItem>
+        </CustomTimeline>
+      </Grid>
+      {/* <Divider orientation="vertical" sx={{ml: '40px'}} flexItem></Divider> */}
+    </Grid>
   );
 };
 

@@ -63,8 +63,8 @@ export default function CustomTimeline({ children }: ICustomTimeLine) {
     <Timeline
       sx={{
         [`& .${timelineContentClasses.root}`]: {
-          mb: 4,
-          flex: 3
+          mb: 6,
+          flex: 40
         },
       }}
     >

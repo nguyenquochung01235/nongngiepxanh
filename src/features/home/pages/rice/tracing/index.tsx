@@ -1,15 +1,19 @@
 import { Box } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
+import { ITruyXuatNguonGoc } from '../../../../../model/tracking-tracing'
 import RiceInformation from './components/RiceInformation'
 import RiceTimeLine from './components/RiceTimeLine'
 
-const TracingPricePage = () => {
+const TrackingPage = () => {
+
+  const [data, setData] = useState<ITruyXuatNguonGoc>()
+
   return (
     <Box width='80%' m='0 auto'>
-      <RiceInformation></RiceInformation>
+      <RiceInformation product={data?.giaodichmubanlua}></RiceInformation>
       <RiceTimeLine></RiceTimeLine>
     </Box>
   )
 }
 
-export default TracingPricePage
+export default TrackingPage

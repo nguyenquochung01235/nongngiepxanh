@@ -1,15 +1,14 @@
 import { Card as CartMUI, CardActionArea, CardContent, CardMedia, Typography } from '@mui/material'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export interface ICartProps {
   href: string,
-  name: string,
   image: string,
-  description: string
+  children?: ReactNode
 }
 
-const Card = ({ href, name, image, description }: ICartProps) => {
+const Card = ({ href, image, children }: ICartProps) => {
 
   const navigate = useNavigate()
 
@@ -18,21 +17,18 @@ const Card = ({ href, name, image, description }: ICartProps) => {
   }
 
   return (
-    <CartMUI sx={{ maxWidth: 305, minWidth: 260 }}>
+    <CartMUI sx={{ maxWidth: 370, minWidth: 335, m: '0 auto' }}>
       <CardActionArea onClick={handleClick}>
         <CardMedia
           component="img"
-          height="140"
+          height="200"
           image={image}
           alt="green iguana"
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {name}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" textAlign='justify'>
-           {description}
-          </Typography>
+          {
+            children
+          }
         </CardContent>
       </CardActionArea>
     </CartMUI>

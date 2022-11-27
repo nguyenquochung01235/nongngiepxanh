@@ -34,12 +34,8 @@ const ListMenu = (props: Props) => {
     <Menu
       items={[
         {
-          label: <Link to='/g/rice'>Lúa</Link>,
+          label: <Link to="/g/htx">Hợp tác xã</Link>,
           key: "0",
-        },
-        {
-          label: <Link to='/g/product'>Sản phẩm</Link>,
-          key: "1",
         },
       ]}
     />
@@ -75,7 +71,7 @@ const ListMenu = (props: Props) => {
           <Dropdown overlay={menu_LoHang}>
             <a onClick={(e) => e.preventDefault()} style={{ color: "#fff" }}>
               <Space size="small">
-                Giao dịch
+                Truy xuất
                 <CaretDownOutlined />
               </Space>
             </a>

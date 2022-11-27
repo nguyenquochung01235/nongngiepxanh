@@ -1,16 +1,21 @@
 import { Pagination, Stack } from '@mui/material';
 import React from 'react'
 
-const CustomPagination = () => {
+interface Props {
+  page: number,
+  setPage: (num: number) => void,
+  limit: number,
+  pageSize:number
+}
 
-  const [page, setPage] = React.useState(1);
+const CustomPagination = (props: Props) => {
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
+    props.setPage(value);
   };
 
   return (
-    <Stack spacing={2} mb={4}>
-      <Pagination count={10} page={page} onChange={handleChange} />
+    <Stack mb={4}>
+      <Pagination count={Math.round(props.pageSize)} page={props.page} onChange={handleChange} />
     </Stack>
   )
 }
