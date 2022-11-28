@@ -49,6 +49,7 @@ import Map from "../../../land/components/map/Map";
 import DetailLand from "../../../land/pages/detail-land/DetailLand";
 import CreateLand from "../../../land/pages/land-create/CreateLand";
 import Landmanagement from "../../../land/pages/land-management/Landmanagement";
+import DetailRiceTransactionUser from "../../../rice-transaction/pages/detail-rice-transaction-user/DetailRiceTransactionUser";
 import RiceTransactionManagement from "../../../rice-transaction/pages/RiceTransactionManagement";
 import CreateShop from "../../../shop/pages/create-shop-rice/CreateShop";
 import DetailShopContract from "../../../shop/pages/detail-shop-contract/DetailShopContract";
@@ -265,6 +266,15 @@ const HomeAdmin = () => {
       icon: <FormOutlined />,
       label: (
         <Link to={`${PATH.HTX}${"/story-of-user"}`}>Quản lý sổ nhật ký</Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/rice-transaction-management"}`,
+      icon: <PayCircleOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/rice-transaction-management"}`}>
+          Giao dịch lúa giống
+        </Link>
       ),
     },
   ];
@@ -515,6 +525,18 @@ const HomeAdmin = () => {
                             <DetailSupplierContract baseUrl="chunhiem"></DetailSupplierContract>
                           }
                         ></Route>
+                        <Route
+                          path={"/rice-transaction-management"}
+                          element={
+                            <RiceTransactionManagement role="chunhiem"></RiceTransactionManagement>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/rice-transaction-management/detail/:id"}
+                          element={
+                            <DetailRiceTransactionUser></DetailRiceTransactionUser>
+                          }
+                        ></Route>
                       </>
                     )}
 
@@ -598,6 +620,12 @@ const HomeAdmin = () => {
                           path={"/rice-transaction-management"}
                           element={
                             <RiceTransactionManagement></RiceTransactionManagement>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/rice-transaction-management/detail/:id"}
+                          element={
+                            <DetailRiceTransactionUser></DetailRiceTransactionUser>
                           }
                         ></Route>
                         <Route path="*" element={<NotFound />} />

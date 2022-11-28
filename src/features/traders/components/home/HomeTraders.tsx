@@ -6,6 +6,7 @@ import {
   ContainerOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  PayCircleOutlined,
 } from "@ant-design/icons";
 import { Badge, Dropdown, Layout, Menu, Space } from "antd";
 import React, { useEffect, useState } from "react";
@@ -24,6 +25,8 @@ import { PATH } from "../../../../enum";
 import { resetCount } from "../../../../redux/notificationSlice";
 import { handleLogout } from "../../../../utils/logout";
 import Dashboard from "../../../admin/pages/dashboard/Dashboard";
+import DetailRiceTransactionUser from "../../../rice-transaction/pages/detail-rice-transaction-user/DetailRiceTransactionUser";
+import RiceTransactionManagement from "../../../rice-transaction/pages/RiceTransactionManagement";
 import CreateCategoryPertocodes from "../../pages/category-pesticides-management/CategoryPertocodesManagement";
 import CreateContract from "../../pages/create-contract/CreateContract";
 import DetailContract from "../../pages/detail-contract/DetailContract";
@@ -71,6 +74,15 @@ const HomeTraders = () => {
       label: (
         <Link to={`${PATH.TRADER}${PATH.CONTRACT_MANAGEMENT}`}>
           Quản lý hợp đồng
+        </Link>
+      ),
+    },
+    {
+      key: `${PATH.TRADER}${"/rice-transaction-management"}`,
+      icon: <PayCircleOutlined />,
+      label: (
+        <Link to={`${PATH.TRADER}${"/rice-transaction-management"}`}>
+          Giao dịch lúa giống
         </Link>
       ),
     },
@@ -225,6 +237,19 @@ const HomeTraders = () => {
               path={`${PATH.SUPPLIER}`}
               element={<Supplier></Supplier>}
             ></Route> */}
+            <Route
+              path={"/rice-transaction-management"}
+              element={
+                <RiceTransactionManagement
+                  baseUrl="trader"
+                  role="trader"
+                ></RiceTransactionManagement>
+              }
+            ></Route>
+            <Route
+              path={"/rice-transaction-management/detail/:id"}
+              element={<DetailRiceTransactionUser></DetailRiceTransactionUser>}
+            ></Route>
             <Route
               path={PATH.PROFILE}
               element={<Profile name="thuonglai"></Profile>}

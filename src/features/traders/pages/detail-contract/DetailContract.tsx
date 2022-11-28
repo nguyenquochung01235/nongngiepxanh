@@ -466,7 +466,12 @@ const DetailContract = (props: Props) => {
     <Spin spinning={deatailContract.isLoading}>
       <div className="detail-contract" style={{ minHeight: "100vh" }}>
         <PageHeader
-          isConfirm={!baseUrl?.includes("chunhiem")}
+          isConfirm={deatailContract?.data?.data?.status !== "confirm"}
+          toggleConfirm={
+            baseUrl?.includes("htx")
+              ? deatailContract?.data?.data?.hoptacxa_xacnhan
+              : deatailContract?.data?.data?.thuonglai_xacnhan
+          }
           confirmLoading={mutation_confirm_contract.isLoading}
           onConfirm={handleConfirm}
           edit={edit}

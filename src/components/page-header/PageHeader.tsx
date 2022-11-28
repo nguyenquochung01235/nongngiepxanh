@@ -17,6 +17,7 @@ type Props = {
   isAllowApprove?: boolean;
   disableApprove?: boolean;
   disabledSelect?: boolean;
+  allowSave?: boolean;
 };
 
 const PageHeader = ({
@@ -34,6 +35,7 @@ const PageHeader = ({
   isAllowApprove,
   disableApprove,
   disabledSelect,
+  allowSave,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -56,7 +58,9 @@ const PageHeader = ({
         </Button>
         {edit !== false && (
           <Button
-            disabled={disabled || disableApprove}
+            disabled={
+              allowSave ? false : disabled || disableApprove || !isConfirm
+            }
             loading={loading}
             form={form}
             htmlType="submit"
