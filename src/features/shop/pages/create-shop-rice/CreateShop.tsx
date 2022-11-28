@@ -68,6 +68,7 @@ const CreateShop = (props: Props) => {
     formData.append("description_giaodich", values.description_giaodich);
     formData.append("img_lohang", values.img_lohang);
     formData.append("soluong", values.soluong);
+    formData.append("price", values.price);
 
     mutation_create_contract.mutate(formData, {
       onSuccess: (data: any) => {
@@ -328,7 +329,7 @@ const CreateShop = (props: Props) => {
                       <InputNumber
                         min={0}
                         style={{ width: "100%", borderRadius: "6px" }}
-                        placeholder="Số lượng"
+                        placeholder="Giá"
                       ></InputNumber>
                     </Form.Item>
                   </Col>

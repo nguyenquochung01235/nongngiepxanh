@@ -15,6 +15,8 @@ type Props = {
   returnName?: boolean;
   disabled?: boolean;
   width?: string;
+  queryParams?: any;
+  getName?: boolean;
 };
 const { Option } = Select;
 
@@ -30,6 +32,8 @@ const AutoComplete = ({
   returnName = false,
   disabled = false,
   width,
+  queryParams = {},
+  getName = false,
 }: Props) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchData, setSearchData] = useState<any>();
@@ -51,6 +55,7 @@ const AutoComplete = ({
 
           const res = await commontApi.autoComplete(type, {
             search: searchValue,
+            ...queryParams,
           });
           setSearchData(res.data);
         } catch (error) {
@@ -91,7 +96,17 @@ const AutoComplete = ({
     searchData.length > 0 &&
     searchData?.map((item: any) => {
       return (
-        <Option key={item[Key]} value={item[Key]}>
+        <Option
+          key={getName ? item[Value] : item[Key]}
+          value={
+            getName
+              ? JSON.stringify({
+                  key: item[Key],
+                  value: item[Value],
+                })
+              : item[Key]
+          }
+        >
           {item[Value]}
         </Option>
       );

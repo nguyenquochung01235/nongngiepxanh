@@ -31,6 +31,11 @@ const contractApi = {
     const url = `hopdongmuaban/delete/${id}`;
     return axiosClient.delete(url);
   },
+
+  confirm(id: string | number) {
+    const url = `hopdongmuaban/confirm/${id}`;
+    return axiosClient.put(url);
+  },
 };
 
 export default contractApi;

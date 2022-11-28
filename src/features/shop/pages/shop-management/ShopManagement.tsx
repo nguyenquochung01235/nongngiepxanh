@@ -91,6 +91,8 @@ const ShopManagement = ({ baseUrl, role }: Props) => {
           <span>
             {record?.hoptacxa_xacnhan == 0 ? (
               <span className="not-confirm">chưa xác nhận</span>
+            ) : record?.hoptacxa_xacnhan == 2 ? (
+              <span className="refuse">Đã hủy</span>
             ) : (
               <span className="confirm">xác nhận</span>
             )}

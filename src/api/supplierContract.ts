@@ -3,7 +3,7 @@ import axiosClient from "./axiosClient";
 
 const supplierContractApi = {
   getAll(params: ListParams) {
-    const url = "giaodichmuabanvattu/get-list";
+    const url = "giaodichmuabanluagiong/get-list";
     return axiosClient.get(url, { params });
   },
 

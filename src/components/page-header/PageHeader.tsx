@@ -13,9 +13,10 @@ type Props = {
   onConfirm?: () => void;
   toggleConfirm?: boolean;
   allowApprove?: boolean;
-  onApprove: (val: any) => void;
+  onApprove?: (val: any) => void;
   isAllowApprove?: boolean;
   disableApprove?: boolean;
+  disabledSelect?: boolean;
 };
 
 const PageHeader = ({
@@ -32,6 +33,7 @@ const PageHeader = ({
   onApprove,
   isAllowApprove,
   disableApprove,
+  disabledSelect,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -84,7 +86,7 @@ const PageHeader = ({
           // </Button>
 
           <Select
-            disabled={disableApprove}
+            disabled={disableApprove || disabledSelect}
             onChange={(val: any) => onApprove && onApprove(val)}
             value={allowApprove}
             style={{ width: "150px", marginLeft: "4px" }}

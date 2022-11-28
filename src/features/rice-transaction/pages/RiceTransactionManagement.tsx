@@ -3,17 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import { Button, Pagination, Popconfirm, Table } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import materialsApi from "../../../../api/materials";
+
 import queryString from "query-string";
-import supplierContractApi from "../../../../api/supplierContract";
-import supplierCategoryContractApi from "../../../../api/supplierCategoryContract";
+import materialsApi from "../../../api/materials";
 
 type Props = {
   baseUrl?: string;
   role?: string;
 };
 
-const SupplierManagement = ({ baseUrl, role }: Props) => {
+const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const navigate = useNavigate();
@@ -23,50 +22,45 @@ const SupplierManagement = ({ baseUrl, role }: Props) => {
     search: searchParams.get("search") || "",
   });
 
-  useEffect(() => {
-    (() => {
-      navigate(
-        `/${baseUrl || "shop"}/supplier-management?${queryString.stringify(
-          filter
-        )}`
-      );
-    })();
-  }, [filter]);
+  // useEffect(() => {
+  // //   (() => {
+  // //     navigate(
+  // //       `/${baseUrl || "shop"}/shop-management?${queryString.stringify(filter)}`
+  // //     );
+  // //   })();
+  // // }, [filter]);
+  // console.log(role);
 
-  const fetchSupplierContract = (filter: any) =>
+  const fetchMaterials = (filter: any) =>
     role == "chunhiem"
-      ? supplierCategoryContractApi.getAllChairman(filter)
-      : supplierCategoryContractApi.getAll(filter);
+      ? materialsApi.getAllChairman(filter)
+      : materialsApi.getAll(filter);
 
-  const suplierContract: any = useQuery(
-    ["supplier/contract/list", filter],
-    () => fetchSupplierContract(filter)
+  const materials: any = useQuery(["materials", filter], () =>
+    fetchMaterials(filter)
   );
 
   const tableColumns: any = [
     {
       title: "ID",
       width: "5%",
-      dataIndex: "id_giaodichmuaban_vattu",
+      dataIndex: "id_giaodich_luagiong",
     },
     {
       title: "Mùa vụ",
-      width: "12%",
+      width: "15%",
       dataIndex: "name_lichmuavu",
     },
     {
-      title: "Tên vật tư",
-      width: "10%",
-      dataIndex: "name_category_vattu",
+      title: "Giống lúa",
+      dataIndex: "name_gionglua",
     },
     {
       title: "Xã viên",
-      width: "10%",
       dataIndex: "name_xavien",
     },
     {
       title: "Tên người bán",
-      width: "10%",
       dataIndex: "name_daily",
     },
     {
@@ -75,8 +69,8 @@ const SupplierManagement = ({ baseUrl, role }: Props) => {
     },
     {
       title: "Trạng thái",
-      dataIndex: "status",
       width: "10%",
+      dataIndex: "status",
       render: (text: any, record: any) => {
         return (
           <span>
@@ -125,8 +119,8 @@ const SupplierManagement = ({ baseUrl, role }: Props) => {
     },
     {
       title: "Xã viên xác nhận",
-      width: "8%",
       dataIndex: "xavien_xacnhan",
+      width: "8%",
       render: (text: any, record: any) => {
         return (
           <span>
@@ -150,10 +144,8 @@ const SupplierManagement = ({ baseUrl, role }: Props) => {
             className=""
             onClick={() =>
               navigate(
-                `/${
-                  baseUrl || "shop"
-                }/supplier-management/detail-supplier-contract/${
-                  record?.id_giaodichmuaban_vattu || ""
+                `/${baseUrl || "shop"}/shop-management/detail-contract/${
+                  record?.id_giaodich_luagiong || ""
                 }`
               )
             }
@@ -194,23 +186,21 @@ const SupplierManagement = ({ baseUrl, role }: Props) => {
   return (
     <div className="shop-management">
       <Button>
-        <Link to="/shop/supplier-management/create-contract-supplier">
-          Tạo hợp đồng
-        </Link>
+        <Link to="/shop/shop-management/create-shop">Tạo hợp đồng</Link>
       </Button>
       <h3 style={{ margin: "16px 0" }}>Danh sách hợp đồng mua bán lúa giống</h3>
       <Table
         scroll={{ x: 2000 }}
-        loading={suplierContract.isLoading}
+        loading={materials.isLoading}
         columns={tableColumns}
-        dataSource={suplierContract?.data?.data || []}
+        dataSource={materials?.data?.data || []}
         pagination={false}
       />
       <div className="pagiantion">
-        {suplierContract?.data?.meta?.total > 0 && (
+        {materials?.data?.meta?.total > 0 && (
           <Pagination
             defaultCurrent={filter?.page as number}
-            total={suplierContract?.data?.meta?.total}
+            total={materials?.data?.meta?.total}
             pageSize={filter?.limit as number}
             onChange={handlePagination}
           />
@@ -220,4 +210,4 @@ const SupplierManagement = ({ baseUrl, role }: Props) => {
   );
 };
 
-export default SupplierManagement;
+export default RiceTransactionManagement;

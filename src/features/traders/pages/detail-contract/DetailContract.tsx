@@ -446,10 +446,29 @@ const DetailContract = (props: Props) => {
     },
   ];
 
+  const handleConfirm = () => {
+    mutation_confirm_contract.mutate(id, {
+      onSuccess: (res) => {
+        getResponseMessage(res);
+        deatailContract.refetch();
+      },
+      onError: (err) => {
+        getErrorMessage(err);
+      },
+    });
+  };
+
+  const mutation_confirm_contract = useMutation((id: any) =>
+    contractApi.confirm(id)
+  );
+
   return (
     <Spin spinning={deatailContract.isLoading}>
       <div className="detail-contract" style={{ minHeight: "100vh" }}>
         <PageHeader
+          isConfirm={!baseUrl?.includes("chunhiem")}
+          confirmLoading={mutation_confirm_contract.isLoading}
+          onConfirm={handleConfirm}
           edit={edit}
           headerBreadcrumb={headerBreadcrumb}
           form="detail-contract"

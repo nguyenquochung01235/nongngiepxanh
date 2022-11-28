@@ -1,14 +1,18 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import "./story-of-season.scss";
 import {
   Button,
   Checkbox,
+  Col,
   DatePicker,
   Form,
   Input,
+  InputNumber,
   Modal,
   Pagination,
   Popconfirm,
+  Row,
   Select,
   Space,
   Spin,
@@ -27,6 +31,7 @@ import { getErrorMessage } from "../../../utils/getErrorMessage";
 import landApi from "../../../api/land";
 import { ColumnsType } from "antd/lib/table";
 import { convertToMoment } from "../../../utils/convertToMoment";
+import AutoComplete from "../../../components/auto-complete/AutoComplete";
 
 type Props = {};
 
@@ -35,11 +40,13 @@ const StoryOfSeason = (props: Props) => {
   const navigate = useNavigate();
   const [changeStatusLoading, setChangeStatusLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenCategory, setIsModalOpenCategory] = useState(false);
   const [searchForm] = Form.useForm();
   const [showModalReason, setShowModalReason] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [detailStory, setDetailStory] = useState<any>();
   const [type, setType] = useState<any>("create");
+  const [categoryOfActivity, setCategoryOfActivity] = useState<any>([]);
   const [detailStoryId, setDetailStoryId] = useState<
     number | string | undefined
   >();
@@ -50,6 +57,88 @@ const StoryOfSeason = (props: Props) => {
     limit: searchParams.get("limit") || 5,
     search: searchParams.get("search") || "",
   });
+  const fetchListLand = () => {
+    return landApi.getAll({});
+  };
+
+  const land = useQuery(["activity/land"], fetchListLand);
+  const actdivityForm = [
+    {
+      name: "name_hoatdong",
+      label: "Tên hoạt động",
+      rules: [
+        {
+          required: true,
+        },
+      ],
+      formChildren: <Input placeholder="Tên hoạt động"></Input>,
+    },
+    {
+      name: "date_start",
+      label: "Ngày bắt đầu",
+      rules: [
+        {
+          required: true,
+        },
+      ],
+      formChildren: (
+        <DatePicker placeholder="Ngày bắt đầu" style={{ width: "100%" }} />
+      ),
+    },
+    {
+      name: "id_thuadat",
+      label: "Thửa đất",
+      rules: [
+        {
+          required: true,
+        },
+      ],
+      formChildren: (
+        <Select placeholder="Thửa đất">
+          {land &&
+            land?.data?.data.map((item: any) => {
+              return (
+                <Select.Option key={item.id_thuadat} value={item.id_thuadat}>
+                  {item.address}
+                </Select.Option>
+              );
+            })}
+        </Select>
+      ),
+    },
+    {
+      name: "date_end",
+      label: "Ngày kết thúc",
+      rules: [
+        {
+          required: true,
+        },
+        ({ getFieldValue }: any): any => ({
+          validator(_: any, value: any) {
+            if (!value || getFieldValue("date_start") < value) {
+              return Promise.resolve();
+            }
+            return Promise.reject(
+              new Error("Ngày kết thúc phải lớn hơn ngày bắt đầu!")
+            );
+          },
+        }),
+      ],
+      formChildren: (
+        <DatePicker placeholder="Ngày kết thúc" style={{ width: "100%" }} />
+      ),
+    },
+    {
+      name: "description",
+      label: "Mô tả",
+      rules: [
+        {
+          required: true,
+        },
+      ],
+      formChildren: <Input.TextArea placeholder="Mô tả"></Input.TextArea>,
+    },
+  ];
 
   useEffect(() => {
     (() => {
@@ -195,12 +284,6 @@ const StoryOfSeason = (props: Props) => {
     },
   ];
 
-  const fetchListLand = () => {
-    return landApi.getAll({});
-  };
-
-  const land = useQuery(["activity/land"], fetchListLand);
-
   const handleCheckAllActivity = (e: any) => {
     console.log(e);
   };
@@ -215,81 +298,47 @@ const StoryOfSeason = (props: Props) => {
     }
   };
 
-  const actdivityForm = [
+  const categoryForm = [
     {
-      name: "name_hoatdong",
-      label: "Tên hoạt động",
-      rules: [
-        {
-          required: true,
-        },
-      ],
-      formChildren: <Input placeholder="Tên hoạt động"></Input>,
+      autoComplete: (
+        <AutoComplete
+          getName={true}
+          returnName
+          keyword=""
+          type="vattusudung"
+          Key="id_giaodichmuaban_vattu"
+          Value="name_category_vattu"
+          name="id_giaodichmuaban_vattu"
+          lable="Vật tư"
+        ></AutoComplete>
+      ),
     },
     {
-      name: "date_start",
-      label: "Ngày bắt đầu",
+      name: "soluong",
+      label: "Số lượng",
       rules: [
         {
           required: true,
         },
       ],
       formChildren: (
-        <DatePicker placeholder="Ngày bắt đầu" style={{ width: "100%" }} />
+        <InputNumber
+          placeholder="Số lượng"
+          style={{ width: "100%" }}
+        ></InputNumber>
       ),
     },
     {
-      name: "id_thuadat",
-      label: "Thửa đất",
+      name: "timeuse",
+      label: "Thời gian sử dụng",
       rules: [
         {
           required: true,
         },
       ],
       formChildren: (
-        <Select placeholder="Thửa đất">
-          {land &&
-            land?.data?.data.map((item: any) => {
-              return (
-                <Select.Option key={item.id_thuadat} value={item.id_thuadat}>
-                  {item.address}
-                </Select.Option>
-              );
-            })}
-        </Select>
+        <DatePicker placeholder="Thời gian sử dụng" style={{ width: "100%" }} />
       ),
-    },
-    {
-      name: "date_end",
-      label: "Ngày kết thúc",
-      rules: [
-        {
-          required: true,
-        },
-        ({ getFieldValue }: any): any => ({
-          validator(_: any, value: any) {
-            if (!value || getFieldValue("date_start") < value) {
-              return Promise.resolve();
-            }
-            return Promise.reject(
-              new Error("Ngày kết thúc phải lớn hơn ngày bắt đầu!")
-            );
-          },
-        }),
-      ],
-      formChildren: (
-        <DatePicker placeholder="Ngày kết thúc" style={{ width: "100%" }} />
-      ),
-    },
-    {
-      name: "description",
-      label: "Mô tả",
-      rules: [
-        {
-          required: true,
-        },
-      ],
-      formChildren: <Input.TextArea placeholder="Mô tả"></Input.TextArea>,
     },
   ];
 
@@ -357,6 +406,15 @@ const StoryOfSeason = (props: Props) => {
         onError: (err) => getErrorMessage(err),
       });
     } else {
+      values.vattusudung =
+        categoryOfActivity.map((item: any) => {
+          return {
+            ...item,
+            id_giaodichmuaban_vattu:
+              JSON.parse(item?.id_giaodichmuaban_vattu)?.key || "",
+          };
+        }) || [];
+
       mutation_add_activity.mutate(values, {
         onSuccess: (res) => {
           getResponseMessage(res);
@@ -384,6 +442,32 @@ const StoryOfSeason = (props: Props) => {
         page,
       };
     });
+  };
+
+  const handleAddField = () => {
+    setIsModalOpenCategory(true);
+  };
+
+  const handleCancelCategory = () => {
+    setIsModalOpenCategory(false);
+  };
+
+  const handleFormSubmitCategory = (values: any) => {
+    values.timeuse = values.timeuse.format("YYYY-MM-DD");
+    setCategoryOfActivity((pre: any) => {
+      const item = categoryOfActivity.find(
+        (item: any) =>
+          item?.id_giaodichmuaban_vattu == values.id_giaodichmuaban_vattu
+      );
+      if (item) {
+        item.soluong += values.soluong;
+        return [...pre];
+      } else {
+        return [...pre, values];
+      }
+    });
+
+    setIsModalOpenCategory(false);
   };
 
   return (
@@ -441,6 +525,7 @@ const StoryOfSeason = (props: Props) => {
       </div>
 
       <Modal
+        centered
         onCancel={handleCancel}
         title={
           detailStory && Object.keys(detailStory).length > 0
@@ -449,6 +534,11 @@ const StoryOfSeason = (props: Props) => {
         }
         open={isModalOpen}
         width="70%"
+        bodyStyle={{
+          overflowY: "auto",
+          maxHeight: "500px",
+          position: "relative",
+        }}
       >
         <Spin spinning={loadingDetailStory && !isCreate}>
           <FormComponent
@@ -464,7 +554,31 @@ const StoryOfSeason = (props: Props) => {
             onSubmit={handleFormSubmit}
             name="activityOfSeason"
             buttonSubmit="Thêm hoạt động"
+            addField={true}
+            onAddField={handleAddField}
             data={actdivityForm}
+            categoryOfActivity={categoryOfActivity}
+          ></FormComponent>
+        </Spin>
+      </Modal>
+      <Modal
+        onCancel={handleCancelCategory}
+        title={
+          detailStory && Object.keys(detailStory).length > 0
+            ? "Chỉnh sửa vật tư"
+            : "Thêm vật tư"
+        }
+        open={isModalOpenCategory}
+        width="50%"
+        centered
+      >
+        <Spin spinning={false}>
+          <FormComponent
+            loading={false}
+            onSubmit={handleFormSubmitCategory}
+            name="categoryOfStory"
+            buttonSubmit="Thêm vật tư"
+            data={categoryForm}
           ></FormComponent>
         </Spin>
       </Modal>
