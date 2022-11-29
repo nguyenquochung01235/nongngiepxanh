@@ -619,7 +619,7 @@ const HomeAdmin = () => {
                         <Route
                           path={"/rice-transaction-management"}
                           element={
-                            <RiceTransactionManagement></RiceTransactionManagement>
+                            <RiceTransactionManagement role="xavien"></RiceTransactionManagement>
                           }
                         ></Route>
                         <Route

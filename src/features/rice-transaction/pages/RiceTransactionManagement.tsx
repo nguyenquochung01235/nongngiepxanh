@@ -1,6 +1,14 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Button, Pagination, Popconfirm, Select, Table } from "antd";
+import {
+  Button,
+  Input,
+  Modal,
+  Pagination,
+  Popconfirm,
+  Select,
+  Table,
+} from "antd";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
@@ -18,6 +26,9 @@ type Props = {
 
 const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [showReason, setShowReason] = useState(false);
+  const [reasonValue, setReasonValue] = useState("");
+  const [deleteId, setDeleteId] = useState<any>();
 
   const navigate = useNavigate();
   const [filter, setFilter] = useState({
@@ -63,6 +74,47 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
 
   const mutation_confirm_rice_transaction = useMutation((id) =>
     userRiceTransactionApi.confirm(id)
+  );
+
+  const handleApprove = (value: any, id: any) => {
+    if (value != 2) {
+      mutation_update_approve.mutate(
+        { id: id, hoptacxa_xacnhan: value },
+        {
+          onSuccess: (res) => {
+            getResponseMessage(res);
+            setShowReason(false);
+            userRiceTransaction.refetch();
+          },
+          onError: (err) => {
+            getErrorMessage(err);
+          },
+        }
+      );
+    } else {
+      setShowReason(true);
+      setDeleteId(id);
+    }
+  };
+
+  const handleSave = () => {
+    mutation_update_approve.mutate(
+      { hoptacxa_xacnhan: 2, reason: reasonValue },
+      {
+        onSuccess: (res) => {
+          getResponseMessage(res);
+          userRiceTransaction.refetch();
+          setShowReason(false);
+        },
+        onError: (err) => {
+          getErrorMessage(err);
+        },
+      }
+    );
+  };
+
+  const mutation_update_approve = useMutation((data: any) =>
+    userRiceTransactionApi.approve(data, data?.id || "")
   );
 
   const tableColumns: any = [
@@ -191,29 +243,31 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
           >
             <EditOutlined />
           </span>
-          {/* <Select
-            onChange={(value: number | string) =>
-              handleConfirm(value, record?.id_giaodichmuaban_lua || "")
-            }
-            size="small"
-            value={record?.thuonglai_xacnhan + "" || ""}
-            placeholder="Trạng thái"
-            style={{ width: 150 }}
-            options={[
-              {
-                value: "0",
-                label: "Chưa xác nhận",
-              },
-              {
-                value: "1",
-                label: "Xác nhận",
-              },
-              {
-                value: "2",
-                label: "Hủy",
-              },
-            ]}
-          /> */}
+          {role == "chunhiem" && (
+            <Select
+              onChange={(value: number | string) =>
+                handleApprove(value, record?.id_giaodichmuaban_lua || "")
+              }
+              size="small"
+              value={record?.thuonglai_xacnhan + "" || ""}
+              placeholder="Trạng thái"
+              style={{ width: 150 }}
+              options={[
+                {
+                  value: "0",
+                  label: "Chưa xác nhận",
+                },
+                {
+                  value: "1",
+                  label: "Xác nhận",
+                },
+                {
+                  value: "2",
+                  label: "Hủy",
+                },
+              ]}
+            />
+          )}
 
           <Button
             loading={mutation_confirm_rice_transaction.isLoading}
@@ -222,7 +276,14 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
             }
             type="primary"
           >
-            {record?.thuonglai_xacnhan ? "Hủy xác nhận" : "Xác nhận"}
+            {role != "chunhiem" &&
+              (role == "xavien"
+                ? record?.xavien_xacnhan
+                  ? "Hủy xác nhận"
+                  : "Xác nhận"
+                : record?.thuonglai_xacnhan
+                ? "Hủy xác nhận"
+                : "Xác nhận")}
           </Button>
         </>
       ),
@@ -240,6 +301,29 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
 
   return (
     <div className="shop-management">
+      <Modal
+        title="Lý do từ chối"
+        open={showReason}
+        onCancel={() => setShowReason(false)}
+      >
+        <Input
+          placeholder="Lý do từ chối"
+          onChange={(e) => setReasonValue(e.target.value)}
+          onKeyPress={(event) => {
+            if (event.key === "Enter") {
+              handleSave();
+            }
+          }}
+        />
+        <br />
+        <Button
+          loading={mutation_update_approve.isLoading}
+          type="primary"
+          onClick={handleSave}
+        >
+          Lưu
+        </Button>
+      </Modal>
       <Button>
         <Link to="/shop/shop-management/create-shop">Tạo hợp đồng</Link>
       </Button>

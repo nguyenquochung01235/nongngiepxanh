@@ -26,6 +26,11 @@ const userRiceTransactionApi = {
     const url = `giaodichmuabanlua/confirm/${id}`;
     return axiosClient.put(url);
   },
+
+  approve(data: any, id: any) {
+    const url = `giaodichmuabanlua/approve/${id}`;
+    return axiosClient.put(url, data);
+  },
 };
 
 export default userRiceTransactionApi;
