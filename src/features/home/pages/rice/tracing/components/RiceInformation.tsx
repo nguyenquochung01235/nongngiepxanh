@@ -1,12 +1,15 @@
-import { Box, Grid, Typography } from "@mui/material";
-import React from "react";
+import { Box, Dialog, DialogContent, Grid, Typography } from "@mui/material";
+import { QRCodeSVG } from "qrcode.react";
+import React, { useState } from "react";
 import { IProduct } from "../../../../../../model/tracking-tracing";
 
 interface Props {
-  product?: IProduct
+  product?: IProduct;
 }
 
-const RiceInformation = ({product}: Props) => {
+const RiceInformation = ({ product }: Props) => {
+  const [toggleQR, setToggleQR] = useState(false);
+
   return (
     <Grid container spacing={3} mt={4}>
       <Grid
@@ -22,7 +25,7 @@ const RiceInformation = ({product}: Props) => {
         <Box
           component="img"
           borderRadius={5}
-          src={product?.img_lohang || '/images/bg-auth.webp'}
+          src={product?.img_lohang || "/images/bg-auth.webp"}
           width="100%"
         ></Box>
       </Grid>
@@ -42,16 +45,29 @@ const RiceInformation = ({product}: Props) => {
           <Box
             component="img"
             borderRadius={5}
-            src={product?.img_lohang || '/images/bg-auth.webp'}
+            src={product?.img_lohang || "/images/bg-auth.webp"}
             width="100%"
             height="100%"
-            sx={{objectFit:'cover'}}
+            sx={{ objectFit: "cover" }}
           ></Box>
         </Grid>
         <Grid item xs>
-          <Typography variant="h5" fontWeight="bold" mb={2} align='justify'>
+          <Typography variant="h5" fontWeight="bold" mb={2} align="justify">
             {product?.name_lohang}
           </Typography>
+          <Box
+            component="div"
+            fontSize="17px"
+            sx={{ cursor: "pointer" }}
+            onClick={() => {
+              setToggleQR(true);
+            }}
+            color="blue"
+            mb={2}
+            textAlign="justify"
+          >
+            Scans by QR Code
+          </Box>
           <Box my={1}>
             <Box component="span" fontSize="17px" fontWeight="bold">
               Tên giống lúa:{" "}
@@ -94,6 +110,18 @@ const RiceInformation = ({product}: Props) => {
           </Box>
         </Grid>
       </Grid>
+      <Dialog open={toggleQR} onClose={() => setToggleQR(false)}>
+        <DialogContent>
+          <QRCodeSVG
+            value={`${product?.name_lohang} | ${product?.name_gionglua} | ${product?.name_xavien} | ${product?.name_thuonglai} | ${window.location.href}`}
+            width="250px"
+            height="250px"
+          ></QRCodeSVG>
+          <Typography align="center" color="blue">
+            QR CODE
+          </Typography>
+        </DialogContent>
+      </Dialog>
     </Grid>
   );
 };
