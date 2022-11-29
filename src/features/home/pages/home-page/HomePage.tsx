@@ -9,7 +9,7 @@ type Props = {};
 const HomePage = (props: Props) => {
   return (
     <>
-      <HomePageHeader></HomePageHeader>
+      
       <div className="home-page-container">
         <TopNews></TopNews>
         <br />
