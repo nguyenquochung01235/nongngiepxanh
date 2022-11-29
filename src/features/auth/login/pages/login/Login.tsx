@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import userApi from "../../../../../api/userApi";
 import { LoginPayload } from "../../../../../model";
+import { isChairman } from "../../../../../redux/htxSlice";
 import { storeUser } from "../../../../../redux/userSlice";
 import { setToken } from "../../../../../utils/jwt";
 import LoginForm from "../../components/login-form/LoginForm";
@@ -28,6 +29,7 @@ const Login = (props: Props) => {
 
       message.success("Đăng nhập thành công");
       dispatch(storeUser({ user, access_token }));
+      dispatch(isChairman(false));
       navigate("/");
       setLoading(false);
     } catch (error) {

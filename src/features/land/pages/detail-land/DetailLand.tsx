@@ -109,7 +109,7 @@ const DetailLand = (props: Props) => {
   }
 
   return (
-    <Spin spinning={land.isLoading}>
+    <Spin spinning={land.isLoading} style={{ height: "100vh" }}>
       <div className="detail-land">
         <h3>Chỉnh sửa thông tin thửa đất</h3>
         {land?.data?.data && Object.keys(land?.data?.data).length > 0 && (

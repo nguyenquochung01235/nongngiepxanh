@@ -1,0 +1,34 @@
+@use "../../../../scss/index" as *;
+.tab-activity-user {
+  display: flex;
+  margin: 20px 0;
+
+  & li {
+    list-style: none;
+    margin-right: 20px;
+    padding-bottom: 4px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  & li.active::after {
+    position: absolute;
+    content: "";
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: $main-color;
+    animation: tab 0.5s forwards;
+    transition: 0.25s $transition;
+  }
+
+  @keyframes tab {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+}

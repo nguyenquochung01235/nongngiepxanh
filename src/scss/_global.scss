@@ -24,6 +24,40 @@ body {
   object-fit: cover;
 }
 
+.confirm,
+.success {
+  padding: 4px 6px;
+  color: $white-color;
+  background-color: #00e396;
+  border-radius: $radius-6;
+}
+
+.not-success {
+  padding: 4px 6px;
+  color: $white-color;
+  background-color: #0ad9e5;
+  border-radius: $radius-6;
+}
+
+.m-r-4 {
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.refuse {
+  padding: 4px 6px;
+  color: $white-color;
+  background-color: #ff4560;
+  border-radius: $radius-6;
+}
+
+.not-confirm {
+  padding: 4px 6px;
+  color: #333;
+  background-color: #fed100;
+  border-radius: $radius-6;
+}
+
 .bold {
   font-weight: 600;
 }
@@ -44,11 +78,12 @@ body {
 }
 
 .ant-collapse {
-  border-radius: $radius-0 !important;
+  border-radius: $radius-6 !important;
 }
 
 html::-webkit-scrollbar {
   width: 8px;
+  max-width: 8px;
 }
 
 html::-webkit-scrollbar-track {
@@ -60,21 +95,9 @@ html::-webkit-scrollbar-thumb {
   border-radius: 20px;
 }
 
-div::-webkit-scrollbar {
-  width: 8px;
-}
-
-div::-webkit-scrollbar-track {
-  background-color: #fff;
-}
-
-div::-webkit-scrollbar-thumb {
-  background-color: rgb(204, 197, 197);
-  border-radius: 20px;
-}
-
 ul::-webkit-scrollbar {
   width: 8px;
+  max-width: 8px;
 }
 
 ul::-webkit-scrollbar-track {
@@ -84,6 +107,38 @@ ul::-webkit-scrollbar-track {
 ul::-webkit-scrollbar-thumb {
   background-color: rgb(204, 197, 197);
   border-radius: 20px;
+}
+
+// div::-webkit-scrollbar {
+//   width: 8px;
+//   max-width: 8px;
+// }
+
+// div::-webkit-scrollbar-track {
+//   background-color: #fff;
+// }
+
+// div::-webkit-scrollbar-thumb {
+//   background-color: rgb(204, 197, 197);
+//   border-radius: 20px;
+// }
+
+// ul::-webkit-scrollbar {
+//   width: 8px;
+//   max-width: 8px;
+// }
+
+// ul::-webkit-scrollbar-track {
+//   background-color: #fff;
+// }
+
+// ul::-webkit-scrollbar-thumb {
+//   background-color: rgb(204, 197, 197);
+//   border-radius: 20px;
+// }
+
+.error-col {
+  background-color: #ff4d4f33;
 }
 
 .cursor-poiner {
@@ -319,4 +374,9 @@ ul::-webkit-scrollbar-thumb {
 .ant-table {
   max-width: 100%;
   overflow-x: auto;
+}
+
+.ant-input-number:focus,
+.ant-input-number-focused {
+  box-shadow: none;
 }

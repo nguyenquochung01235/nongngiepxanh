@@ -6,14 +6,17 @@ import riceApi from "../../api/price";
 type Props = {
   Key: string;
   Value: string;
-  onSelect?: Function;
+  onSelect?: (values: any) => void;
   placeholder?: string;
   name?: string;
   lable?: string;
-  type: string;
+  type?: string;
   keyword?: string;
   returnName?: boolean;
   disabled?: boolean;
+  width?: string;
+  queryParams?: any;
+  getName?: boolean;
 };
 const { Option } = Select;
 
@@ -28,6 +31,9 @@ const AutoComplete = ({
   keyword = "search",
   returnName = false,
   disabled = false,
+  width,
+  queryParams = {},
+  getName = false,
 }: Props) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchData, setSearchData] = useState<any>();
@@ -49,6 +55,7 @@ const AutoComplete = ({
 
           const res = await commontApi.autoComplete(type, {
             search: searchValue,
+            ...queryParams,
           });
           setSearchData(res.data);
         } catch (error) {
@@ -56,7 +63,7 @@ const AutoComplete = ({
         } finally {
           setLoading(false);
         }
-      }, 800);
+      }, 500);
     })();
 
     return () => clearTimeout(timer.current);
@@ -89,7 +96,17 @@ const AutoComplete = ({
     searchData.length > 0 &&
     searchData?.map((item: any) => {
       return (
-        <Option key={item[Key]} value={item[Key]}>
+        <Option
+          key={getName ? item[Value] : item[Key]}
+          value={
+            getName
+              ? JSON.stringify({
+                  key: item[Key],
+                  value: item[Value],
+                })
+              : item[Key]
+          }
+        >
           {item[Value]}
         </Option>
       );
@@ -97,6 +114,7 @@ const AutoComplete = ({
 
   const selectC = (
     <Select
+      style={width ? { width: width } : {}}
       allowClear
       placeholder={placeholder || "Tìm kiếm"}
       showSearch

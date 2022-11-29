@@ -1,4 +1,4 @@
-import { Button, Col, Form, Row, Spin } from "antd";
+import { Button, Col, Form, Row, Space, Spin } from "antd";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { validateMessage } from "../../utils/validateMessage";
@@ -14,6 +14,13 @@ type Props = {
   onDisable?: any;
   goBackUrl?: string;
   showBack?: boolean;
+  isCreate?: boolean;
+  updateId?: any;
+  onReset?: any;
+  type?: string;
+  addField?: boolean;
+  onAddField?: any;
+  categoryOfActivity?: any;
 };
 
 const FormComponent = ({
@@ -27,8 +34,32 @@ const FormComponent = ({
   onDisable,
   goBackUrl,
   showBack,
+  isCreate,
+  updateId,
+  type,
+  addField = false,
+  onAddField,
+  categoryOfActivity = [],
 }: Props) => {
   const [formCommon] = Form.useForm();
+
+  useEffect(() => {
+    if (type === "create") {
+      formCommon.setFieldsValue({});
+    }
+  }, [type]);
+
+  useEffect(() => {
+    if (initialValues) {
+      formCommon.setFieldsValue(initialValues);
+    }
+  }, [initialValues]);
+
+  useEffect(() => {
+    if (isCreate) {
+      formCommon.resetFields();
+    }
+  }, [isCreate, updateId]);
 
   let dataChildren = [];
 
@@ -106,17 +137,68 @@ const FormComponent = ({
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 24 }}>
           {dataChildren.length > 0 && dataChildren}
         </Row>
-        <Row>
+
+        {categoryOfActivity && categoryOfActivity.length > 0 && (
+          <>
+            <div className="category-of-activity">
+              <h3>Vật tư sử dụng: </h3>
+              <div>
+                {categoryOfActivity.map((item: any) => {
+                  return (
+                    <Row gutter={[16, 16]} style={{ marginBottom: "12px" }}>
+                      <Col lg={8} md={8} sm={24} xs={24}>
+                        <span>
+                          <span className="m-r-4"> Tên vật tư: </span>
+                          <b>
+                            {" "}
+                            {JSON.parse(item?.id_giaodichmuaban_vattu)?.value ||
+                              ""}
+                          </b>
+                        </span>
+                      </Col>
+                      <Col lg={8} md={8} sm={24} xs={24}>
+                        <span>
+                          <span className="m-r-4"> Số lượng:</span>
+                          <b> {item?.soluong || ""}</b>
+                        </span>
+                      </Col>
+                      <Col lg={8} md={8} sm={24} xs={24}>
+                        <span>
+                          <span className="m-r-4"> Thời gia sử dụng:</span>
+                          <b> {item?.timeuse || ""}</b>
+                        </span>
+                      </Col>
+                    </Row>
+                  );
+                })}
+              </div>
+            </div>
+          </>
+        )}
+
+        <Row style={{ position: "relative" }}>
           <div className="common-form-submit">
-            <Button
-              className={hideBtnSubmit ? "hide" : ""}
-              loading={loading}
-              form={name}
-              type="primary"
-              htmlType="submit"
-            >
-              {buttonSubmit || "Thực hiện"}
-            </Button>
+            <Space>
+              <Button
+                className={hideBtnSubmit ? "hide" : ""}
+                loading={loading}
+                form={name}
+                type="primary"
+                htmlType="submit"
+              >
+                {initialValues && Object.keys(initialValues).length > 0
+                  ? "Cập nhật"
+                  : buttonSubmit || "Thực hiện"}
+              </Button>
+              {addField && (
+                <Button
+                  type="primary"
+                  onClick={() => onAddField && onAddField()}
+                >
+                  {addField ? "Thêm vật tư" : "Thêm trường"}
+                </Button>
+              )}
+            </Space>
             {goBackUrl && showBack && (
               <Button style={{ marginLeft: "4px" }}>
                 <Link to={goBackUrl}>Trở về</Link>

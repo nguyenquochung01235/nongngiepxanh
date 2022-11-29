@@ -49,13 +49,13 @@ const DetailContract = (props: Props) => {
   const [refesh, setRefresh] = useState(false);
   const [ckData, setCkData] = useState();
 
-  const fetchActivitySeason = (id: any) => {
+  const fetchDetailContract = (id: any) => {
     return contractApi.getDetail(id);
   };
 
   const deatailContract: any = useQuery(
     ["contract/detail", id],
-    () => fetchActivitySeason(id),
+    () => fetchDetailContract(id),
     { cacheTime: 0 }
   );
 
@@ -433,8 +433,8 @@ const DetailContract = (props: Props) => {
 
   const headerBreadcrumb = [
     {
-      name: "Thương lái",
-      path: "/trader",
+      name: baseUrl?.includes("htx") ? "HTX" : "Thương lái",
+      path: baseUrl?.includes("htx") ? "/htx" : "/trader",
     },
     {
       name: "Quản lý hợp đồng",
@@ -446,10 +446,29 @@ const DetailContract = (props: Props) => {
     },
   ];
 
+  const handleConfirm = () => {
+    mutation_confirm_contract.mutate(id, {
+      onSuccess: (res) => {
+        getResponseMessage(res);
+        deatailContract.refetch();
+      },
+      onError: (err) => {
+        getErrorMessage(err);
+      },
+    });
+  };
+
+  const mutation_confirm_contract = useMutation((id: any) =>
+    contractApi.confirm(id)
+  );
+
   return (
     <Spin spinning={deatailContract.isLoading}>
       <div className="detail-contract" style={{ minHeight: "100vh" }}>
         <PageHeader
+          isConfirm={!baseUrl?.includes("chunhiem")}
+          confirmLoading={mutation_confirm_contract.isLoading}
+          onConfirm={handleConfirm}
           edit={edit}
           headerBreadcrumb={headerBreadcrumb}
           form="detail-contract"

@@ -23,7 +23,9 @@ const HomePageHeader = (props: Props) => {
               to={
                 item?.name === "Xã Viên"
                   ? "/htx/dashboard"
-                  : "/trader/dashboard"
+                  : item?.name === "Thương Lái"
+                  ? "/trader/dashboard"
+                  : "/shop/dashboard"
               }
             >
               Vào trang quản lý {item?.name}
@@ -88,7 +90,10 @@ const HomePageHeader = (props: Props) => {
           <div className="home-header__auth">
             {user ? (
               <Dropdown overlay={menu} trigger={["click"]} arrow>
-                <div className="cursor-poiner text-small">
+                <div
+                  className="cursor-poiner text-small"
+                  style={{ display: "flex", alignItems: "center" }}
+                >
                   <img
                     style={{
                       width: "32px",
@@ -106,7 +111,12 @@ const HomePageHeader = (props: Props) => {
                     alt=""
                   />
                   <a
-                    style={{ color: "inherit" }}
+                    style={{
+                      color: "inherit",
+                      maxWidth: "150px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
                     onClick={(e) => e.preventDefault()}
                   >
                     {user?.fullname}

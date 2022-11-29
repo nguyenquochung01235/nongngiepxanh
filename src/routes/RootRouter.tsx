@@ -18,6 +18,7 @@ import { addNotification } from "../redux/notificationSlice";
 import UserDetail from "../components/user-detail/UserDetail";
 import { notification } from "antd";
 import { NotificationPlacement } from "antd/lib/notification";
+import HomeShop from "../features/shop/components/home/HomeShop";
 
 type Props = {};
 
@@ -50,7 +51,7 @@ const RootRouter = (props: Props) => {
     <AllPageLoading>
       <Routes>
         <Route path="*" element={<NotFound />} />
-        <Route path="/" element={<Navigate to='/g'></Navigate>}></Route>
+        <Route path="/" element={<Navigate to="/g"></Navigate>}></Route>
         <Route path={PATH.LOGIN} element={<Login></Login>}></Route>
         <Route path={PATH.REGISTER} element={<Register></Register>}></Route>
         <Route
@@ -66,10 +67,8 @@ const RootRouter = (props: Props) => {
           path={`${PATH.TRADER}/*`}
           element={<HomeTraders></HomeTraders>}
         ></Route>
-        <Route
-          path='/g/*'
-          element={<HomePage></HomePage>}
-        ></Route>
+        <Route path="/g/*" element={<HomePage></HomePage>}></Route>
+        <Route path={`shop/*`} element={<HomeShop></HomeShop>}></Route>
       </Routes>
     </AllPageLoading>
   );
