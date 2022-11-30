@@ -121,7 +121,7 @@ const HTXDeatailPage = () => {
               return (
                 <Grid item xs={4} key={htx.id_giaodichmuaban_lua}>
                   <Card
-                    href={`/g/htx/${htx.id_giaodichmuaban_lua}`}
+                    href={`/g/htx/lohang/${htx.id_giaodichmuaban_lua}`}
                     image={htx.img_lohang || "/images/bg-auth.webp"}
                   >
                     <Typography
