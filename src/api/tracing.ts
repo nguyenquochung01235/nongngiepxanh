@@ -1,3 +1,5 @@
+import { AxiosResponse } from "axios";
+import { ITruyXuatNguonGoc } from "../model/tracking-tracing";
 import { ListParams } from "./../model/common";
 import axiosClient from "./axiosClient";
 
@@ -16,8 +18,15 @@ const tracingApi = {
     });
   },
 
-  getLohang(id: string, params: any) {
+  getLohang(id: string, params?: any) {
     const url = `/auto-complete/blockchain/get-list-lohang/${id}`;
+    return axiosClient.get(url, {
+      params
+    });
+  },
+
+  getChiTietLoHang(id: string, params?: any): Promise<AxiosResponse<ITruyXuatNguonGoc>> {
+    const url = `/api/blockchain/tracing/${id}`;
     return axiosClient.get(url, {
       params
     });

@@ -135,7 +135,7 @@ const HTXDeatailPage = () => {
                     </Typography>
                     <Typography fontSize="15px">
                       <span style={{ fontWeight: "bold", fontSize: "15px" }}>
-                        Tên thương lái:
+                        Tên xa viên:
                       </span>{" "}
                       {htx.name_xavien}
                     </Typography>
