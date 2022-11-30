@@ -111,7 +111,7 @@ const PreviewContract = (props: Props) => {
               </p>
               <p>
                 <b>Thông tin giống lúa </b>
-                <p className="ml-12">- {data?.rice?.name_gionglua || ""}</p>
+                <p className="ml-12">- {data?.name_gionglua || ""}</p>
               </p>
               <p>
                 <b>danh mục phân bón </b>
@@ -121,7 +121,7 @@ const PreviewContract = (props: Props) => {
               </p>
               <p>
                 <b>Thông tin mùa vụ </b>
-                <p className="ml-12">- {data?.season?.name_lichmuavu || ""}</p>
+                <p className="ml-12">- {data?.name_lichmuavu || ""}</p>
               </p>
             </div>
           </div>

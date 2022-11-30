@@ -132,7 +132,7 @@ const Profile = ({ name }: Props) => {
     };
   }
   return (
-    <Spin spinning={profile.isLoading}>
+    <Spin spinning={profile.isLoading} style={{ height: "100vh" }}>
       <div className="profile">
         <h3>Cập nhật thông tin cá nhân</h3>
         {Object.keys(result).length > 0 && (

@@ -7,6 +7,7 @@ import {
   Collapse,
   Form,
   Input,
+  InputNumber,
   Row,
   Select,
   Space,
@@ -16,6 +17,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import contractApi from "../../../../api/contract";
+import shopContractApi from "../../../../api/shopContract";
 import traderApi from "../../../../api/trader";
 import AutoComplete from "../../../../components/auto-complete/AutoComplete";
 import { PATH } from "../../../../enum";
@@ -23,16 +25,16 @@ import { searchUser } from "../../../../redux/contractSlice";
 import { getErrorMessage } from "../../../../utils/getErrorMessage";
 import { getResponseMessage } from "../../../../utils/getResponseMessage";
 import { validateMessage } from "../../../../utils/validateMessage";
-
-import "./create-trader.scss";
+import UploadImage from "../../../../components/upload-image/UploadImage";
 
 type Props = {};
 
-const CreateContract = (props: Props) => {
+const CreateShop = (props: Props) => {
   const [form] = Form.useForm();
   const [user, setUser] = useState<any>(undefined);
   const [ckData, setCkData] = useState();
   const [seachValue, setSearchValue] = useState<string>("");
+  const [file, setFile] = useState();
   const [dataContract, setDataContract] = useState<any>({});
 
   const navigate = useNavigate();
@@ -45,40 +47,39 @@ const CreateContract = (props: Props) => {
     setUser(searchUserStore);
   }, []);
 
+  const detailShop = useSelector((state: any) => state.user.user);
+
   const mutation_create_contract = useMutation((data: any) => {
-    return contractApi.create(data);
+    return shopContractApi.create(data);
   });
 
   const handleSubmitForm = (values: any) => {
-    values.id_hoptacxa = user?.id_hoptacxa || "";
-    values.description_hopdongmuaban = ckData || "";
+    values.id_nhacungcapvattu = detailShop?.id_user || "";
+    values.id_xavien = user?.id_user || "";
+    values.id_lichmuavu = user?.id_lichmuavu || "";
+    values.description_giaodich = ckData || "";
+    values.img_lohang = file || null;
 
-    mutation_create_contract.mutate(values, {
+    const formData: any = new FormData();
+    formData.append("id_xavien", values.id_xavien);
+    formData.append("id_nhacungcapvattu", values.id_nhacungcapvattu);
+    formData.append("id_lichmuavu", values.id_lichmuavu);
+    formData.append("id_gionglua", values.id_gionglua);
+    formData.append("description_giaodich", values.description_giaodich);
+    formData.append("img_lohang", values.img_lohang);
+    formData.append("soluong", values.soluong);
+    formData.append("price", values.price);
+
+    mutation_create_contract.mutate(formData, {
       onSuccess: (data: any) => {
         getResponseMessage(data);
-        navigate("/trader/contract-management");
+        // navigate("/trader/contract-management");
       },
       onError: (err) => {
         getErrorMessage(err);
       },
     });
   };
-
-  const fetchDetailTrader = async () => {
-    const res = await traderApi.getDetail();
-    if (res.data) {
-      setDataContract((pre: any) => {
-        return {
-          ...pre,
-          trader: res.data || null,
-        };
-      });
-    }
-
-    return res;
-  };
-
-  const detailTrader = useQuery<any>(["contract/detail"], fetchDetailTrader);
 
   const fetchSeason = (id: string | number) => {
     if (id) {
@@ -95,7 +96,7 @@ const CreateContract = (props: Props) => {
 
   const handleSeachUser = async () => {
     mutation.mutate(
-      { phone_number: seachValue },
+      { phone_number: seachValue, type: "giaodichmuabanluagiong" },
       {
         onSuccess: (data) => {
           setUser(data.data);
@@ -116,17 +117,23 @@ const CreateContract = (props: Props) => {
   };
 
   const mutation = useMutation((value: any) => {
-    return contractApi.searchUser(value);
+    return shopContractApi.searchUser(value);
   });
 
-  if (user && Object.keys(user).length > 0) {
-    form.setFieldsValue({ ...user });
-  }
+  // if (user && Object.keys(user).length > 0) {
+  //   form.setFieldsValue({ ...user });
+  // }
+
+  const handleChangeImage = (file: any) => {
+    setFile(file);
+  };
 
   return (
-    <Spin spinning={detailTrader.isLoading || detailTrader.isFetching}>
+    <Spin spinning={false}>
       <div className="create-contract">
-        <h3 className="create-contract-heading">Tạo hợp đồng</h3>
+        <h3 className="create-contract-heading">
+          Tạo hợp đồng mua bán lúa giống
+        </h3>
         <br />
         <div className="create-contract-form">
           <Form
@@ -143,14 +150,14 @@ const CreateContract = (props: Props) => {
               <Col lg={12} md={12} sm={24} xs={24}>
                 <Form.Item
                   name="title_hopdongmuaban"
-                  label="Tên hợp đồng"
+                  label=""
                   rules={[
                     {
                       required: true,
                     },
                   ]}
                 >
-                  <Input
+                  {/* <Input
                     placeholder="Tên hơp đồng"
                     onChange={(e) =>
                       setDataContract((pre: any) => {
@@ -160,7 +167,7 @@ const CreateContract = (props: Props) => {
                         };
                       })
                     }
-                  />
+                  /> */}
                 </Form.Item>
               </Col>
               <Col lg={12} md={12} sm={24} xs={24}>
@@ -196,34 +203,30 @@ const CreateContract = (props: Props) => {
               <Col lg={12} md={12} sm={24} xs={24}>
                 <Collapse defaultActiveKey={["1"]} bordered={false}>
                   <Collapse.Panel header="Bên A" key="1">
-                    {detailTrader.isLoading && "Đang tải dữ liệu..."}
-                    {detailTrader && detailTrader.data && (
+                    {detailShop && (
                       <>
                         <p className="align-center">
-                          <span className="trader-label"> Tên thương lái:</span>
+                          <span className="trader-label"> Tên Shop:</span>
                           <span className="trader-detail">
-                            {detailTrader.data?.data?.name_thuonglai || ""}
+                            {detailShop?.fullname || ""}
                           </span>
                         </p>
                         <p className="align-center">
                           <span className="trader-label"> Số điện thoại: </span>
                           <span className="trader-detail">
-                            {detailTrader.data?.data?.phone_number || ""}
+                            {detailShop?.phone_number || ""}
                           </span>
                         </p>
                         <p className="align-center">
                           <span className="trader-label"> Đại chỉ: </span>
                           <span className="trader-detail">
-                            {detailTrader.data?.data?.address || ""}
+                            {detailShop?.address || ""}
                           </span>
                         </p>
                         <p className="align-center">
-                          <span className="trader-label">
-                            {" "}
-                            Người đại diện:{" "}
-                          </span>
+                          <span className="trader-label"> Email: </span>
                           <span className="trader-detail">
-                            {detailTrader.data?.data?.fullname || ""}
+                            {detailShop.email || ""}
                           </span>
                         </p>
                       </>
@@ -232,21 +235,17 @@ const CreateContract = (props: Props) => {
                 </Collapse>
               </Col>
               <Col lg={12} md={12} sm={24} xs={24}>
-                {user === undefined &&
-                  "Tìm kiếm hợp tác xã bạn muốn tạo hợp đồng"}
-                {user === null && "Không tìm thấy hợp tác xã"}
+                {user === undefined && "Tìm kiếm xã viên bạn muốn tạo hợp đồng"}
+                {user === null && "Không tìm thấy xã viên"}
                 {user && (
                   <Collapse defaultActiveKey={["B"]} bordered={false}>
                     <Collapse.Panel header="Bên B" key="B">
                       {user && (
                         <>
                           <p className="align-center">
-                            <span className="trader-label">
-                              {" "}
-                              Tên hợp tác xã:
-                            </span>
+                            <span className="trader-label"> Tên xã viên:</span>
                             <span className="trader-detail">
-                              {user?.name_hoptacxa || ""}
+                              {user?.fullname || ""}
                             </span>
                           </p>
                           <p className="align-center">
@@ -255,7 +254,7 @@ const CreateContract = (props: Props) => {
                               Số điện thoại:{" "}
                             </span>
                             <span className="trader-detail">
-                              {user?.phone_number_hoptacxa || ""}
+                              {user?.xavien_phone_number || ""}
                             </span>
                           </p>
                           <p className="align-center">
@@ -285,47 +284,7 @@ const CreateContract = (props: Props) => {
               <>
                 <Row gutter={24}>
                   <Col lg={12} md={12} sm={24} xs={24}>
-                    <Form.Item
-                      name="id_lichmuavu"
-                      label="Mùa vụ"
-                      rules={[
-                        {
-                          required: true,
-                        },
-                      ]}
-                    >
-                      <Select
-                        disabled
-                        placeholder="Mùa vụ"
-                        onChange={(value: any) =>
-                          setDataContract((pre: any) => {
-                            const name = season?.data?.data.find(
-                              (item: any) => item?.id_lichmuavu === value
-                            );
-                            return {
-                              ...pre,
-                              season: name,
-                            };
-                          })
-                        }
-                      >
-                        {season &&
-                          season?.data?.data.map((item: any) => {
-                            return (
-                              <Select.Option
-                                key={item.id_lichmuavu}
-                                value={item.id_lichmuavu}
-                              >
-                                {item.name_lichmuavu}
-                              </Select.Option>
-                            );
-                          })}
-                      </Select>
-                    </Form.Item>
-                  </Col>
-                  <Col lg={12} md={12} sm={24} xs={24}>
                     <AutoComplete
-                      disabled
                       onSelect={(value: any) =>
                         setDataContract((pre: any) => {
                           return { ...pre, rice: value || "" };
@@ -340,24 +299,42 @@ const CreateContract = (props: Props) => {
                       lable="Giống lúa"
                     ></AutoComplete>
                   </Col>
-                </Row>
-                <Row gutter={24}>
                   <Col lg={12} md={12} sm={24} xs={24}>
-                    <AutoComplete
-                      onSelect={(value: any) =>
-                        setDataContract((pre: any) => {
-                          return { ...pre, category: value || "" };
-                        })
-                      }
-                      returnName
-                      type="danhmucquydinh"
-                      Key="id_danhmucquydinh"
-                      Value="name_danhmucquydinh"
-                      name="id_danhmucquydinh"
-                      lable="Danh mục quy định"
-                    ></AutoComplete>
+                    <Form.Item
+                      name="soluong"
+                      label="Số lượng"
+                      rules={[
+                        {
+                          required: true,
+                        },
+                      ]}
+                    >
+                      <InputNumber
+                        min={0}
+                        style={{ width: "100%", borderRadius: "6px" }}
+                        placeholder="Số lượng"
+                      ></InputNumber>
+                    </Form.Item>
+                  </Col>
+                  <Col lg={12} md={12} sm={24} xs={24}>
+                    <Form.Item
+                      name="price"
+                      label="Giá"
+                      rules={[
+                        {
+                          required: true,
+                        },
+                      ]}
+                    >
+                      <InputNumber
+                        min={0}
+                        style={{ width: "100%", borderRadius: "6px" }}
+                        placeholder="Giá"
+                      ></InputNumber>
+                    </Form.Item>
                   </Col>
                 </Row>
+
                 <Row gutter={24}>
                   <Col lg={24} md={24} sm={24} xs={24}>
                     <h4>Mô tả hợp đồng:</h4>
@@ -438,6 +415,9 @@ const CreateContract = (props: Props) => {
                       {ckData === "" && "Trường này không được bỏ trống"}
                     </div>
                   </Col>
+                  <Col lg={12} md={12} sm={24} xs={24}>
+                    <UploadImage onChange={handleChangeImage}></UploadImage>
+                  </Col>
                 </Row>
                 <br />
                 <Row>
@@ -475,4 +455,4 @@ const CreateContract = (props: Props) => {
   );
 };
 
-export default CreateContract;
+export default CreateShop;

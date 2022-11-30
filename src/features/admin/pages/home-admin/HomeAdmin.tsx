@@ -1,12 +1,16 @@
 import {
+  ApiOutlined,
   AppstoreAddOutlined,
   AppstoreOutlined,
   BellOutlined,
   CalendarOutlined,
   ContainerOutlined,
+  FormOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  PayCircleOutlined,
   PieChartOutlined,
+  TransactionOutlined,
   UserOutlined,
   YuqueOutlined,
 } from "@ant-design/icons";
@@ -20,7 +24,7 @@ import {
   Space,
   Spin,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Link,
@@ -45,6 +49,12 @@ import Map from "../../../land/components/map/Map";
 import DetailLand from "../../../land/pages/detail-land/DetailLand";
 import CreateLand from "../../../land/pages/land-create/CreateLand";
 import Landmanagement from "../../../land/pages/land-management/Landmanagement";
+import RiceTransactionManagement from "../../../rice-transaction/pages/RiceTransactionManagement";
+import CreateShop from "../../../shop/pages/create-shop-rice/CreateShop";
+import DetailShopContract from "../../../shop/pages/detail-shop-contract/DetailShopContract";
+import DetailSupplierContract from "../../../shop/pages/detail-supplier-contract/DetailSupplierContract";
+import ShopManagement from "../../../shop/pages/shop-management/ShopManagement";
+import SupplierManagement from "../../../shop/pages/supplier-management/SupplierManagement";
 import StoryOfSeason from "../../../story/pages/StoryOfSeason";
 import Story from "../../../story/Story";
 import ContractManagement from "../../../traders/components/contract/ContractManagement";
@@ -53,7 +63,9 @@ import RenderChangeApp from "../../components/render-change-app/RenderChangeApp"
 import AddUserToHTX from "../add-user-htx/AddUserToHTX";
 import CreateHTX from "../create-htx/CreateHTX";
 import Dashboard from "../dashboard/Dashboard";
+import DetailHTX from "../detail-htx/DetailHTX";
 import HTXManagement from "../htx-management/HTXManagement";
+import HTXStorymanagement from "../htx-story-management/HTXStorymanagement";
 import SeasonActivity from "../season-activity/SeasonActivity";
 import DetailSeaSon from "../season-management/pages/detail/DetailSeaSon";
 import SeasonManagement from "../season-management/pages/list/SeasonManagement";
@@ -72,8 +84,10 @@ const HomeAdmin = () => {
   const notification = useSelector((state: any) => state.notification);
   const user = useSelector((state: any) => state.user);
   const htx = useSelector((state: any) => state.htx.hasHTX);
+  const isChairmanSlt = useSelector((state: any) => state.htx.isChairman);
   const roleHtx = useSelector((state: any) => state.htx);
   const navigate = useNavigate();
+  const isFirst = useRef(false);
   const dispatch = useDispatch();
 
   const showDrawer = () => {
@@ -84,15 +98,25 @@ const HomeAdmin = () => {
     setOpen(false);
   };
   const location: any = useLocation();
-  const changeRole =
-    localStorage.getItem("account") || location.state?.role || roles?.role;
-  console.log(changeRole);
+  const changeRole = location.state?.role;
+  const currentAccount = localStorage.getItem("current_account");
 
   useEffect(() => {
     (async () => {
+      if (isFirst.current) {
+        if (!changeRole) {
+          return;
+        }
+      }
       setLoading(true);
+      isFirst.current = true;
+      let res: any = null;
       try {
-        const res: any = await userApi.roleOfUser(changeRole);
+        if (!isFirst.current) {
+          res = await userApi.roleOfUser(changeRole);
+        } else {
+          res = await userApi.roleOfUser(changeRole || currentAccount);
+        }
 
         if (res.data?.id_hoptacxa) {
           localStorage.setItem("htx", res.data);
@@ -100,8 +124,15 @@ const HomeAdmin = () => {
           dispatch(setRole(res.data));
           setRoles(res.data);
 
-          if (changeRole) {
-            dispatch(isChairman());
+          if (res.data.role === "xavien" && !isChairmanSlt) {
+            dispatch(isChairman(false));
+            localStorage.setItem("chairman", "");
+          }
+
+          if (changeRole === "chunhiem" || res.data.role === "chunhiem") {
+            dispatch(isChairman(true));
+            localStorage.setItem("chairman", "true");
+            localStorage.setItem("account", "chunhiem");
           }
         } else {
           setIsNewUser(true);
@@ -113,7 +144,7 @@ const HomeAdmin = () => {
         setLoading(false);
       }
     })();
-  }, [changeRole, localStorage.getItem("account")]);
+  }, [changeRole, currentAccount]);
 
   useEffect(() => {
     setCurrentPath("/htx/" + location.pathname.split("/")[2]);
@@ -149,11 +180,36 @@ const HomeAdmin = () => {
       label: <Link to="/htx/manage-story">Nhật ký đồng ruộng</Link>,
     },
     {
+      key: `${PATH.HTX}${"/shop-management"}`,
+      icon: <TransactionOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/shop-management"}`}>Giao dịch lúa giống</Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/supplier-management"}`,
+      icon: <ApiOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/supplier-management"}`}>
+          Giao dịch vật tư
+        </Link>
+      ),
+    },
+    {
       key: `${PATH.HTX}${PATH.CONTRACT_MANAGEMENT}`,
       icon: <ContainerOutlined />,
       label: (
         <Link to={`${PATH.HTX}${PATH.CONTRACT_MANAGEMENT}`}>
           Quản lý hợp đồng
+        </Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/rice-transaction-management"}`,
+      icon: <PayCircleOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/rice-transaction-management"}`}>
+          Giao dịch lúa giống
         </Link>
       ),
     },
@@ -186,6 +242,29 @@ const HomeAdmin = () => {
         <Link to={`${PATH.HTX}${PATH.CONTRACT_MANAGEMENT}`}>
           Quản lý hợp đồng
         </Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/shop-management"}`,
+      icon: <TransactionOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/shop-management"}`}>Giao dịch lúa giống</Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/supplier-management"}`,
+      icon: <ApiOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/supplier-management"}`}>
+          Giao dịch vật tư
+        </Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/story-of-user"}`,
+      icon: <FormOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/story-of-user"}`}>Quản lý sổ nhật ký</Link>
       ),
     },
   ];
@@ -240,7 +319,7 @@ const HomeAdmin = () => {
             className="side-bar"
           >
             <div className="logo">
-              <Link to={`${PATH.HTX}${PATH.DASHBOARD}`}>
+              <Link to={`${PATH.HTX}${"/manage-htx/detail"}`}>
                 <img
                   src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg"
                   alt=""
@@ -248,27 +327,29 @@ const HomeAdmin = () => {
               </Link>
               {
                 <div>
-                  <span
-                    style={{
-                      marginLeft: "12px",
-                      fontSize: "11px",
-                      color: "#333",
-                    }}
-                  >
-                    Hợp tác xã
-                  </span>
-                  <div
-                    style={
-                      !collapsed
-                        ? {
-                            display: "block",
-                          }
-                        : { display: "none" }
-                    }
-                    className="logo-title opacity"
-                  >
-                    {roleHtx?.role?.name_hoptacxa || ""}
-                  </div>
+                  <Link to={`${PATH.HTX}${"/manage-htx/detail"}`}>
+                    <span
+                      style={{
+                        marginLeft: "12px",
+                        fontSize: "11px",
+                        color: "#333",
+                      }}
+                    >
+                      Hợp tác xã
+                    </span>
+                    <div
+                      style={
+                        !collapsed
+                          ? {
+                              display: "block",
+                            }
+                          : { display: "none" }
+                      }
+                      className="logo-title opacity"
+                    >
+                      {roleHtx?.role?.name_hoptacxa || ""}
+                    </div>
+                  </Link>
                 </div>
               }
             </div>
@@ -371,6 +452,72 @@ const HomeAdmin = () => {
                       ></Route>
                     )}
 
+                    {roles?.role === "chunhiem" && (
+                      <>
+                        <Route
+                          path={PATH.ADD_USER_TO_HTX}
+                          element={<AddUserToHTX></AddUserToHTX>}
+                        ></Route>
+                        <Route
+                          path={"/story-of-user"}
+                          element={<HTXStorymanagement></HTXStorymanagement>}
+                        ></Route>
+                        <Route
+                          path={PATH.MANAGE_HTX}
+                          element={<HTXManagement></HTXManagement>}
+                        ></Route>
+                        <Route
+                          path={PATH.MANAGE_SEASON}
+                          element={<SeasonManagement></SeasonManagement>}
+                        ></Route>
+                        <Route
+                          path={PATH.MANAGE_SEASON_DETAIL}
+                          element={<DetailSeaSon></DetailSeaSon>}
+                        ></Route>
+                        <Route
+                          path={PATH.MANAGE_ACTIVITY}
+                          element={<SeasonActivity></SeasonActivity>}
+                        ></Route>
+                        <Route
+                          path={PATH.CALENDAR}
+                          element={<Calendar></Calendar>}
+                        ></Route>
+                        <Route
+                          path={"/shop-management"}
+                          element={
+                            <ShopManagement
+                              baseUrl="htx"
+                              role="chunhiem"
+                            ></ShopManagement>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/shop-management/detail-contract/:id"}
+                          element={
+                            <DetailShopContract baseUrl="chunhiem"></DetailShopContract>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/supplier-management"}
+                          element={
+                            <SupplierManagement
+                              role="chunhiem"
+                              baseUrl="htx"
+                            ></SupplierManagement>
+                          }
+                        ></Route>
+
+                        <Route
+                          path={
+                            "/supplier-management/detail-supplier-contract/:id"
+                          }
+                          element={
+                            <DetailSupplierContract baseUrl="chunhiem"></DetailSupplierContract>
+                          }
+                        ></Route>
+                      </>
+                    )}
+
                     {(roles?.role === "xavien" ||
                       roles?.role === "chunhiem") && (
                       <>
@@ -391,6 +538,10 @@ const HomeAdmin = () => {
                         <Route
                           path="/manage-land/detail/:id"
                           element={<DetailLand></DetailLand>}
+                        ></Route>
+                        <Route
+                          path="/manage-htx/detail"
+                          element={<DetailHTX></DetailHTX>}
                         ></Route>
                         <Route
                           path="/manage-story/detail/:id"
@@ -416,34 +567,43 @@ const HomeAdmin = () => {
                             ></DetailContract>
                           }
                         ></Route>
+                        <Route
+                          path={"/shop-management"}
+                          element={
+                            <ShopManagement baseUrl="htx"></ShopManagement>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/shop-management/detail-contract/:id"}
+                          element={
+                            <DetailShopContract baseUrl="htx"></DetailShopContract>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/supplier-management"}
+                          element={
+                            <SupplierManagement baseUrl="htx"></SupplierManagement>
+                          }
+                        ></Route>
+
+                        <Route
+                          path={
+                            "/supplier-management/detail-supplier-contract/:id"
+                          }
+                          element={
+                            <DetailSupplierContract baseUrl="htx"></DetailSupplierContract>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/rice-transaction-management"}
+                          element={
+                            <RiceTransactionManagement></RiceTransactionManagement>
+                          }
+                        ></Route>
                         <Route path="*" element={<NotFound />} />
                       </>
                     )}
 
-                    <Route
-                      path={PATH.ADD_USER_TO_HTX}
-                      element={<AddUserToHTX></AddUserToHTX>}
-                    ></Route>
-                    <Route
-                      path={PATH.MANAGE_HTX}
-                      element={<HTXManagement></HTXManagement>}
-                    ></Route>
-                    <Route
-                      path={PATH.MANAGE_SEASON}
-                      element={<SeasonManagement></SeasonManagement>}
-                    ></Route>
-                    <Route
-                      path={PATH.MANAGE_SEASON_DETAIL}
-                      element={<DetailSeaSon></DetailSeaSon>}
-                    ></Route>
-                    <Route
-                      path={PATH.MANAGE_ACTIVITY}
-                      element={<SeasonActivity></SeasonActivity>}
-                    ></Route>
-                    <Route
-                      path={PATH.CALENDAR}
-                      element={<Calendar></Calendar>}
-                    ></Route>
                     <Route
                       path={PATH.PROFILE}
                       element={<Profile name="xavien"></Profile>}

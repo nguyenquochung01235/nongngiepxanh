@@ -2,7 +2,7 @@ import { Menu } from "antd";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { setRole } from "../../../../redux/htxSlice";
+import { isChairman, setRole } from "../../../../redux/htxSlice";
 
 type Props = {
   account?: any[];
@@ -10,7 +10,7 @@ type Props = {
 
 const RenderChangeApp = ({ account = [] }: Props) => {
   const htx = useSelector((state: any) => state.htx.role);
-  const isChairman = useSelector((state: any) => state.htx.isChairman);
+  const isChairmanSlt = useSelector((state: any) => state.htx.isChairman);
 
   let items: any = [];
   const navigate = useNavigate();
@@ -19,7 +19,12 @@ const RenderChangeApp = ({ account = [] }: Props) => {
     navigate("/htx/dashboard", { state: { role: value } });
   };
 
-  if ((htx && htx?.role === "chunhiem") || isChairman) {
+  if (
+    (htx && htx?.role === "chunhiem") ||
+    isChairmanSlt ||
+    localStorage.getItem("account") === "chunhiem" ||
+    localStorage.getItem("chairman")
+  ) {
     items = [
       {
         label: <span>Quản lý Hợp tác xã</span>,
@@ -49,7 +54,7 @@ const RenderChangeApp = ({ account = [] }: Props) => {
 
   const onMenuClick = (e: any) => {
     if (e.key !== "home") {
-      localStorage.setItem("account", e.key);
+      localStorage.setItem("current_account", e.key);
       handleNavigate(e.key || "");
     }
   };
@@ -58,7 +63,7 @@ const RenderChangeApp = ({ account = [] }: Props) => {
     <div className="change-app">
       <Menu
         onClick={onMenuClick}
-        defaultSelectedKeys={[localStorage.getItem("account") || "chunhiem"]}
+        defaultSelectedKeys={[htx?.role || "xavien"]}
         items={items}
       />
     </div>
