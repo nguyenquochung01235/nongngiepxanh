@@ -121,7 +121,6 @@ const RiceTimeLine = ({ lohang }: Props) => {
           </CustomTimeLineItem>
         </CustomTimeline>
       </Grid>
-      {/* <Divider orientation="vertical" sx={{ml: '40px'}} flexItem></Divider> */}
     </Grid>
   );
 };
