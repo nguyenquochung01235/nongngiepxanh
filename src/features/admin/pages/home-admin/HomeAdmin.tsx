@@ -10,6 +10,7 @@ import {
   MenuUnfoldOutlined,
   PayCircleOutlined,
   PieChartOutlined,
+  SnippetsOutlined,
   TransactionOutlined,
   UserOutlined,
   YuqueOutlined,
@@ -49,6 +50,10 @@ import Map from "../../../land/components/map/Map";
 import DetailLand from "../../../land/pages/detail-land/DetailLand";
 import CreateLand from "../../../land/pages/land-create/CreateLand";
 import Landmanagement from "../../../land/pages/land-management/Landmanagement";
+import CreatePost from "../../../post/pages/create-post/CreatePost";
+import DetailPost from "../../../post/pages/detail-post/DetailPost";
+import PostManagement from "../../../post/pages/post-management/PostManagement";
+import DetailRiceTransactionUser from "../../../rice-transaction/pages/detail-rice-transaction-user/DetailRiceTransactionUser";
 import RiceTransactionManagement from "../../../rice-transaction/pages/RiceTransactionManagement";
 import CreateShop from "../../../shop/pages/create-shop-rice/CreateShop";
 import DetailShopContract from "../../../shop/pages/detail-shop-contract/DetailShopContract";
@@ -265,6 +270,22 @@ const HomeAdmin = () => {
       icon: <FormOutlined />,
       label: (
         <Link to={`${PATH.HTX}${"/story-of-user"}`}>Quản lý sổ nhật ký</Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/rice-transaction-management"}`,
+      icon: <PayCircleOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/rice-transaction-management"}`}>
+          Giao dịch lúa giống
+        </Link>
+      ),
+    },
+    {
+      key: `${PATH.HTX}${"/post-management"}`,
+      icon: <SnippetsOutlined />,
+      label: (
+        <Link to={`${PATH.HTX}${"/post-management"}`}>Quản lý bài viết</Link>
       ),
     },
   ];
@@ -515,6 +536,30 @@ const HomeAdmin = () => {
                             <DetailSupplierContract baseUrl="chunhiem"></DetailSupplierContract>
                           }
                         ></Route>
+                        <Route
+                          path={"/rice-transaction-management"}
+                          element={
+                            <RiceTransactionManagement role="chunhiem"></RiceTransactionManagement>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/rice-transaction-management/detail/:id"}
+                          element={
+                            <DetailRiceTransactionUser></DetailRiceTransactionUser>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/post-management"}
+                          element={<PostManagement></PostManagement>}
+                        ></Route>
+                        <Route
+                          path={"/post-management/create"}
+                          element={<CreatePost></CreatePost>}
+                        ></Route>
+                        <Route
+                          path={"/post-management/detail/:id"}
+                          element={<DetailPost></DetailPost>}
+                        ></Route>
                       </>
                     )}
 
@@ -597,7 +642,13 @@ const HomeAdmin = () => {
                         <Route
                           path={"/rice-transaction-management"}
                           element={
-                            <RiceTransactionManagement></RiceTransactionManagement>
+                            <RiceTransactionManagement role="xavien"></RiceTransactionManagement>
+                          }
+                        ></Route>
+                        <Route
+                          path={"/rice-transaction-management/detail/:id"}
+                          element={
+                            <DetailRiceTransactionUser></DetailRiceTransactionUser>
                           }
                         ></Route>
                         <Route path="*" element={<NotFound />} />
