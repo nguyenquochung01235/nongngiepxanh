@@ -1,9 +1,11 @@
 import { Col, Row } from "antd";
 import React from "react";
 import "./top-news.scss";
-type Props = {};
+type Props = {
+  post?: any;
+};
 
-const TopNews = (props: Props) => {
+const TopNews = ({ post }: Props) => {
   return (
     <div className="top-news">
       <div className="top-news-list">
@@ -18,7 +20,7 @@ const TopNews = (props: Props) => {
                       height: "300px",
                       objectFit: "cover",
                     }}
-                    src="https://t.ex-cdn.com/nongnghiep.vn/resize/600x360/files/bao_in/2022/10/08/18_57_5766_1-083124.jpeg"
+                    src={post && post[0]?.image}
                     alt=""
                   />
                 </Col>
@@ -34,17 +36,13 @@ const TopNews = (props: Props) => {
                     overflow: "auto",
                   }}
                 >
-                  <h2>Mô hình trồng lúa kết hợp nuôi tôm</h2>
+                  <div style={{ maxHeight: "140px", overflow: "hidden" }}>
+                    <h2>{(post && post[0]?.title_post) || ""}</h2>
+                  </div>
                   <span className="top-news-list__item-category">
                     Nông nghiệp 4.0
                   </span>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Dolore, rerum neque velit architecto reiciendis tenetur
-                    optio corporis laborum consectetur nobis cum, voluptas, in
-                    nostrum similique. Perspiciatis inventore fugiat
-                    necessitatibus quas!
-                  </p>
+                  <p>{(post && post[0]?.short_description) || ""}</p>
                 </Col>
               </Row>
             </div>
@@ -70,17 +68,17 @@ const TopNews = (props: Props) => {
                       height: "120px",
                       objectFit: "cover",
                     }}
-                    src="https://t.ex-cdn.com/nongnghiep.vn/resize/600x360/files/bao_in/2022/10/08/18_57_5766_1-083124.jpeg"
+                    src={post && post[1]?.iamge}
                     alt=""
                   />
                 </Col>
                 <Col lg={24} md={24} sm={24} xs={24}>
-                  <h2>Những món ăn không nên bỏ lỡ</h2>
-                  <span className="top-news-list__item-category">Ẩm thực</span>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Dolore, rerum neque velit architecto reiciendis tenetur
-                  </p>
+                  <h2>{(post && post[1]?.title_post) || ""}</h2>
+                  <span className="top-news-list__item-category">
+                    {" "}
+                    Nông nghiệp 4.0
+                  </span>
+                  <p>{(post && post[1]?.short_description) || ""}</p>
                 </Col>
               </Row>
             </div>

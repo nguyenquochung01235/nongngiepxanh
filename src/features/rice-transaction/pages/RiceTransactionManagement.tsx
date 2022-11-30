@@ -99,7 +99,7 @@ const RiceTransactionManagement = ({ baseUrl, role }: Props) => {
 
   const handleSave = () => {
     mutation_update_approve.mutate(
-      { hoptacxa_xacnhan: 2, reason: reasonValue },
+      { id: deleteId, hoptacxa_xacnhan: 2, reason: reasonValue },
       {
         onSuccess: (res) => {
           getResponseMessage(res);
