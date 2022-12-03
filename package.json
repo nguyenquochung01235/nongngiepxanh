@@ -3,9 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "preinstall": "npm install --f",
   "scripts": {
-    
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
