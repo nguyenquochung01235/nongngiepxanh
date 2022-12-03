@@ -4,9 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite  --port 3000",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "dev": "vite  --port 3000"
   },
   "dependencies": {
     "@aldabil/react-scheduler": "^2.3.1",
