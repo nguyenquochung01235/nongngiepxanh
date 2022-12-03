@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "postinstall": "npm install --f",
-    "build": "npm install --f",
-    "dev": "vite"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@aldabil/react-scheduler": "^2.3.1",
