@@ -3,9 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "start": "vite"
-  },
+ 
   "dependencies": {
     "@aldabil/react-scheduler": "^2.3.1",
     "@ant-design/icons": "^4.7.0",
