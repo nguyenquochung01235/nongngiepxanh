@@ -3,16 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "preinstall": "npm install --f",
   "scripts": {
-<<<<<<< HEAD
-    "dev": "vite"
-=======
-    
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview"
->>>>>>> 66f490a3df38457ed037ac72a0113420da3dc3dc
   },
   "dependencies": {
     "@aldabil/react-scheduler": "^2.3.1",
