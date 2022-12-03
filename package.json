@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite  --port process.env.PORT || 3000"
+    "dev": "vite"
   },
   "dependencies": {
     "@aldabil/react-scheduler": "^2.3.1",
