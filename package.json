@@ -7,7 +7,7 @@
     "node": "16.x"
   },
   "scripts": {
-    "start": "vite"
+    "start": "vite --port 3000"
   },
   "dependencies": {
     "@aldabil/react-scheduler": "^2.5.14",
